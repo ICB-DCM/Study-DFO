@@ -1,0 +1,1 @@
+function [fx,cx] = canoe(x);alpha = 10^3;a1 = [1; -1];a2 = -a1;fx1 = 1 - exp(-alpha*norm(x)^3);fx2 = 0.5*max(norm(x-a1)^3,norm(x-a2)^3);fx = fx1*fx2;cx = [];return

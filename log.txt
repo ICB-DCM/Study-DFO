@@ -1,0 +1,56 @@
+algorithms:
+-----------
+
+- freely available for academic usage + matlab (?)
+- propreritary ones may be better, but not easily accessible for scientists
+- better algorithms from RS study with exception of TOMLAB, which is proprietary
+
+DHC
+BOBYQA/NEWUOA |(+)
+CMAES - c,m,py, genetic, perturbation, covmar |(+)
+?DAKOTAx4 - c++, genetics/direct/patternsearches/greedy
+?DFO - fortran, tr, very exp funs, <= 50 vars, quadratic model
+M:FMINCON-IP
+M:FMINSEARCHBND - nelder-mead
+M:GA
+M:PATTERNSEARCH (GPS/GSS/MADS)
+M:SIMULANNEALBND
+M:PARTICLESWARM
+?GLOBAL - m, multistart stochastic
+?HOPSPACK - c++, hybrid optimization, gss local
+?IMFIL - m, implicit filtering
+?MCS - m, multilevel coordinate search |++
+?NOMAD-M -m, ltmads, orthomads
+PSWARMM - m |+
+?SID-PSM - m, patternsearch with simplex |+
+?SNOBFIT - m, branch-and-bound |+
+?TOMLABx4 - m, glccluster:direct-hybrid/lgo:branch-and-bound+det,stochlocalsearch/multimin:multistart/oqnlp:nocal-nlp-solver-scattersearch
+MEIGO-ESS
+
+
+options:
+--------
+default parameters (applicants do not have the knowledge or cannot afford to try out many different algorithmic options)
+local/global: difficult to do correctly
+* for multimodal problems: need to do at least as many starts as modes -> maybe global algorithm that balances local/global search himself (-> but must be good algorithm, so often a simple multistart is easier)
+
+
+test problems:
+--------------
+
+globallib, princetonlib, luksan+vlcek
+convex/non-convex, smooth/non-smooth
+
+test set cannot be biased, as we are not interested in the share of solved problems for a particular algorithm, but in the comparison between different algorithms
+
+
+evaluation criteria:
+--------------------
+
+optimal value known -> use that
+alternative (esp. for noisy problems): run all, take best value found over all optimizers, consider that as optimum + eps.
+
+
+notes:
+------
+TOMLAB: glbsolve, glcsolve, ego, rbfsolve: for box constraints
