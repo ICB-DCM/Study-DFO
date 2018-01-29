@@ -33,6 +33,7 @@ function [ result ] = doExercise( ex )
             addpath('../algorithms/fminsearchbnd');
             
             % fminsearch does not take bounds
+            options = optimset();
             options.MaxFunEvals = ex.maxFunEvals;
             options.MaxIter = ex.maxFunEvals + 1;
 %             options.TolX = ex.tolX;
@@ -236,7 +237,9 @@ function [ result ] = doExercise( ex )
         case 'imfil'
             % local
             
-            imfilfun = @(x,h) [objfun(x), 0, 1];
+            addpath('../algorithms/imfil');
+            
+            imfilfun = @(x) yimfilfun(objfun,x);
             bounds = [ex.lb, ex.ub];
             starttime = cputime;
             [x,histout] = imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds);
