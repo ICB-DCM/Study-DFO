@@ -54,7 +54,7 @@ classdef TF
 		power10  	   = struct(TF.name, 'power10', TF.fun, @TF.f_power10, TF.lb, -10, TF.ub, 9, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
         price1         = struct(TF.name, 'price1', TF.fun, @TF.f_price1, TF.lb, -500, TF.ub, 500, TF.xbst, 5, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
         qing           = struct(TF.name, 'qing', TF.fun, @TF.f_qing, TF.lb, -500, TF.ub, 500, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
-        quartic        = struct(TF.name, 'quartic', TF.fun, @TF.f_quartic, TF.lb, 2, TF.ub, 2, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
+        quartic        = struct(TF.name, 'quartic', TF.fun, @TF.f_quartic, TF.lb, -2, TF.ub, 2, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
 		rastrigin      = struct(TF.name, 'rastrigin', TF.fun, @TF.f_rastrigin, TF.lb, -5.12, TF.ub, 5.12, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex,0, TF.unimodal, 0);
         rosenbrock     = struct(TF.name, 'rosenbrock', TF.fun, @TF.f_rosenbrock, TF.lb, -2.5, TF.ub, 3, TF.xbst, 1, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
         salomon        = struct(TF.name, 'salomon', TF.fun, @TF.f_salomon, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
