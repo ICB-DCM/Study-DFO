@@ -1,8 +1,16 @@
 function [ result ] = doExercise( ex )
 %RUNEXERCISE runs exercise
 
-    fval_trace = zeros(2500,1);
-    objfun = @(x) testFunctionWrapper(ex.fun,x);
+    global y_arr_fval_trace;
+    y_arr_fval_trace = [];
+    objfun = @(x) testFunctionWrap(ex.fun,x);
+    
+    % initialize the random number generator before each optimization run
+    % to ensure reproducibility.
+    % in particular, the results should not depend on the order in which
+    % optimizations are started.
+    rng('default');
+    rng(0);
     
     switch (ex.alg)
         case 'fmincon'
@@ -17,7 +25,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = fmincon(objfun,ex.x0,[],[],[],[],ex.lb,ex.ub,[],options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
         
         case 'fminsearchbnd'
             % local
@@ -35,7 +43,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = fminsearchbnd(objfun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
           
         case 'direct'
             % global
@@ -55,7 +63,7 @@ function [ result ] = doExercise( ex )
             [x,fval,history] = direct(Problem,bounds,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,history(end,1),history(end,2),cputime-starttime,-1,fval_trace);
+                fval,x,history(end,1),history(end,2),cputime-starttime,-1,y_arr_fval_trace);
           
         case 'cmaes'
             % global
@@ -75,7 +83,7 @@ function [ result ] = doExercise( ex )
             [x,fval,counteval,exitflag,~,~] = cmaes(fitfun,ex.x0,[],options,objfun);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,-1,counteval,cputime-starttime,exitflag,fval_trace);
+                fval,x,-1,counteval,cputime-starttime,exitflag,y_arr_fval_trace);
             
         case {'meigo-ess-fmincon',...
               'meigo-ess-nomadm',...
@@ -120,7 +128,7 @@ function [ result ] = doExercise( ex )
             ret = MEIGO(problem,options,'ESS',objfun);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                ret.fbest,ret.xbest,-1,ret.numeval,cputime-starttime,ret.end_crit,fval_trace);
+                ret.fbest,ret.xbest,-1,ret.numeval,cputime-starttime,ret.end_crit,y_arr_fval_trace);
           
         case 'rcs'
             % local
@@ -136,7 +144,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = rcs(objfun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
             
         case 'dhc'
             % local
@@ -152,7 +160,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = dhc(objfun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
          
         case 'bobyqa'
             % local
@@ -166,7 +174,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = bobyqa(objfun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.funcCount,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.funcCount,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
             
         case 'mcs'
             % global
@@ -181,7 +189,7 @@ function [ result ] = doExercise( ex )
             [x,fval,~,~,ncall,~,flag] = mcs(fcn,objfun,ex.lb,ex.ub,printLevel,smax,ex.maxFunEvals);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,-1,ncall,cputime-starttime,flag,fval_trace);
+                fval,x,-1,ncall,cputime-starttime,flag,y_arr_fval_trace);
             
         case 'nomadm'
             % local
@@ -209,7 +217,7 @@ function [ result ] = doExercise( ex )
             [x,fval,runData] = PSwarm(problem,initialPopulation,options,objfun);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,runData.IterCounter,runData.ObjFunCounter,cputime-starttime,-1,fval_trace);
+                fval,x,runData.IterCounter,runData.ObjFunCounter,cputime-starttime,-1,y_arr_fval_trace);
             
         case 'snobfit'
             % global
@@ -223,7 +231,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = ysnobfit(objfun,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.funcCount,output.funcCount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.funcCount,output.funcCount,cputime-starttime,exitflag,y_arr_fval_trace);
             
         case 'imfil'
             % local
@@ -234,7 +242,7 @@ function [ result ] = doExercise( ex )
             [x,histout] = imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                objfun(x),x,-1,size(histout,1),cputime-starttime,-1,fval_trace);
+                objfun(x),x,-1,size(histout,1),cputime-starttime,-1,y_arr_fval_trace);
             
         case 'ga'
             % global
@@ -252,7 +260,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = ga(objfun,ex.dim,[],[],[],[],ex.lb,ex.ub,[],[],options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,y_arr_fval_trace);
         
             
         case {'gps','gss','mads'}
@@ -275,7 +283,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = patternsearch(objfun,ex.x0,[],[],[],[],ex.lb,ex.ub,[],options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,y_arr_fval_trace);
         
         case 'simulannealbnd'
             % local
@@ -288,7 +296,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = simulannealbnd(fun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,y_arr_fval_trace);
                     
         case 'particleswarm'
             % global
@@ -300,7 +308,7 @@ function [ result ] = doExercise( ex )
             [x,fval,exitflag,output] = particleswarm(fun,ex.dim,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,fval_trace);
+                fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,y_arr_fval_trace);
         
         otherwise
             error('Could not identify optimizer');

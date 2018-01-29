@@ -21,7 +21,7 @@ classdef Exercise
     end
     
     methods
-        function obj = Exercise(name,fun,dim,lb,ub,fbst,xbst,smooth,unimodal,alg,x0,maxFunEvals)
+        function obj = Exercise(name,fun,dim,lb,ub,fbst,xbst,smooth,convex,unimodal,alg,x0,maxFunEvals)
             obj.name = name;
             obj.fun = fun;
             obj.dim = dim;
@@ -30,6 +30,7 @@ classdef Exercise
             obj.fbst = fbst;
             obj.xbst = xbst;
             obj.smooth = smooth;
+            obj.convex = convex;
             obj.unimodal = unimodal;
             
             obj.alg = alg;

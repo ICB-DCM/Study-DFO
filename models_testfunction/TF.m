@@ -418,24 +418,25 @@ classdef TF
         
         %% helper functions
         
-        function cell_problems = f_getTestFunctions(dim_lb,dim_ub,smooth,unimodal)
-            % 0: no, 1: yes, 2: both
-            nTFs = length(TF.cell_list);
-            index = 1;
+        function cell_problems = f_getTestFunctions(bool_arbdim)
+        % create list of testfunctions, either those for arbitrary dimension,
+        % or for fixed dimension
+        
+            nTFs = length(TF.cell_tfs);
+            index = 0;
             for j=1:nTFs
-                if ( (smooth == 2 || TF.cell_list{j}.smooth == smooth) ...
-                        && (unimodal == 2 || TF.cell_list{j}.unimodal == unimodal)...
-                        && TF.cell_list{j}.dim >= dim_lb ...
-                        && TF.cell_list{j}.dim <= dim_ub )
-                    cell_problems{index} = TF.cell_list{j};
+                if ( TF.cell_tfs{j}.dim == Inf ) == bool_arbdim
                     index = index + 1;
+                    cell_problems{index} = TF.cell_tfs{j};
                 end
             end
         end
         
         function [lb,ub,xbst] = f_getVectors(simple_problem,dim)
+        % create vectors for the specified dimension
+        
             if (length(simple_problem.lb) == 1)
-                lb =simple_problem.lb*ones(dim,1);
+                lb = simple_problem.lb*ones(dim,1);
             else
                 lb = simple_problem.lb;
             end
@@ -453,17 +454,11 @@ classdef TF
             end
         end
         
-        function fun_with_noise = f_addNoiseTiny(fun)
-            fun_with_noise = @(x) fun(x)*(1+1e-10*randn(1));
+        function fun_with_noise = f_addNoise(fun)
+        % additive gaussian noise of variance 1e-4
+            fun_with_noise = @(x) fun(x) + 1e-2*randn(1);
         end
         
-        function fun_with_noise = f_addNoiseSmall(fun)
-            fun_with_noise = @(x) fun(x)*(1+1e-6*randn(1));
-        end
-        
-        function fun_with_noise = f_addNoiseBig(fun)
-            fun_with_noise = @(x) fun(x)*(1+1e-1*randn(1));
-        end
     end
     
 end
