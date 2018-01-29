@@ -9,7 +9,7 @@ if nargin == 1
     bool_noise = false;
 end
 
-addpath('../tests_testfunction');
+addpath('../models_testfunction');
 
 %% create exercises
 
