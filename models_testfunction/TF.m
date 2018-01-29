@@ -42,7 +42,8 @@ classdef TF
         levy           = struct(TF.name, 'levy', TF.fun, @TF.f_levy, TF.lb, -10, TF.ub, 10, TF.xbst, 1, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
         matyas         = struct(TF.name, 'matyas', TF.fun, @TF.f_matyas, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
         max      	   = struct(TF.name, 'max', TF.fun, @TF.f_max, TF.lb, -100, TF.ub, 100, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);	
-		nesterov       = struct(TF.name, 'nesterov', TF.fun, @TF.f_nesterov, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
+		mountainhole   = struct(TF.name, 'mountainhole', TF.fun, @TF.f_mountainhole, TF.lb, -5, TF.ub, 5, TF.xbst, [-sqrt(1/2);0], TF.fbst, -sqrt(1/2)*exp(-1/2), TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 1);
+        nesterov       = struct(TF.name, 'nesterov', TF.fun, @TF.f_nesterov, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
         norm1          = struct(TF.name, 'norm1', TF.fun, @TF.f_norm1, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
         norm2          = struct(TF.name, 'norm2', TF.fun, @TF.f_norm2, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
         norm3          = struct(TF.name, 'norm3', TF.fun, @TF.f_norm3, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
@@ -72,7 +73,7 @@ classdef TF
             TF.booth, TF.bukin2, TF.bukin4, TF.bukin6, TF.cam3, ...
             TF.colville, TF.dixonprice, TF.easom, TF.exponential, ...
             TF.freudensteinroth, TF.goldsteinprice, TF.griewank, ...
-            TF.himmelblau, TF.hyperellipse, TF.levy, TF.matyas, TF.max, ...
+            TF.himmelblau, TF.hyperellipse, TF.levy, TF.matyas, TF.max, TF.mountainhole, ...
             TF.nesterov, TF.norm1, TF.norm2, TF.norm3, TF.powellsum, ...
             TF.powellsum2, TF.power2, TF.power4, TF.power10, TF.price1, ...
             TF.qing, TF.quartic, TF.rastrigin, TF.rosenbrock, ...
@@ -252,7 +253,11 @@ classdef TF
         		
 		function [fval] = f_max(x)
             fval = max(abs(x));
-		end
+        end
+        
+        function [fval] = f_mountainhole(x)
+            fval = x(1) * exp(-(x(1)^2+x(2)^2));
+        end
 
         function [fval] = f_nesterov(x)
             fval = sum(x.^2)/2+sum(abs(x));

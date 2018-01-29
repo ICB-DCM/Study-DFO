@@ -1,4 +1,4 @@
-function varargout = functionHandleFileNameWrapper(x, fun, varargin)
+function varargout = funHandleFileNameWrap(x, fun, varargin)
 % Objective function wrapper for MEIGO / PSwarm / ... which need objective
 % function *file*name* and cannot use function handles directly. 
 % 

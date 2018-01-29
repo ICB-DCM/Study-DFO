@@ -30,10 +30,10 @@ for j=find(free>K)', 	% list of newly freed indices
   % later: speed up the following by passing K to ldlup.m!
   p=zeros(n,1);
   if n>1
-      fK = find(K);
-      pK = G(fK,j);
-      p(find(K)) = pK;
-%       p(K)=G(find(K),j);
+%       fK = find(K);
+%       pK = G(fK,j);
+%       p(find(K)) = pK;
+      p(K)=G(find(K),j);
   end
   p(j)=G(j,j);
   [L,dd,p]=ldlup(L,dd,j,p);

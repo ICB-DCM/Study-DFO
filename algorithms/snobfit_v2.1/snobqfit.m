@@ -80,7 +80,15 @@ for i = 1:n-1
   end
 end
 g = y(1:n);
-[y,f1] = minq(f0-x0*g+0.5*x0*G*x0',g-G*x0',G,max(x0'-d',u'),min(x0'+d',v'),0);
+% [y,f1] = minq(f0-x0*g+0.5*x0*G*x0',g-G*x0',G,max(x0'-d',u'),min(x0'+d',v'),0);
+ydata.gam = f0-x0*g+0.5*x0*G*x0';
+ydata.c = g-G*x0';
+ydata.b = zeros(size(ydata.c));
+[L,D] = ldl(G); % L * D * L' = G
+ydata.A = L';
+ydata.D = diag(D);
+[y,f1] = minq8(ydata,max(x0'-d',u'),min(x0'+d',v'));
+
 y = snobround(y',u,v,dx);
 nc = 0;
 while min(max(abs(x-ones(size(x,1),1)*y)-ones(size(x,1),1)*dx,[],2))<-eps & nc<10

@@ -22,7 +22,7 @@ problem.x_U=ones(1,2);                         %upper bounds
 
 opts.maxeval=500;
 opts.ndiverse=40;
-opts.local.solver='dhc';
+opts.local.solver='nomad';
 opts.local.finish='fmincon';
 opts.local.iterprint=1;
 %========================= END OF PROBLEM SPECIFICATIONS =====================

@@ -81,7 +81,7 @@ Problem.typeProblem = 'TRUTH';
 %*******************************************************************************
 
 % Specify Problem Files
-problemPath = fullfile(pwd,'TestProblems','ToyProblems');
+problemPath = fullfile(pwd,'nomad_examples');
 Problem.File.F = 'canoeDW';               % functions file
 Problem.File.O = 'canoeDW_Omega';         % linear constraints file
 Problem.File.X = 'canoeDW_X';             % closed constraints file
