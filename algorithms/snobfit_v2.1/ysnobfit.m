@@ -39,7 +39,7 @@ while funEvals < options.MaxFunEvals
     f = zeros(nreq,2);
     for j=1:nreq % evaluate f at new proposed points
         x(j,:) = request(j,1:n);
-        f(j,:) = [objfun(x(j,:)), -1];
+        f(j,:) = [fun(x(j,:)), -1];
     end
     funEvals = funEvals + nreq;
     [fbestnew,jbestnew] = min(f);
