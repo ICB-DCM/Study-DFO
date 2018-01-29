@@ -183,7 +183,7 @@ function [ result ] = doExercise( ex )
             
             fcn = 'mcsFunHandleWrap';
             printLevel = 0; % no printing
-            smax = 5*dim+10; % default number of levels
+            smax = 5*ex.dim+10; % default number of levels
             
             starttime = cputime;
             [x,fval,~,~,ncall,~,flag] = mcs(fcn,objfun,ex.lb,ex.ub,printLevel,smax,ex.maxFunEvals);

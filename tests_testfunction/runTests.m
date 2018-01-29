@@ -9,6 +9,8 @@ if nargin == 1
     bool_noise = false;
 end
 
+addpath('../tests_testfunction');
+
 %% create exercises
 
 cell_exercises = createExercises(solver, bool_noise);
@@ -31,6 +33,8 @@ for jExercise = 1:nExercises
     fprintf(['solver: ' ex.alg '\t objfun: ' ex.name noise '\t dim: ' num2str(ex.dim) '\n']);
     
     result = doExercise(ex);
+    
+    fprintf(['xbst: ' num2str(result.fbst) '\t x: ' num2str(result.fval) '\n']);
     
     cell_results{jExercise} = result;
 end
