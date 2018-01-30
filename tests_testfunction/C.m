@@ -26,7 +26,7 @@ classdef C
             'ga','particleswarm'};
         nSolvers_global            = length(C.cell_solvers_global);
         
-        fval_tolerance  = 1e-3;
+        fval_tolerance  = 1e-2;
         
     end
     

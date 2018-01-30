@@ -58,7 +58,7 @@ classdef Result
         end
         
         function printTiny(obj)
-           fprintf('%12s \t|\t %d\t|\t %12s \t|\t %d \t|\t %d \t|\t %.15f \t|\t %.15f \t|\t %s\n',obj.name,obj.dim,obj.alg,obj.iterations,obj.funEvals,obj.time,obj.fval,mat2str(obj.x)); 
+           fprintf('%12s \t|\t %d\t|\t %12s \t|\t %d \t|\t %d \t|\t %.15f\n',obj.name,obj.dim,obj.alg,obj.funEvals,obj.time,obj.fval); 
         end
     end
     

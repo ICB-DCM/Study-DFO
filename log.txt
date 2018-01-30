@@ -32,6 +32,8 @@ options:
 --------
 default parameters (applicants do not have the knowledge or cannot afford to try out many different algorithmic options)
 local/global: difficult to do correctly
+consider local runs as multistart, 1 start of global algorithm with same total maxFunEvals.
+starts/maxFunEvals: 20/1000, 1/20000
 * for multimodal problems: need to do at least as many starts as modes -> maybe global algorithm that balances local/global search himself (-> but must be good algorithm, so often a simple multistart is easier)
 
 
@@ -41,7 +43,7 @@ test problems:
 globallib, princetonlib, luksan+vlcek
 convex/non-convex, smooth/non-smooth
 
-test set cannot be biased, as we are not interested in the share of solved problems for a particular algorithm, but in the comparison between different algorithms
+test set cannot be biased, as we are not interested in the share of solved problems for a particular algorithm, but in the comparison between different algorithms. therefore, different test sets will highlight different features, but a good optimizer should be able to solve them all.
 
 
 evaluation criteria:

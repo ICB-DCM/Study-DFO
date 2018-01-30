@@ -20,7 +20,7 @@ for j=1:npoint
     f(j,:) = [fun(x(j,:)), -1];
 end
 funEvals = npoint;
-[fbest,jbest] = min(f);
+[fbest,jbest] = min(f(:,1));
 xbest = x(jbest,:);
 
 while funEvals < options.MaxFunEvals
@@ -42,7 +42,7 @@ while funEvals < options.MaxFunEvals
         f(j,:) = [fun(x(j,:)), -1];
     end
     funEvals = funEvals + nreq;
-    [fbestnew,jbestnew] = min(f);
+    [fbestnew,jbestnew] = min(f(:,1));
     if fbestnew < fbest
         fbest = fbestnew;
         xbest = x(jbestnew,:);

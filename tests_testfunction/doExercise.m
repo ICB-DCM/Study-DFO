@@ -185,9 +185,10 @@ function [ result ] = doExercise( ex )
             fcn = 'mcsFunHandleWrap';
             printLevel = 0; % no printing
             smax = 5*ex.dim+10; % default number of levels
+            maxFunEvals = C.maxFunEvals_local;
             
             starttime = cputime;
-            [x,fval,~,~,ncall,~,flag] = mcs(fcn,objfun,ex.lb,ex.ub,printLevel,smax,ex.maxFunEvals);
+            [x,fval,~,~,ncall,~,flag] = mcs(fcn,objfun,ex.lb,ex.ub,printLevel,smax,maxFunEvals);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
                 fval,x,-1,ncall,cputime-starttime,flag,y_arr_fval_trace);
@@ -226,7 +227,7 @@ function [ result ] = doExercise( ex )
             addpath('../algorithms/snobfit_v2.1');
             addpath('../algorithms/mcs/minq8');
             
-            options.MaxFunEvals = ex.maxFunEvals;
+            options.MaxFunEvals = C.maxFunEvals_local;
             
             starttime = cputime;
             [x,fval,exitflag,output] = ysnobfit(objfun,ex.lb,ex.ub,options);
@@ -268,9 +269,12 @@ function [ result ] = doExercise( ex )
             
         case {'gps','gss','mads'}
             % local
-            
+       
+            options = psoptimset(@patternsearch);
             options.MaxFunctionEvaluations = ex.maxFunEvals;
+            options.MaxFunEvals = ex.maxFunEvals;
             options.MaxIterations = ex.maxFunEvals + 1;
+            options.MaxIter = ex.maxFunEvals + 1;
             options.Display = 'off';
             switch ex.alg
                 case 'gps'
@@ -291,12 +295,16 @@ function [ result ] = doExercise( ex )
         case 'simulannealbnd'
             % local
             
+            options = saoptimset;
+            
             options.MaxFunctionEvaluations = ex.maxFunEvals;
+            options.MaxFunEvals = ex.maxFunEvals;
             options.MaxIterations = ex.maxFunEvals + 1;
+            options.MaxIter = ex.maxFunEvals + 1;
             options.Display = 'off';
             
             starttime = cputime;
-            [x,fval,exitflag,output] = simulannealbnd(fun,ex.x0,ex.lb,ex.ub,options);
+            [x,fval,exitflag,output] = simulannealbnd(objfun,ex.x0,ex.lb,ex.ub,options);
             result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
                 fval,x,output.iterations,output.funccount,cputime-starttime,exitflag,y_arr_fval_trace);
