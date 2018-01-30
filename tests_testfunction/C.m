@@ -14,6 +14,9 @@ classdef C
         
         maxFunEvals_local  = 2000;
         maxFunEvals_global = 50000;
+        maxFunEvals = {2e3,2e4,2e5};
+        
+        maxTime = 60*10; % 10 minutes
         
         cell_solvers_local         = {'fmincon','fminsearchbnd','rcs',...
             'dhc','bobyqa','imfil',...
