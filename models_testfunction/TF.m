@@ -16,16 +16,18 @@ classdef TF
         xbst     = 'xbst';
         fbst     = 'fbst';
         dim      = 'dim'; % Inf means arbitrary dim
-        smooth   = 'smooth';
+        smooth   = 'smooth'; % smooth in the sense of partially differentiable everywhere
         convex   = 'convex';
         unimodal = 'unimodal';
                 
         % test simple_problems
-        ackley         = struct(TF.name, 'ackley', TF.fun, @TF.f_ackley, TF.lb, -4, TF.ub, 4, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
+        ackley         = struct(TF.name, 'ackley', TF.fun, @TF.f_ackley, TF.lb, -6, TF.ub, 6, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
 		alpine1        = struct(TF.name, 'alpine1', TF.fun, @TF.f_alpine1, TF.lb, -5, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
         beale          = struct(TF.name, 'beale', TF.fun, @TF.f_beale, TF.lb, -4.5, TF.ub, 4.5, TF.xbst, [3;0.5], TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
         bohachevsky1   = struct(TF.name, 'bohachevsky1', TF.fun, @TF.f_bohachevsky1, TF.lb, -10, TF.ub, 12, TF.xbst, 0, TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
-        booth          = struct(TF.name, 'booth', TF.fun, @TF.f_booth, TF.lb, -10, TF.ub, 10, TF.xbst, [1;3], TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
+        bohachevsky2   = struct(TF.name, 'bohachevsky2', TF.fun, @TF.f_bohachevsky2, TF.lb, -60, TF.ub, 50, TF.xbst, 0, TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
+        bohachevsky3   = struct(TF.name, 'bohachevsky3', TF.fun, @TF.f_bohachevsky3, TF.lb, -100, TF.ub, 100, TF.xbst, 0, TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
+		booth          = struct(TF.name, 'booth', TF.fun, @TF.f_booth, TF.lb, -10, TF.ub, 10, TF.xbst, [1;3], TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
         bukin2     	   = struct(TF.name, 'bukin2', TF.fun, @TF.f_bukin2, TF.lb, [-15;-5], TF.ub, [-3;3], TF.xbst, [-10;0], TF.fbst, 0, TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
 		bukin4    	   = struct(TF.name, 'bukin4', TF.fun, @TF.f_bukin2, TF.lb, [-15;-5], TF.ub, [-3;3], TF.xbst, [-10;0], TF.fbst, 0, TF.dim, 2, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
         bukin6         = struct(TF.name, 'bukin6', TF.fun, @TF.f_bukin6, TF.lb, [-15;-5], TF.ub, [-3;3], TF.xbst, [-10;1], TF.fbst, 0, TF.dim, 2, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
@@ -44,15 +46,12 @@ classdef TF
         max      	   = struct(TF.name, 'max', TF.fun, @TF.f_max, TF.lb, -100, TF.ub, 100, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);	
 		mountainhole   = struct(TF.name, 'mountainhole', TF.fun, @TF.f_mountainhole, TF.lb, -5, TF.ub, 5, TF.xbst, [-sqrt(1/2);0], TF.fbst, -sqrt(1/2)*exp(-1/2), TF.dim, 2, TF.smooth, 1, TF.convex, 0, TF.unimodal, 1);
         nesterov       = struct(TF.name, 'nesterov', TF.fun, @TF.f_nesterov, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
-        norm1          = struct(TF.name, 'norm1', TF.fun, @TF.f_norm1, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
-        norm2          = struct(TF.name, 'norm2', TF.fun, @TF.f_norm2, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
-        norm3          = struct(TF.name, 'norm3', TF.fun, @TF.f_norm3, TF.lb, -10, TF.ub, 5, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
         powellsum      = struct(TF.name, 'powellsum', TF.fun, @TF.f_powellsum, TF.lb, -2, TF.ub, 2, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1); 
         powellsum2     = struct(TF.name, 'powellsum2', TF.fun, @TF.f_powellsum2, TF.lb, -2, TF.ub, 2, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 1, TF.unimodal, 1);
         power2         = struct(TF.name, 'power2', TF.fun, @TF.f_power2, TF.lb, -10, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
         power4   	   = struct(TF.name, 'power4', TF.fun, @TF.f_power4, TF.lb, -10, TF.ub, 9, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
 		power10  	   = struct(TF.name, 'power10', TF.fun, @TF.f_power10, TF.lb, -10, TF.ub, 9, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
-        price1         = struct(TF.name, 'price1', TF.fun, @TF.f_price1, TF.lb, -500, TF.ub, 500, TF.xbst, 5, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
+        price1         = struct(TF.name, 'price1', TF.fun, @TF.f_price1, TF.lb, -50, TF.ub, 50, TF.xbst, 5, TF.fbst, 0, TF.dim, Inf, TF.smooth, 0, TF.convex, 0, TF.unimodal, 0);
         qing           = struct(TF.name, 'qing', TF.fun, @TF.f_qing, TF.lb, -500, TF.ub, 500, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0);
         quartic        = struct(TF.name, 'quartic', TF.fun, @TF.f_quartic, TF.lb, -2, TF.ub, 2, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
 		rastrigin      = struct(TF.name, 'rastrigin', TF.fun, @TF.f_rastrigin, TF.lb, -5.12, TF.ub, 5.12, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex,0, TF.unimodal, 0);
@@ -69,12 +68,12 @@ classdef TF
         xinsheyang2    = struct(TF.name, 'xinsheyang2', TF.fun, @TF.f_xinsheyang2, TF.lb, -15, TF.ub, 20, TF.xbst, 0, TF.fbst, -1, TF.dim, Inf, TF.smooth, 1, TF.convex, 0, TF.unimodal, 0); 
         zakharov       = struct(TF.name, 'zakharov', TF.fun, @TF.f_zakharov, TF.lb, -5, TF.ub, 10, TF.xbst, 0, TF.fbst, 0, TF.dim, Inf, TF.smooth, 1, TF.convex, 1, TF.unimodal, 1);
            
-        cell_tfs = {TF.ackley, TF.alpine1, TF.beale, TF.bohachevsky1, ...
+        cell_tfs = {TF.ackley, TF.alpine1, TF.beale, TF.bohachevsky1, TF.bohachevsky2, TF.bohachevsky3, ...
             TF.booth, TF.bukin2, TF.bukin4, TF.bukin6, TF.cam3, ...
             TF.colville, TF.dixonprice, TF.easom, TF.exponential, ...
             TF.freudensteinroth, TF.goldsteinprice, TF.griewank, ...
             TF.himmelblau, TF.hyperellipse, TF.levy, TF.matyas, TF.max, TF.mountainhole, ...
-            TF.nesterov, TF.norm1, TF.norm2, TF.norm3, TF.powellsum, ...
+            TF.nesterov, TF.powellsum, ...
             TF.powellsum2, TF.power2, TF.power4, TF.power10, TF.price1, ...
             TF.qing, TF.quartic, TF.rastrigin, TF.rosenbrock, ...
             TF.salomon, TF.schaffer2, TF.schwefel1, TF.schwefel2, ...
@@ -116,6 +115,22 @@ classdef TF
 		% global minimum: [0] at [0,0]
 		% unimodal
 			fval = x(1)^2+2*x(2)^2-0.3*cos(3*pi*x(1))-0.4*cos(4*pi*x(2)) + 0.7;
+        end
+        
+        function [fval] = f_bohachevsky2(x)
+		% x\in\R^2
+		% typical domain: [-100,100]
+		% global minimum: [0] at [0,0]
+		% unimodal
+			fval = x(1)^2+2*x(2)^2-0.3*cos(3*pi*x(1))*cos(4*pi*x(2)) + 0.3;
+		end
+		
+		function [fval] = f_bohachevsky3(x)
+		% x\in\R^2
+		% typical domain: [-100,100]
+		% global minimum: [0] at [0,0]
+		% unimodal
+			fval = x(1)^2+2*x(2)^2-0.3*cos(3*pi*x(1)+4*pi*x(2)) + 0.3;
         end
 		
         function [fval] = f_booth(x)
@@ -261,18 +276,6 @@ classdef TF
 
         function [fval] = f_nesterov(x)
             fval = sum(x.^2)/2+sum(abs(x));
-        end
-        
-        function [fval] = f_norm1(x)
-            fval = sum(abs(x));
-        end
-        
-        function [fval] = f_norm2(x)
-            fval = sqrt(sum(x.^2));
-        end
-        
-        function [fval] = f_norm3(x)
-            fval = (sum(abs(x).^3))^(1/3);
         end
         
         function [fval] = f_powellsum(x)
@@ -422,6 +425,7 @@ classdef TF
         % create list of testfunctions, either those for arbitrary dimension,
         % or for fixed dimension
         
+            cell_problems = cell(0);
             nTFs = length(TF.cell_tfs);
             index = 0;
             for j=1:nTFs
