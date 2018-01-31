@@ -82,57 +82,8 @@ con0 = getInitialConcentrations();
 % The structs and the PestoOptions object, which are necessary for the 
 % PESTO routines to work are created and set to convenient values
 
-% parameters
-display(' Prepare structs and options...')
-parameters.name   = {'log(theta_1)', 'log(theta_2)', 'log(theta_3)', 'log(theta_4)'};
-parameters.min    = lowerBound * ones(4, 1);
-parameters.max    = upperBound * ones(4, 1);
-parameters.number = length(parameters.name);
-
 % objective function
 objectiveFunction = @(theta) logLikelihoodEC(theta, yMeasured, sigma2, con0, nTimepoints, nMeasure);
-
-% PestoOptions
-optionsPesto           = PestoOptions();
-optionsPesto.obj_type  = 'log-posterior';
-optionsPesto.comp_type = 'sequential'; 
-optionsPesto.mode      = 'visual';
-optionsPesto.plot_options.add_points.par = theta;
-optionsPesto.plot_options.add_points.logPost = objectiveFunction(theta);
-
-%% Parameter Sampling
-% Covering all sampling options in one struct
-display(' Sampling without prior information...');
-optionsPesto.MCMC.nIterations  = 1e4;
-
-% PT (with only 1 chain -> AM) specific options:
-optionsPesto.MCMC.samplingAlgorithm = 'PT';
-optionsPesto.MCMC.PT.nTemps         = 6;
-optionsPesto.MCMC.PT.exponentT      = 6;    
-optionsPesto.MCMC.PT.regFactor      = 1e-8;
-
-% Initialize the chains by choosing a random initial point and a 'large'
-% covariance matrix
-optionsPesto.MCMC.theta0 = lowerBound * ones(4, 1) + ...
-    (upperBound * ones(4, 1) - lowerBound * ones(4, 1)) .* rand(4,1); 
-optionsPesto.MCMC.sigma0 = 1e5 * eye(4);
-
-% Run the sampling
-parameters = getParameterSamples(parameters, objectiveFunction, optionsPesto);
-
-% Use a diagnosis tool to see, how plotting worked (see burn-in etc.)
-plotMCMCdiagnosis(parameters, 'parameters');
-
-%% Calculate Confidence Intervals
-% Confidence Intervals for the Parameters are inferred from the local 
-% optimization and the sampling information.
-
-% Set alpha levels
-alpha = [0.8, 0.9, 0.95, 0.99];
-
-display(' Computing confidence intervals...');
-parameters = getParameterConfidenceIntervals(parameters, alpha, optionsPesto);
-
 
 %% Perform Multistart optimization
 % A multi-start local optimization is performed within the bound defined in
@@ -155,60 +106,49 @@ parameters = getParameterConfidenceIntervals(parameters, alpha, optionsPesto);
 % optionsPesto.n_starts = 1;
 % parameters = getMultiStarts(parameters, objectiveFunction, optionsPesto);
 
+disp(['True parameters: ',mat2str(theta)]);
+
 % Options for an alternative multi-start local optimization
 display(' Optimizing parameters...');
-optionsPesto.n_starts = 5;
-parameters = getMultiStarts(parameters, objectiveFunction, optionsPesto);
+n_starts = 10;
+dim = 4;
+lb = lowerBound * ones(4,1);
+ub = upperBound * ones(4,1);
 
-% Use a diagnosis tool to see, how optimization worked
-plotMultiStartDiagnosis(parameters);
+disp('fmincon:');
+parameters_fmincon = runMultiStarts(objectiveFunction, 1, n_starts, 'mcs', dim, lb, ub);
+printResultParameters(parameters_fmincon);
 
-
-%% Calculate Confidence Intervals
-% Confidence Intervals for the Parameters are inferred from the local 
-% optimization and the sampling information.
-display(' Computing confidence intervals...');
-parameters = getParameterConfidenceIntervals(parameters, alpha, optionsPesto);
-
-
-%% Calculate Profile Likelihoods
-% The result of the sampling is compared with profile likelihoods.
-optionsPesto.profile_method = 'integration';
-optionsPesto.solver.gamma = 1;
-optionsPesto.objOutNumber = 2;
-optionsPesto.solver.hessian = 'user-supplied';
-
-display(' Computing parameter profiles...');
-parameters = getParameterProfiles(parameters, objectiveFunction, optionsPesto);
-
-
-%% Do additional plots
-% In order to check how well sampling and profiling agree with each other,
-% we do two additional plots.
-PlottingOptionsSampling = PestoPlottingOptions();
-PlottingOptionsSampling.S.plot_type = 1;
-PlottingOptionsSampling.S.ind = 1;
-
-fh = figure('Name','plotParameterSamples - 1D');
-plotParameterSamples(parameters,'1D',fh,[],PlottingOptionsSampling);
-
-fh = figure('Name','plotParameterSamples - 2D');
-plotParameterSamples(parameters,'2D',fh,[],PlottingOptionsSampling);
-
-%% Perform a second Sampling, now based on Multistart Optimization
-% To compare the effect of previous multi-start optimization, we perform a
-% second sampling.
-optionsPesto.MCMC.theta0 = parameters.MS.par(:,1); 
-optionsPesto.MCMC.sigma0 = 0.5*inv(squeeze(parameters.MS.hessian(:,:,1)));
-
-% Run the sampling
-display(' Sampling with information from optimization...');
-optionsPesto.MCMC.nIterations  = 2e3;
-parametersNew = parameters;
-parametersNew = getParameterSamples(parametersNew, objectiveFunction, optionsPesto);
-
-
-%% Calculate Confidence Intervals
-% Confidence Intervals for the Parameters are inferred from the local 
-% optimization, the sampling and the profile information.
-parameters = getParameterConfidenceIntervals(parametersNew, alpha, optionsPesto);
+function parameters = runMultiStarts(objectiveFunction, objOutNumber, nStarts, localOptimizer, nPar, parMin, parMax)
+%     clearPersistentVariables();
+    
+    tol = 1e-10;
+    numevals = 100*nPar;
+    
+    options = PestoOptions();
+    options.obj_type = 'log-posterior';
+    options.comp_type = 'sequential';
+    options.n_starts = nStarts;
+    options.objOutNumber = 2;
+    options.mode = 'text';
+    options.localOptimizer = localOptimizer;
+    options.localOptimizerOptions.GradObj="on";
+%     options.localOptimizerOptions.TolX          = tol;
+%     options.localOptimizerOptions.TolFun        = tol;
+    options.localOptimizerOptions.MaxFunEvals   = numevals;
+    options.localOptimizerOptions.MaxIter       = numevals;
+    
+    % for fmincon
+    options.localOptimizerOptions.MaxFunctionEvaluations = numevals;
+    options.localOptimizerOptions.MaxIterations = numevals;
+    options.localOptimizerOptions.StepTolerance = tol;
+    options.localOptimizerOptions.Display = 'off';
+  
+    
+    parameters.number = nPar;
+    parameters.min = parMin;
+    parameters.max = parMax;
+    
+    parameters = getMultiStarts(parameters, objectiveFunction, options);
+    
+end

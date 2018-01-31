@@ -43,7 +43,7 @@ test problems:
 globallib, princetonlib, luksan+vlcek
 convex/non-convex, smooth/non-smooth
 
-test set cannot be biased, as we are not interested in the share of solved problems for a particular algorithm, but in the comparison between different algorithms. therefore, different test sets will highlight different features, but a good optimizer should be able to solve them all.
+test sets cannot be biased (/ ARE ALWAYS BIASED), as we are not interested in the share of solved problems for a particular algorithm, but in the comparison between different algorithms. therefore, different test sets will highlight different features, but a good optimizer should be able to solve them all.
 
 
 evaluation criteria:
