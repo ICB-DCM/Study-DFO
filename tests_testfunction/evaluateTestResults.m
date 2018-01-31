@@ -4,18 +4,15 @@ close all;
 solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','imfil','mcs','meigo-ess-bobyqa','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','particleswarm','pswarm','rcs','simulannealbnd'};
 cell_results_all = cell(0);
 for j=1:length(solvers)
-    load(['cell_results_test_' solvers{j}]);
-    cell_results_all = vertcat(cell_results_all,cell_results);
+    file = ['cell_results_test_' solvers{j} '_2000_20_.mat'];
+    if exist(file,'file')
+        load(file);
+        cell_results_all = vertcat(cell_results_all,cell_results);
+    end
 end
-load('cell_results_test_fmincon.mat');
-cell_results_fmincon = cell_results;
-load('cell_results_test_dhc.mat');
-cell_results_dhc = cell_results;
-load('cell_results_test_rcs.mat');
-cell_results_rcs = cell_results;
 
 % add information
-cell_results_all = EvaluationHelper.f_createResultExtendedList(cell_results_all);
+% cell_results_all = EvaluationHelper.f_createResultExtendedList(cell_results_all);
 
 % get best results
 cell_results_best = EvaluationHelper.f_extractBestResults(cell_results_all);
@@ -253,8 +250,7 @@ hold on;
 for j=1:nKeys
     plot(v_x,log10(v_y(j,:)),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
 end
-plot(1:C.nDims,log10(C.maxFunEvals_local)*ones(1,C.nDims),'-r','DisplayName','maxFunEvals-local');
-plot(1:C.nDims,log10(C.maxFunEvals_global)*ones(1,C.nDims),'-r','DisplayName','maxFunEvals-global');
+plot(1:C.nDims,log10(C.maxFunEvals{1})*ones(1,C.nDims),'-r','DisplayName','maxFunEvals');
 hold off;
 legend('show','Location','northeastoutside');
 xticks(1:C.nDims);

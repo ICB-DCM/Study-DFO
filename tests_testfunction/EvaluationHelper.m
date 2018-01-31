@@ -28,14 +28,14 @@ classdef EvaluationHelper
                 grpName = grpRes.name;
                 grpDim = grpRes.dim;
                 grpAlg = grpRes.alg;
-                grpFval = grpRes.accurate_fval;
+                grpFval = grpRes.fval;
                 index = index + 1;
                 while (index <= n)
                     curRes = cell_results_all{index};
                     curName = curRes.name;
                     curDim = curRes.dim;
                     curAlg = curRes.alg;
-                    curFval = curRes.accurate_fval;
+                    curFval = curRes.fval;
                     if  isequal(grpName,curName) && isequal(grpDim,curDim) && isequal(grpAlg,curAlg) 
                         index = index + 1;
                         if (curFval < grpFval)
@@ -126,7 +126,7 @@ classdef EvaluationHelper
                
                % update
                map_total(res.alg) = map_total(res.alg) + 1;
-               map(res.alg) = map(res.alg) + res.accurate_funEvals;
+               map(res.alg) = map(res.alg) + res.funEvals;
             end
             
             % get share
