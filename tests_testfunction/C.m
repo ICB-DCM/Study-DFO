@@ -3,8 +3,9 @@ classdef C
     %   Detailed explanation goes here
     
     properties (Constant)
-        nStarts_local      = 25;
-        nStarts_global     = 1;
+        nStarts = 20;
+%         nStarts_local = 20;
+%         nStarts_global = 1;
         
         arr_dims        = [2,3,4,5,10,15,20,25,30,35,40,50,75,100,200,300];
         nDims           = length(C.arr_dims);
@@ -12,9 +13,9 @@ classdef C
 %         tolX            = 1e-10;
 %         tolFun          = 1e-10;
         
-        maxFunEvals_local  = 2000;
-        maxFunEvals_global = 50000;
-        maxFunEvals = {2e3,2e4,2e5};
+%         maxFunEvals_local  = 2500;
+%         maxFunEvals_global = 50000;
+        maxFunEvals = {2000,40000};
         
         maxTime = 60*10; % 10 minutes
         

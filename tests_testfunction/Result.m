@@ -22,10 +22,10 @@ classdef Result
         % results
         fval
         x
-        iterations
         funEvals
         time
-        exitflag
+        flag_time
+        flag_fevals
         fval_trace
         
     end
@@ -33,7 +33,7 @@ classdef Result
     methods
         function obj = Result(name,dim,lb,ub,fbst,xbst,smooth,convex,unimodal,...
                 alg,x0,maxFunEvals,...
-                fval,x,iterations,funEvals,time,exitflag,fval_trace)
+                fval,x,funEvals,time,flag_time,flag_fevals,fval_trace)
             obj.name = name;
             obj.dim = dim;
             obj.lb = lb;
@@ -50,10 +50,10 @@ classdef Result
             
             obj.fval = fval;
             obj.x = x;
-            obj.iterations = iterations;
             obj.funEvals = funEvals;
             obj.time = time;
-            obj.exitflag = exitflag;
+            obj.flag_time = flag_time;
+            obj.flag_fevals = flag_fevals;
             obj.fval_trace = fval_trace;
         end
         

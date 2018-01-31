@@ -1,4 +1,4 @@
-function [ cell_exercises ] = createExercises( solver, bool_noise )
+function [ cell_exercises ] = createExercises( solver, maxFunEvals, nStarts, bool_noise )
 %CREATEEXERCISES
 
         % create function list
@@ -28,12 +28,12 @@ function [ cell_exercises ] = createExercises( solver, bool_noise )
         
         % cell_exercises is to be filled
         if strcmp(solver_type,'local')
-            nStarts = C.nStarts_local;
-            maxFunEvals = C.maxFunEvals_local;
+%             starts = C.nStarts_local;
+%             maxFunEvals = C.maxFunEvals_local;
             
         elseif strcmp(solver_type,'global')
-            nStarts = C.nStarts_global;
-            maxFunEvals = C.maxFunEvals_global;
+%             starts = C.nStarts_global;
+%             maxFunEvals = C.maxFunEvals_global;
         else
             error('solver not recognized');
         end

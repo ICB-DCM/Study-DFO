@@ -26,6 +26,8 @@ classdef ResultExtended < Result
                 obj.accurate_fval_trace(j) = obj.accurate_fval_trace(obj.accurate_funEvals);
             end
             obj.accurate_fval = obj.accurate_fval_trace(obj.maxFunEvals);
+            obj.accurate_fval_trace = [];
+            obj.fval_trace = []; % save space
         end
     end
 end

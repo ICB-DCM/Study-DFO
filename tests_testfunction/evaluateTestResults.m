@@ -1,7 +1,7 @@
 close all;
 
 % gather all results in one big cell array
-solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','mcs','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','rcs'};
+solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','imfil','mcs','meigo-ess-bobyqa','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','particleswarm','pswarm','rcs','simulannealbnd'};
 cell_results_all = cell(0);
 for j=1:length(solvers)
     load(['cell_results_test_' solvers{j}]);
