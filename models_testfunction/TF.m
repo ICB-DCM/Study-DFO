@@ -460,7 +460,7 @@ classdef TF
         
         function fun_with_noise = f_addNoise(fun)
         % additive gaussian noise of variance 1e-4
-            fun_with_noise = @(x) fun(x) + 1e-2*randn(1);
+            fun_with_noise = @(x) fun(x) + C.noise_standard_deviation*randn(1);
         end
         
     end

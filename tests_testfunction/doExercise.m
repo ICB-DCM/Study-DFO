@@ -186,6 +186,7 @@ try
             problem.UB = ex.ub;
             
             initialPopulation = [];
+            options.MaxIter = ex.maxFunEvals + 1;
             options.MaxObj = ex.maxFunEvals;
             
             PSwarm(problem,initialPopulation,options,objfun);

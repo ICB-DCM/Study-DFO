@@ -32,6 +32,8 @@ classdef C
         
         fval_tolerance  = 1e-2;
         
+        noise_standard_deviation = 0.3*C.fval_tolerance;
+        
     end
     
     methods (Static)

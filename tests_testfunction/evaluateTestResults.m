@@ -1,4 +1,5 @@
 close all;
+clear;
 
 % gather all results in one big cell array
 solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','imfil','mcs','meigo-ess-bobyqa','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','particleswarm','pswarm','rcs','simulannealbnd'};
@@ -97,34 +98,42 @@ map_time = EvaluationHelper.f_getAverageTimePerAlg(cell_results_all);
 
 
 %% visualize
+cell_keys = keys(map_shares);
+nKeys = length(cell_keys);
 
-markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h'};
-nMarkers = length(markers);
-colors  = {'r','m','c','g','b','k'};
+colors = distinguishable_colors(nKeys);
+markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h'};
+markers = markers(1:nKeys);
+% colors  = {'r','m','c','g','b','k'};
 nColors = length(colors);
-
+axes('NextPlot','replacechildren', 'ColorOrder',colors); 
 % TextSizes.DefaultAxesFontSize = 14;
 % TextSizes.DefaultTextFontSize = 18;
 % set(0,TextSizes);
 
 % smooth, unimodal
-cell_keys = keys(map_shares);
-nKeys = length(cell_keys);
+
 
 v_x = 1:5;
 v_y = zeros(nKeys,5);
 cell_maps = {map_shares,map_shares_smooth,map_shares_nonsmooth,map_shares_convex,map_shares_nonconvex};
 for j=1:nKeys
+   key_j = cell_keys{j};
    for k=1:5
        tmp_map = cell_maps{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
+% sort
+[v_y,index] = sortrows(v_y,5,'descend');
+cell_keys_tmp = cell_keys(index);
+colors_tmp = colors(index,:);
+markers_tmp = markers(index);
+%display
 fig = figure('name','smooth/modal');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
 legend('show','Location','northeastoutside');
@@ -132,6 +141,7 @@ xticks(1:5);
 xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function types');
 ylabel('solved problems');
+ylim([0,1]);
 
 saveas(fig, [pwd '/images/smooth-convex.png']); 
 
@@ -143,16 +153,20 @@ v_x = 1:5;
 v_y = zeros(nKeys,5);
 cell_maps = {map_shares_all,map_shares_all_smooth,map_shares_all_nonsmooth,map_shares_all_convex,map_shares_all_nonconvex};
 for j=1:nKeys
+   key_j = cell_keys{j};
    for k=1:5
        tmp_map = cell_maps{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
+[v_y,index] = sortrows(v_y,1,'descend');
+cell_keys_tmp = cell_keys(index);
+colors_tmp = colors(index,:);
+markers_tmp = markers(index);
 fig = figure('name','smooth/convex (all)');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
 legend('show','Location','northeastoutside');
@@ -160,6 +174,7 @@ xticks(1:5);
 xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function types');
 ylabel('solved problems');
+ylim([0,1]);
 
 saveas(fig, [pwd '/images/smooth-convex-all.png']); 
 
@@ -167,16 +182,20 @@ saveas(fig, [pwd '/images/smooth-convex-all.png']);
 v_x = 1:C.nDims;
 v_y = zeros(nKeys,1);
 for j=1:nKeys
+   key_j = cell_keys{j};
    for k=1:C.nDims
        tmp_map = cell_map_best_dim_shares{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
+[v_y,index] = sortrows(v_y,C.nDims,'descend');
+cell_keys_tmp = cell_keys(index);
+colors_tmp = colors(index,:);
+markers_tmp = markers(index);
 fig = figure('name','dims');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
 legend('show','Location','northeastoutside');
@@ -184,6 +203,7 @@ xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dim');
 ylabel('solved problems');
+ylim([0,1]);
 
 saveas(fig, [pwd '/images/dims.png']); 
 
@@ -191,16 +211,20 @@ saveas(fig, [pwd '/images/dims.png']);
 v_x = 1:C.nDims;
 v_y = zeros(nKeys,1);
 for j=1:nKeys
+   key_j = cell_keys{j};
    for k=1:C.nDims
        tmp_map = cell_map_all_dim_shares{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
+[v_y,index] = sortrows(v_y,C.nDims,'descend');
+cell_keys_tmp = cell_keys(index);
+colors_tmp = colors(index,:);
+markers_tmp = markers(index);
 fig = figure('name','dims (all)');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
 legend('show','Location','northeastoutside');
@@ -208,6 +232,7 @@ xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dim');
 ylabel('solved problems');
+ylim([0,1]);
 
 saveas(fig, [pwd '/images/dims-all.png']); 
 
@@ -215,16 +240,16 @@ saveas(fig, [pwd '/images/dims-all.png']);
 v_x = 1:C.nDims;
 v_y = zeros(nKeys,1);
 for j=1:nKeys
+    key_j = cell_keys{j};
    for k=1:C.nDims
        tmp_map = cell_map_all_dim_time{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
 fig = figure('name','time');
 hold on;
 for j=1:nKeys
-    plot(v_x,log10(v_y(j,:)),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,log10(v_y(j,:)),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
 end
 hold off;
 legend('show','Location','northeastoutside');
@@ -239,16 +264,16 @@ saveas(fig, [pwd '/images/time.png']);
 v_x = 1:C.nDims;
 v_y = zeros(nKeys,1);
 for j=1:nKeys
+    key_j = cell_keys{j};
    for k=1:C.nDims
        tmp_map = cell_map_all_dim_fevals{k};
-       tmp_keys = keys(tmp_map);
-       v_y(j,k) = tmp_map(tmp_keys{j});
+       v_y(j,k) = tmp_map(key_j);
    end
 end
 fig = figure('name','funEvals');
 hold on;
 for j=1:nKeys
-    plot(v_x,log10(v_y(j,:)),[markers{mod(j,nMarkers)+1} colors{mod(j,nColors)+1} '-'], 'DisplayName', cell_keys{j}); 
+    plot(v_x,log10(v_y(j,:)),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
 end
 plot(1:C.nDims,log10(C.maxFunEvals{1})*ones(1,C.nDims),'-r','DisplayName','maxFunEvals');
 hold off;

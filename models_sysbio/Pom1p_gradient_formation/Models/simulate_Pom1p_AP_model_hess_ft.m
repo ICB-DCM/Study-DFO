@@ -1,7 +1,7 @@
 % simulate_Pom1p_AP_model_hess_ft.m is the matlab interface to the cvodes mex
 %   which simulates the ordinary differential equation and respective
 %   sensitivities according to user specifications.
-%   this routine was generated using AMICI commit # in branch unknown branch in repo unknown repository.
+%   this routine was generated using AMICI commit 53032d67dfa9b9e400f9ec131a444f83f646a6a7 in branch master in repo https://github.com/icb-dcm/amici.
 %
 % USAGE:
 % ======
@@ -16,7 +16,8 @@
 %           this corresponds to the specification in model.sym.p
 % kappa ... 1 dimensional parameter vector of parameters for which sensitivities are not desired.
 %           this corresponds to the specification in model.sym.k
-% data ... struct containing the following fields. Can have the following fields %     Y ... 2 dimensional matrix containing data.
+% data ... struct containing the following fields:
+%     Y ... 2 dimensional matrix containing data.
 %           columns must correspond to observables and rows to time-points
 %     Sigma_Y ... 2 dimensional matrix containing standard deviation of data.
 %           columns must correspond to observables and rows to time-points
@@ -31,8 +32,11 @@
 %    .tstart    ... start of integration. for all timepoints before this, values will be set to initial value.
 %    .sens_ind ... 1 dimensional vector of indexes for which sensitivities must be computed.
 %           default value is 1:length(theta).
+%    .x0 ... user-provided state initialisation. This should be a vector of dimension [#states, 1].
+%        default is state initialisation based on the model definition.
 %    .sx0 ... user-provided sensitivity initialisation. this should be a matrix of dimension [#states x #parameters].
-%        default is sensitivity initialisation based on the derivative of the state initialisation.%    .lmm    ... linear multistep method for forward problem.
+%        default is sensitivity initialisation based on the derivative of the state initialisation.
+%    .lmm    ... linear multistep method for forward problem.
 %        1: Adams-Bashford
 %        2: BDF (DEFAULT)
 %    .iter    ... iteration method for linear multistep.
@@ -41,10 +45,10 @@
 %    .linsol   ... linear solver module.
 %        direct solvers:
 %        1: Dense (DEFAULT)
-%        2: Band (not implented)
-%        3: LAPACK Dense (not implented)
-%        4: LAPACK Band  (not implented)
-%        5: Diag (not implented)
+%        2: Band (not implemented)
+%        3: LAPACK Dense (not implemented)
+%        4: LAPACK Band  (not implemented)
+%        5: Diag (not implemented)
 %        implicit krylov solvers:
 %        6: SPGMR
 %        7: SPBCG
@@ -58,7 +62,6 @@
 %    .sensi_meth   ... method for sensitivity analysis.
 %        'forward': forward sensitivity analysis (DEFAULT)
 %        'adjoint': adjoint sensitivity analysis 
-%        'ss': steady state sensitivity analysis 
 %    .adjoint   ... flag for adjoint sensitivity analysis.
 %        true: on 
 %        false: off (DEFAULT)
@@ -83,13 +86,13 @@
 % sol.llh ... likelihood value
 % sol.chi2 ... chi2 value
 % sol.sllh ... gradient of likelihood
-% sol.s2llh ... hessian of likelihood
+% sol.s2llh ... hessian or hessian-vector-product of likelihood
 % sol.x ... time-resolved state vector
 % sol.y ... time-resolved output vector
 % sol.sx ... time-resolved state sensitivity vector
 % sol.sy ... time-resolved output sensitivity vector
-% sol.z event output
-% sol.sz sensitivity of event output
+% sol.z ... event output
+% sol.sz ... sensitivity of event output
 function varargout = simulate_Pom1p_AP_model_hess_ft(varargin)
 
 % DO NOT CHANGE ANYTHING IN THIS FILE UNLESS YOU ARE VERY SURE ABOUT WHAT YOU ARE DOING
@@ -98,37 +101,53 @@ if(nargin<2)
     error('Not enough input arguments.');
 else
     tout=varargin{1};
-    phi=varargin{2};
+    theta=varargin{2};
 end
 if(nargin>=3)
     kappa=varargin{3};
 else
     kappa=[];
 end
-theta = 10.^(phi(:));
-
 
 if(length(theta)<9)
     error('provided parameter vector is too short');
 end
 
 
-pbar = ones(size(theta));
-pbar(pbar==0) = 1;
 xscale = [];
 if(nargin>=5)
-    options_ami = amioption(varargin{5});
+    if(isa(varargin{5},'amioption'))
+        options_ami = varargin{5};
+    else
+        options_ami = amioption(varargin{5});
+    end
 else
     options_ami = amioption();
 end
 if(isempty(options_ami.sens_ind))
     options_ami.sens_ind = 1:9;
 end
-if(options_ami.sensi<2)
-    options_ami.id = transpose([0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]);
+if(options_ami.sensi>1)
+    error('Second order sensitivities were requested but not computed');
 end
-options_ami.z2event = []; % MUST NOT CHANGE THIS VALUE
-chainRuleFactor = theta(options_ami.sens_ind)*log(10);
+
+if(~isempty(options_ami.pbar))
+    pbar = options_ami.pbar;
+else
+    pbar = ones(size(theta));
+end
+
+if(isempty(options_ami.pscale))
+    options_ami.pscale = 'log10' ;
+end
+switch (options_ami.pscale)
+    case 1
+        chainRuleFactor = exp(theta(options_ami.sens_ind));
+    case 2
+        chainRuleFactor = 10.^theta(options_ami.sens_ind)*log(10);
+    otherwise
+        chainRuleFactor = ones(size(options_ami.sens_ind));
+end
 
 if(nargout>1)
     if(nargout>4)
@@ -138,14 +157,8 @@ if(nargout>1)
         options_ami.sensi = 0;
     end
 end
-if(options_ami.ss>0)
-    if(options_ami.sensi>1)
-        error('Computation of steady state sensitivity only possible for first order sensitivities');
-    end
-    options_ami.sensi = 0;
-end
-np = length(options_ami.sens_ind); % MUST NOT CHANGE THIS VALUE
-if(np == 0)
+nplist = length(options_ami.sens_ind); % MUST NOT CHANGE THIS VALUE
+if(nplist == 0)
     options_ami.sensi = 0;
 end
 nxfull = 400;
@@ -161,23 +174,27 @@ end
 plist = options_ami.sens_ind-1;
 if(nargin>=4)
     if(isempty(varargin{4}));
-        data=amidata(length(tout),1,0,options_ami.nmaxevent,length(kappa));
+        data=[];
     else
-        data=amidata(varargin{4});
+        if(isa(varargin{4},'amidata'));
+             data=varargin{4};
+        else
+            data=amidata(varargin{4});
+        end
+        if(data.ne>0);
+            options_ami.nmaxevent = data.ne;
+        else
+            data.ne = options_ami.nmaxevent;
+        end
+        if(isempty(kappa))
+            kappa = data.condition;
+        end
+        if(isempty(tout))
+            tout = data.t;
+        end
     end
 else
-    data=amidata(length(tout),1,0,options_ami.nmaxevent,length(kappa));
-end
-if(data.ne>0);
-    options_ami.nmaxevent = data.ne;
-else
-    data.ne = options_ami.nmaxevent;
-end
-if(isempty(kappa))
-    kappa = data.condition;
-end
-if(isempty(tout))
-    tout = data.t;
+    data=[];
 end
 if(~all(tout==sort(tout)))
     error('Provided time vector is not monotonically increasing!');
@@ -191,28 +208,26 @@ end
 if(length(kappa)<400)
     error('provided condition vector is too short');
 end
+init = struct();
+if(~isempty(options_ami.x0))
+    if(size(options_ami.x0,2)~=1)
+        error('x0 field must be a row vector!');
+    end
+    if(size(options_ami.x0,1)~=nxfull)
+        error('Number of columns in x0 field does not agree with number of states!');
+    end
+    init.x0 = options_ami.x0;
+end
 if(~isempty(options_ami.sx0))
-    if(size(options_ami.sx0,2)~=np)
+    if(size(options_ami.sx0,2)~=nplist)
         error('Number of rows in sx0 field does not agree with number of model parameters!');
     end
-    options_ami.sx0 = bsxfun(@times,options_ami.sx0,1./(permute(theta(options_ami.sens_ind),[2,1])*log(10)));
+    if(size(options_ami.sx0,1)~=nxfull)
+        error('Number of columns in sx0 field does not agree with number of states!');
+    end
+    init.sx0 = bsxfun(@times,options_ami.sx0,1./permute(chainRuleFactor(:),[2,1]));
 end
-sol = ami_Pom1p_AP_model_hess_ft(tout,theta(1:9),kappa(1:400),options_ami,plist,pbar,xscale,data);
-if(options_ami.sensi==1)
-    sol.sllh = sol.sllh.*theta(options_ami.sens_ind)*log(10);
-    sol.sx = bsxfun(@times,sol.sx,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-    sol.sy = bsxfun(@times,sol.sy,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-    sol.sz = bsxfun(@times,sol.sz,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-    sol.srz = bsxfun(@times,sol.srz,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-    sol.ssigmay = bsxfun(@times,sol.ssigmay,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-    sol.ssigmayz = bsxfun(@times,sol.ssigmaz,permute(theta(options_ami.sens_ind),[3,2,1])*log(10));
-end
-if(options_ami.sensi_meth == 3)
-    sol.dxdotdp = bsxfun(@times,sol.dxdotdp,permute(theta(options_ami.sens_ind),[2,1])*log(10));
-    sol.dydp = bsxfun(@times,sol.dydp,permute(theta(options_ami.sens_ind),[2,1])*log(10));
-    sol.sx = -sol.J\sol.dxdotdp;
-    sol.sy = sol.dydx*sol.sx + sol.dydp;
-end
+sol = ami_Pom1p_AP_model_hess_ft(tout,theta(1:9),kappa(1:400),options_ami,plist,pbar(plist+1),xscale,init,data);
 if(nargout>1)
     varargout{1} = sol.status;
     varargout{2} = sol.t;
