@@ -4,11 +4,11 @@ close all;
 
 % parameters_meigo = test('meigo-ess',10,1000);
 % parameters_fmincon = test('fmincon',10,1000);
-% parameters_dhc = test('dhc',10,1000);
+parameters_dhc = test('dhc',20,1000);
 % parameters_rcs = test('rcs',10,1000);
 % parameters_mcs = test('mcs',10,1000);
 % parameters_pswarm = test('pswarm',10,1000);
-parameters_direct = test('direct',10,10000);
+% parameters_direct = test('direct',10,10000);
 
 function [parameters_res] =  test(solver,nStarts,maxFunEvals)
 
@@ -62,7 +62,7 @@ objectiveFunction = @(theta) logLikelihoodCR(theta, t, y, sigma2, 'log');
 % some of its properties are set accordingly.
 
 % Optimization
-parameters_res = runMultiStarts(objectiveFunction, nStarts, maxFunEvals, solver, nPar, lb, ub);
+parameters_res = runMultiStarts(objectiveFunction, nStarts, maxFunEvals, solver, nPar, lb, ub,false);
 printResultParameters(parameters_res);
 save(['test_cr_' solver '_' num2str(nStarts) '_' num2str(maxFunEvals)],'parameters_res');
 
@@ -109,11 +109,13 @@ switch solver
         error('solver not recognized');
 end
 if ~strcmp(solver,'meigo-ess')
-%     options.localOptimizerOptions.MaxFunctionEvaluations = numevals;
-%     options.localOptimizerOptions.MaxFunEvals   = numevals;
-%     options.localOptimizerOptions.MaxIterations = numevals;
+    options.localOptimizerOptions.MaxFunctionEvaluations = numevals;
+    options.localOptimizerOptions.MaxFunEvals   = numevals;
+    options.localOptimizerOptions.MaxIterations = numevals;
     options.localOptimizerOptions.MaxIter       = numevals;
     options.localOptimizerOptions.MaxObj        = numevals;
+    options.localOptimizerOptions.OutputFcn = @outfun;
+%     options.localOptimizerOptions.Display = 'debug';
 %     options.localOptimizerOptions.GradObj='off';
     % options.localOptimizerOptions.Display = 'off';
 else

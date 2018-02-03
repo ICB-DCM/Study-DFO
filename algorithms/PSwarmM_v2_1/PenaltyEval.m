@@ -89,7 +89,7 @@ end
 
 % Compute objective function value for remaining points
 if(~isempty(FeasibleLinearIdx))
-    try
+%     try
         ObjValue(FeasibleLinearIdx)=feval(Problem.ObjFunction, PointsEval, varargin{:});
         % update counter
         Problem.Stats.RealObjFunCounter=Problem.Stats.RealObjFunCounter+NPoints;
@@ -100,12 +100,12 @@ if(~isempty(FeasibleLinearIdx))
                     InsertCache(Problem,PointsEval(:,i),ObjValue(FeasibleLinearIdx(i)),step);
             end
         end
-        
-    catch
-        error('pswarm:ObjectiveError', ...
-            ['Cannot continue because user supplied objective function' ...
-            ' failed with the following error:\n%s'], lasterr)
-    end
+        % for tests, disable error catching
+%     catch
+%         error('pswarm:ObjectiveError', ...
+%             ['Cannot continue because user supplied objective function' ...
+%             ' failed with the following error:\n%s'], lasterr)
+%     end
 end
 
 return;
