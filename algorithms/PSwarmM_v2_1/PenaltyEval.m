@@ -89,6 +89,7 @@ end
 
 % Compute objective function value for remaining points
 if(~isempty(FeasibleLinearIdx))
+% we do not want to catch the error here in test mode
 %     try
         ObjValue(FeasibleLinearIdx)=feval(Problem.ObjFunction, PointsEval, varargin{:});
         % update counter
@@ -100,7 +101,7 @@ if(~isempty(FeasibleLinearIdx))
                     InsertCache(Problem,PointsEval(:,i),ObjValue(FeasibleLinearIdx(i)),step);
             end
         end
-        % for tests, disable error catching
+        
 %     catch
 %         error('pswarm:ObjectiveError', ...
 %             ['Cannot continue because user supplied objective function' ...
