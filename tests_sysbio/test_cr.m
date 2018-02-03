@@ -7,17 +7,23 @@ addpath('../models_sysbio/conversion_reaction');
 maxFunEvals = 1000;
 nStarts = 10;
 
-parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
-parameters_dhc = test('dhc',maxFunEvals,nStarts);
-parameters_rcs = test('rcs',maxFunEvals,nStarts);
+% parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
+% parameters_dhc = test('dhc',maxFunEvals,nStarts);
+% parameters_rcs = test('rcs',maxFunEvals,nStarts);
 % parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
-parameters_mcs = test('mcs',maxFunEvals,nStarts);
-parameters_direct = test('direct',maxFunEvals,nStarts);
-parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
-parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+% parameters_mcs = test('mcs',maxFunEvals,nStarts);
+% parameters_direct = test('direct',maxFunEvals,nStarts);
+% parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
+% parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
 
-function [parameters_res] =  test(solver,maxFunEvals,nStarts)
+function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
+
+if nargin < 4
+    useGradient = false;
+end
+disp(solver);
+addpath(genpath('../algorithms'));
 
 % Seed the random number generator. Seeding the random number generator
 % ensures that everytime this example is run, the same sequence of random
@@ -25,6 +31,7 @@ function [parameters_res] =  test(solver,maxFunEvals,nStarts)
 % optimization will be used. This is helpful for debugging or comparing
 % results across different machines.
 % Results might vary though if PestoOptions.comp_type is set to 'parallel'
+rng('default');
 rng(0);
 
 %% Model Definition
@@ -67,7 +74,7 @@ objectiveFunction = @(theta) logLikelihoodCR(theta, t, y, sigma2, 'log');
 % some of its properties are set accordingly.
 
 % Optimization
-parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, false);
+parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, useGradient);
 printResultParameters(parameters_res);
 save(['test_cr_' solver '_' num2str(nStarts) '_' num2str(maxFunEvals)],'parameters_res');
 
@@ -95,6 +102,7 @@ options.localOptimizer = solver;
 % set maxFunEvals for the different optimizers
 switch solver
     case 'fmincon'
+        lOptions = optimset;
         lOptions.MaxFunctionEvaluations = numevals;
         lOptions.MaxIterations = numevals;
         if useGradients
