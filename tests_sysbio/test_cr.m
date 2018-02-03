@@ -2,17 +2,22 @@ clear;
 clear persistent;
 close all;
 
-% parameters_meigo = test('meigo-ess',10,1000);
-% parameters_fmincon = test('fmincon',10,1000);
-parameters_dhc = test('dhc',20,1000);
-% parameters_rcs = test('rcs',10,1000);
-% parameters_mcs = test('mcs',10,1000);
-% parameters_pswarm = test('pswarm',10,1000);
-% parameters_direct = test('direct',10,10000);
-
-function [parameters_res] =  test(solver,nStarts,maxFunEvals)
-
 addpath('../models_sysbio/conversion_reaction');
+
+maxFunEvals = 1000;
+nStarts = 10;
+
+parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
+parameters_dhc = test('dhc',maxFunEvals,nStarts);
+parameters_rcs = test('rcs',maxFunEvals,nStarts);
+% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+parameters_mcs = test('mcs',maxFunEvals,nStarts);
+parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
+parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+
+function [parameters_res] =  test(solver,maxFunEvals,nStarts)
 
 % Seed the random number generator. Seeding the random number generator
 % ensures that everytime this example is run, the same sequence of random
@@ -62,13 +67,13 @@ objectiveFunction = @(theta) logLikelihoodCR(theta, t, y, sigma2, 'log');
 % some of its properties are set accordingly.
 
 % Optimization
-parameters_res = runMultiStarts(objectiveFunction, nStarts, maxFunEvals, solver, nPar, lb, ub,false);
+parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, false);
 printResultParameters(parameters_res);
 save(['test_cr_' solver '_' num2str(nStarts) '_' num2str(maxFunEvals)],'parameters_res');
 
 end % function
 
-function parameters = runMultiStarts(objectiveFunction, nStarts, maxFunEvals, solver, nPar, parMin, parMax, useGradients)
+function parameters = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients)
 %     clearPersistentVariables();
 
 %     tol = 1e-10;
@@ -90,51 +95,44 @@ options.localOptimizer = solver;
 % set maxFunEvals for the different optimizers
 switch solver
     case 'fmincon'
-        
+        lOptions.MaxFunctionEvaluations = numevals;
+        lOptions.MaxIterations = numevals;
+        if useGradients
+            options.objOutNumber = 2;
+            lOptions.GradObj = 'on';
+        else
+            lOptions.GradObj = 'off';
+        end
     case 'dhc'
-        
+        lOptions.MaxFunEvals = numevals;
     case 'rcs'
-        
+        lOptions.MaxFunEvals = numevals;
+        lOptions.MaxIter = numevals;
+    case 'bobyqa'
+        lOptions.MaxFunEvals = numevals;
+        lOptions.Rhobeg = 0.1*max(abs(ub-lb));
     case 'mcs'
-        
+        lOptions.MaxFunEvals = numevals;
     case 'direct'
-        
-    case 'meigo-ess-fmincon'
-        
+        lOptions.maxevals = numevals;
+        lOptions.maxits = numevals;
+    case 'meigo-ess'
+        lOptions.inter_save = false;
+        lOptions.maxeval = numevals;
+        lOptions.maxtime = Inf;
+    case 'cmaes'
+        lOptions.MaxFunEvals = numevals;
+        lOptions.MaxIter = numevals;
+        lOptions.LBounds = parMin;
+        lOptions.UBounds = parMax;
     case 'pswarm'
-        options.localOptimizerOptions.MaxIter = numevals;
-        options.localOptimizerOptions.MaxObj  = numevals;
+        lOptions.MaxIter = numevals;
+        lOptions.MaxObj  = numevals;
     
     otherwise 
         error('solver not recognized');
 end
-if ~strcmp(solver,'meigo-ess')
-    options.localOptimizerOptions.MaxFunctionEvaluations = numevals;
-    options.localOptimizerOptions.MaxFunEvals   = numevals;
-    options.localOptimizerOptions.MaxIterations = numevals;
-    options.localOptimizerOptions.MaxIter       = numevals;
-    options.localOptimizerOptions.MaxObj        = numevals;
-    options.localOptimizerOptions.OutputFcn = @outfun;
-%     options.localOptimizerOptions.Display = 'debug';
-%     options.localOptimizerOptions.GradObj='off';
-    % options.localOptimizerOptions.Display = 'off';
-else
-    options.localOptimizerOptions.maxeval       = numevals;
-    options.localOptimizerOptions.maxtime       = Inf;
-    options.localOptimizerOptions.local.solver  = 'fmincon';
-    options.localOptimizerOptions.local.finish  = 'fmincon';
-    options.localOptimizerOptions.local.iterprint = 0;
-    options.localOptimizerOptions.iterprint     = 0;
-    options.localOptimizerOptions.plot          = 0;
-end
-
-% set tolerances for the different optimizers
-%     options.localOptimizerOptions.TolX          = tol;
-%     options.localOptimizerOptions.TolFun        = tol;
-%     options.localOptimizerOptions.StepTolerance = tol;
-
-% more options
-
+options.localOptimizerOptions = lOptions;
 
 parameters.number = nPar;
 parameters.min = parMin;
