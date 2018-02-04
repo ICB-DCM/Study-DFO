@@ -1,4 +1,4 @@
-function [fval] = testFunWrap(fun,maxFunEvals,starttime,x)
+function [fval] = testFunWrap(fun,maxFunEvals,starttic,x)
 
 
 global y_arr_fval_trace;
@@ -20,8 +20,7 @@ end
 
 % check termination criteria
 ischover = false;
-time_now = cputime;
-if time_now - starttime > C.maxTime 
+if toc(starttic) > C.maxTime 
     y_flag_time = 1;
     ischover = true;
 end

@@ -15,8 +15,8 @@ global y_flag_time; % indicate if ended bc time up
 y_flag_time = 0;
 global y_flag_fevals; % indicate if ended bc maxFunEvals reached
 y_flag_fevals = 0;
-starttime = cputime; % for time measurement
-objfun = @(x) testFunWrap(ex.fun,ex.maxFunEvals,starttime,x);
+starttic = tic; % for time measurement
+objfun = @(x) testFunWrap(ex.fun,ex.maxFunEvals,starttic,x);
 
 try
     
@@ -210,7 +210,6 @@ try
             bounds = [ex.lb, ex.ub];
             
             imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds);
-            exitflag = 0;
             
         case 'ga'
             % global
@@ -276,13 +275,13 @@ try
        
     result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
                 ex.alg,ex.x0,ex.maxFunEvals,...
-                y_fbst,y_xbst,y_feval_counter,cputime-starttime,y_flag_time,y_flag_fevals,y_arr_fval_trace);
+                y_fbst,y_xbst,y_feval_counter,toc(starttic),y_flag_time,y_flag_fevals,y_arr_fval_trace);
     
 catch ME
     if strcmp(ME.identifier,'y:stop')
         result = Result(ex.name,ex.dim,ex.lb,ex.ub,ex.fbst,ex.xbst,ex.smooth,ex.convex,ex.unimodal,...
             ex.alg,ex.x0,ex.maxFunEvals,...
-            y_fbst,y_xbst,y_feval_counter,cputime-starttime,y_flag_time,y_flag_fevals,y_arr_fval_trace);
+            y_fbst,y_xbst,y_feval_counter,toc(starttic),y_flag_time,y_flag_fevals,y_arr_fval_trace);
     else
         rethrow(ME);
     end
