@@ -5,16 +5,16 @@ close all;
 addpath('../models_sysbio/conversion_reaction');
 
 maxFunEvals = 1000;
-nStarts = 10;
+nStarts = 100;
 
-% parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
-% parameters_dhc = test('dhc',maxFunEvals,nStarts);
-% parameters_rcs = test('rcs',maxFunEvals,nStarts);
-% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
-% parameters_mcs = test('mcs',maxFunEvals,nStarts);
-% parameters_direct = test('direct',maxFunEvals,nStarts);
-% parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
-% parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
+parameters_dhc = test('dhc',maxFunEvals,nStarts);
+parameters_rcs = test('rcs',maxFunEvals,nStarts);
+parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+parameters_mcs = test('mcs',maxFunEvals,nStarts);
+parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
+parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
 
 function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
@@ -76,7 +76,7 @@ objectiveFunction = @(theta) logLikelihoodCR(theta, t, y, sigma2, 'log');
 % Optimization
 parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, useGradient);
 printResultParameters(parameters_res);
-save(['test_cr_' solver '_' num2str(nStarts) '_' num2str(maxFunEvals)],'parameters_res');
+save(['test_cr_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts)],'parameters_res');
 
 end % function
 
