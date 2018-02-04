@@ -23,6 +23,7 @@ if nargin < 4
     useGradient = false;
 end
 disp(solver);
+
 addpath(genpath('../algorithms'));
 
 % Seed the random number generator. Seeding the random number generator
@@ -118,7 +119,7 @@ switch solver
         lOptions.MaxIter = numevals;
     case 'bobyqa'
         lOptions.MaxFunEvals = numevals;
-        lOptions.Rhobeg = 0.1*max(abs(ub-lb));
+        lOptions.Rhobeg = 0.1*max(abs(parMax-parMin));
     case 'mcs'
         lOptions.MaxFunEvals = numevals;
     case 'direct'
