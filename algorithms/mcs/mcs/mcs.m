@@ -125,7 +125,7 @@ function [xbest,fbest,xmin,fmi,ncall,ncloc,flag]=mcs(fcn,data,u,v,prt,smax,nf,st
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % global variables
-global foptbox nbasket nboxes ncall nglob nsweep nsweepbest optlevel  record xglob xloc
+global foptbox nbasket nboxes ncall nglob nsweep nsweepbest optlevel record xglob xloc
 % foptbox(1:nglob)  function value(s) of the box(es) containing the (a)
 %             	global minimizer of a test function
 % nbasket   	counter for boxes in the 'shopping basket'
@@ -147,10 +147,29 @@ global foptbox nbasket nboxes ncall nglob nsweep nsweepbest optlevel  record xgl
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n = length(u);
 
+% initialization of the record list, the counters nboxes, nbasket, m 
+% and nloc, xloc and the output flag
+foptbox = [];
+nbasket = 0;
+nboxes = 1;
+nglob = 0;
+nsweep = 0;
+nsweepbest = 0;
+optlevel = [];
+record = zeros(smax-1,1);
+record(1) = 1;
+xglob = [];
+xloc = [];
+
+nbasket0 = 0;
+flag = 1; 
+m = n;
+nloc = 0;
+
 % check box bounds
-if ~isempty(find(v<u)) 
+if ~isempty(find(v<u,1)) 
   error('incompatible box bounds')
-elseif ~isempty(find(u==v))
+elseif ~isempty(find(u==v,1))
   error('degenerate box bound')
 end
 
@@ -160,8 +179,8 @@ if nargin < 5, prt = 1; end
 if nargin < 6, smax = 5*n+10; end
 if nargin < 7, nf = 50*n^2; end
 if nargin < 8, stop = 3*n; end
-if nargin < 9, 
-  if isempty(find(isinf(u))) & isempty(find(isinf(v)))
+if nargin < 9
+  if isempty(find(isinf(u),1)) && isempty(find(isinf(v),1))
     iinit = 0; 
   else
     iinit = 1;
@@ -185,11 +204,11 @@ step = 1000;
 dim = step1;
 
 % initialization of some large arrays
-isplit = zeros(1,step1);
-level = zeros(1,step1);
-ipar = zeros(1,step1);
-ichild = zeros(1,step1);
-f = zeros(2,step1);
+% isplit = zeros(1,step1);
+% level = zeros(1,step1);
+% ipar = zeros(1,step1);
+% ichild = zeros(1,step1);
+% f = zeros(2,step1);
 z = zeros(2,step1);
 nogain = zeros(1,step1);
 
@@ -224,14 +243,14 @@ elseif iinit == 3
 else
   init0 	%self-defined initialization list
   for i=1:size(x0,2)
-    if ~isempty(find(x0(:,i)<u)) | ~isempty(find(x0(:,i)>v))
+    if ~isempty(find(x0(:,i)<u,1)) || ~isempty(find(x0(:,i)>v,1))
       error('incorrect initialization list')
     end
   end
 end 
 
 % check whether there are infinities in the initialization list
-if ~isempty(find(isinf(x0))), error('infinities in ititialization list'), end
+if ~isempty(find(isinf(x0),1)), error('infinities in ititialization list'), end
 
 % computation of the function values f0 appertaining to the init. list 
 % and the pointer istar to the best point in the initialization list
@@ -241,11 +260,13 @@ if iinit ~= 3
 end
 
 % definition of the base vertex of the original box
+x = zeros(n,1);
 for i = 1:n
   x(i) = x0(i,l(i));
 end
 
 % definition of the opposite vertex v1 of the original box
+v1 = zeros(n,1);
 for i = 1:n
   if abs(x(i)-u(i)) > abs(x(i)-v(i))
     v1(i) = u(i);
@@ -254,23 +275,10 @@ for i = 1:n
   end
 end
 
-% initialization of the record list, the counters nboxes, nbasket, m 
-% and nloc, xloc and the output flag
-record = zeros(smax-1,1);
-nboxes = 1;
-nbasket = 0;
-nbasket0 = 0;
-nsweep = 0;
-m = n;
-record(1) = 1;
-nloc = 0;
-xloc = [];
-flag = 1; 
-
 [ipar,level,ichild,f,isplit,p,xbest,fbest] = initbox(x0,f0,l,L,istar,u,v,prt);
 % generates the boxes in the initialization procedure
 f0min = fbest;
-if stop(1) > 0 & stop(1) < 1
+if stop(1) > 0 && stop(1) < 1
   flag = chrelerr(fbest,stop);
 elseif stop(1) == 0
   flag = chvtr(fbest,stop(2));
@@ -285,7 +293,7 @@ s = strtsw(smax,level,f(1,:));
 % non-split boxes is computed
 nsweep = nsweep + 1;	% sweep counter
   
-while s < smax & ncall + 1 <= nf
+while s < smax && ncall + 1 <= nf
   par = record(s);   % the best box at level s is the current box
   [n0,x,y,x1,x2,f1,f2] = vertex(par,n,u,v,v1,x0,f0,ipar,isplit,ichild,z,f,l,L); 
   % compute the base vertex x, the opposite vertex y, the 'neighboring' 
@@ -360,7 +368,7 @@ while s < smax & ncall + 1 <= nf
       % the vector iopt contains the indices of the global minimizers
       % contained in the box
       for iglob = 1:nglob
-        if w1 <= xglob(:,iglob) & xglob(:,iglob) <= w2
+        if w1 <= xglob(:,iglob) && xglob(:,iglob) <= w2
           iopt = [iopt, iglob];
         end
         for iglob = 1:length(iopt)
@@ -378,7 +386,7 @@ while s < smax & ncall + 1 <= nf
     end
   end
   if s == smax  % if smax is reached, a new sweep is started 
-    if local,
+    if local
       [fmi(nbasket0+1:nbasket),j] = sort(fmi(nbasket0+1:nbasket));
       xmin(:,nbasket0+1:nbasket) = xmin(:,nbasket0+j);
       xmin0 = [];
@@ -387,12 +395,12 @@ while s < smax & ncall + 1 <= nf
         x = xmin(:,j);
         f1 = fmi(j);
         chkloc;
-        if loc,
+        if loc
           addloc;          
           [xbest,fbest,xmin,fmi,x,f1,loc,flag,ncall1] = basket(fcn,data,x,f1,xmin,fmi,xbest,fbest,stop,nbasket0);
           ncall = ncall + ncall1;
           if ~flag,break,end
-          if loc,
+          if loc
             [xmin1,fmi1,nc,flag] = lsearch(fcn,data,x,f1,f0min,u,v,nf-ncall,stop,local,gamma,hess);
             ncall = ncall + nc;
             ncloc = ncloc + nc;
@@ -407,7 +415,7 @@ while s < smax & ncall + 1 <= nf
                 fmi(nbasket) = fmi1;
                 break
               end
-              if stop(1) > 0 & stop(1) < 1
+              if stop(1) > 0 && stop(1) < 1
                 flag = chrelerr(fbest,stop);
               elseif stop(1) == 0
                 flag = chvtr(fbest,stop(2));
@@ -417,12 +425,12 @@ while s < smax & ncall + 1 <= nf
             [xbest,fbest,xmin,fmi,loc,flag,ncall1] = basket1(fcn,data,xmin1,fmi1,xmin,fmi,xbest,fbest,stop,nbasket0);
             ncall = ncall + ncall1;
             if ~flag,break,end
-            if loc,
+            if loc
               nbasket0 = nbasket0 + 1;
               xmin(:,nbasket0) = xmin1;
               fmi(nbasket0) = fmi1;
               fbestloc;
-              if ~flag,
+              if ~flag
                 nbasket = nbasket0; break
               end
             end
@@ -433,7 +441,7 @@ while s < smax & ncall + 1 <= nf
       if ~flag,break,end
     end
     s = strtsw(smax,level,f(1,:));
-    if prt,
+    if prt
       if nsweep == 1
         fprintf('nsw  minl  ');
         if prt > 1
@@ -459,7 +467,7 @@ end
 if ncall >= nf
   flag = 2;
 end
-if local,
+if local
   if length(fmi) > nbasket
     xmin(:,nbasket+1:length(fmi)) = [];
     fmi(nbasket+1:length(fmi)) = [];

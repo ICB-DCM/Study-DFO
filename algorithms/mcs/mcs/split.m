@@ -78,7 +78,7 @@
 % updtrec.m
 %
 function [xbest,fbest,xmin,fmi,ipar,level,ichild,f,flag,ncall] = split(fcn,data,i,s,smax,par,n0,u,v,x,y,x1,x2,z,xmin,fmi,ipar,level,ichild,f,xbest,fbest,stop,prt)  
-global nbasket nboxes nglob nsweep nsweepbest record xglob 
+global nbasket nboxes nglob nsweep nsweepbest xglob 
 % nbasket   	counter for points in the 'shopping basket'
 % nboxes      	counter for boxes not in the 'shopping basket'
 % nglob       	number of global minimizers of a test function in [u,v]
@@ -93,7 +93,7 @@ iopt = [];
 if prt > 1
   [w1,w2] =  bounds(n,n0,x,y,u,v);
   for iglob = 1:nglob
-    if w1 <= xglob(:,iglob) & xglob(:,iglob) <= w2
+    if w1 <= xglob(:,iglob) && xglob(:,iglob) <= w2
       iopt = [iopt, iglob];
     end
   end     
@@ -106,7 +106,7 @@ if f(2,par) < fbest
   fbest = f(2,par);
   xbest = x;
   nsweepbest = nsweep;
-  if stop(1) > 0 & stop(1) < 1
+  if stop(1) > 0 && stop(1) < 1
     flag = chrelerr(fbest,stop);
   elseif stop(1) == 0
     flag = chvtr(fbest,stop(2));
@@ -119,7 +119,7 @@ if s + 1 < smax
     nboxes = nboxes + 1;
     [ipar(nboxes),level(nboxes),ichild(nboxes),f(1,nboxes)] = genbox(par,s+1,1,f(1,par));
     updtrec(nboxes,level(nboxes),f(1,:));
-    if prt > 1,
+    if prt > 1
       updtoptl(i,z(1),splval,iopt,s+1,f(1,par));
     end 
     if s + 2 < smax 
@@ -132,7 +132,7 @@ if s + 1 < smax
       xmin(:,nbasket) = x;
       fmi(nbasket) = f(2,par);
     end
-    if prt > 1,
+    if prt > 1
       updtoptl(i,splval,z(2),iopt,s+2,f(2,par));
     end 
   else
@@ -146,13 +146,13 @@ if s + 1 < smax
       xmin(:,nbasket) = x;
       fmi(nbasket) = f(1,par);
     end
-    if prt > 1,
+    if prt > 1
       updtoptl(i,z(1),splval,iopt,s+2,f(1,par));
     end 
     nboxes = nboxes + 1;
     [ipar(nboxes),level(nboxes),ichild(nboxes),f(1,nboxes)] = genbox(par,s+1,2,f(2,par));
     updtrec(nboxes,level(nboxes),f(1,:));
-    if prt > 1,
+    if prt > 1
       updtoptl(i,splval,z(2),iopt,s+1,f(2,par));
     end 
   end
@@ -163,7 +163,7 @@ if s + 1 < smax
       nboxes = nboxes + 1;
       [ipar(nboxes),level(nboxes),ichild(nboxes),f(1,nboxes)] = genbox(par,s+1,3,f(2,par));
       updtrec(nboxes,level(nboxes),f(1,:));
-      if prt > 1,
+      if prt > 1
         updtoptl(i,z(2),y(i),iopt,s+1,f(2,par));
       end 
     else
@@ -177,7 +177,7 @@ if s + 1 < smax
         xmin(:,nbasket) = x;
         fmi(nbasket) = f(2,par);
       end
-      if prt > 1,
+      if prt > 1
         updtoptl(i,z(2),y(i),iopt,s+2,f(2,par));
       end 
     end
@@ -191,7 +191,7 @@ else
   nbasket = nbasket + 1;
   xmin(:,nbasket) = x;
   fmi(nbasket) = f(2,par);
-  if prt > 1,
+  if prt > 1
     updtoptl(i,z(1),splval,iopt,smax,f(1,par));
     updtoptl(i,splval,z(2),iopt,smax,f(2,par));
     if z(2) ~= y(i)

@@ -53,7 +53,7 @@ if iterprint
 end
 
 [x,fval,exitflag,numeval]=ssm_localsolver(x0,x_L,x_U,c_L,c_U,neq,ndata,int_var,bin_var,fobj,...
-    local_solver,local_iterprint,local_tol,weight,nconst,tolc,varargin{:});
+    local_solver,local_iterprint,local_tol,weight,nconst,tolc,opts.local.solver_options,varargin{:});
 
 if iterprint
     fprintf('Local solution function value: %g \n',fval);

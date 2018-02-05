@@ -35,7 +35,7 @@ function [x,f,g,ier] = qls(x,f,g,p,xl,xu,data)
 ier = 0;
 i1 = find(p>0);
 i2 = find(p<0);
-if ~isempty(i1);
+if ~isempty(i1)
   a1 = max((xl(i1)-x(i1))./p(i1));
   a2 = min((xu(i1)-x(i1))./p(i1));
 else
@@ -51,7 +51,7 @@ h(2) = sum(data.D.*(data.A*p).^2);
 if h(2)>0
   alp = -h(1)/h(2);
   alp = min(max(alp,a1),a2);
-elseif ~h(2)
+elseif h(2)==0
   if h(1)>0
     if isfinite(a1)
       alp = a1;
@@ -95,7 +95,7 @@ else
   if isinf(a1) || isinf(a2)
     ier = 1;
     warning('QLS: The problem is unbounded')
-    if (h(1)<0&&isinf(a2))||(h(1)>0&&isfinite(a1))||(~h(1)&&isinf(a2))
+    if (h(1)<0&&isinf(a2))||(h(1)>0&&isfinite(a1))||(h(1)==0&&isinf(a2))
       alp = 1;
     else
       alp = -1;

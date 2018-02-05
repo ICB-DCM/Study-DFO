@@ -32,7 +32,7 @@
 % qls.m 
 %
 function [x,f,g,ier] = freebounds(x,f,g,d,xl,xu,data)
-ind0 = find(~d&((g>0&isinf(xl))|(g<0&isinf(xu))));
+ind0 = find(d==0&((g>0&isinf(xl))|(g<0&isinf(xu))));
 if ~isempty(ind0)
   ier = 1;
   warning('FREEBOUNDS: The function is unbounded below')
@@ -55,7 +55,7 @@ end
 alpl = xl-x;
 alpu = xu-x;
 p = zeros(size(x));
-ind0 = find(~d);
+ind0 = find(d==0);
 for j=1:length(ind0)
   i = ind0(j);
   if g(i) > 0 

@@ -56,3 +56,5 @@ alternative (esp. for noisy problems): run all, take best value found over all o
 notes:
 ------
 TOMLAB: glbsolve, glcsolve, ego, rbfsolve: for box constraints
+MCS: Cannot handle nans.
+MEIGO: Does not pass gradients to fmincon. Can do!

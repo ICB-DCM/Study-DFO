@@ -20,7 +20,7 @@ global foptbox optlevel xglob
 % xglob(1:n,1:nglob) xglob(:,i), i=1:nglob, are the global minimizers 
 % of a test function 
 for j = 1:length(iopt)
-  if min(x,y) <= xglob(i,iopt(j)) & xglob(i,iopt(j)) <= max(x,y)
+  if min(x,y) <= xglob(i,iopt(j)) && xglob(i,iopt(j)) <= max(x,y)
     optlevel(iopt(j)) = level;
     foptbox(iopt(j)) = f; 
   end

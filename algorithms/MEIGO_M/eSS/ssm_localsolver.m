@@ -1,5 +1,5 @@
 function [x,fval,exitflag,numeval]=ssm_localsolver(X0,x_L,x_U,c_L,c_U,neq,ndata,int_var,bin_var,fobj,...
-    local_solver,local_iterprint,local_tol,weight,nconst,tolc,varargin)
+    local_solver,local_iterprint,local_tol,weight,nconst,tolc,localoptions,varargin)
 global ccll ccuu n_upper n_lower n_fun_eval
 
 global hjfun hjxl hjxu hjcl hjcu hjweight hjtolc
@@ -688,10 +688,25 @@ switch local_solver
             dsp='iter';
         else
             dsp='off';
-        end;
-        options=optimset('LargeScale','off','Display',dsp,'Tolx',tolx,'TolFun',tolf,'Tolcon',tolg,'MaxSQPIter',100*length(X0),'MaxFunEvals',200*nvar,'MaxIter',200*nvar);
-        [x,fval,exitflag,OUTPUT]=fmincon(@fmobj,X0,[],[],[],[],x_L,x_U,const_fun,options,fobj,neq,varargin{:});
+        end
+        options = localoptions;
+        options.TolX = tolx;
+        options.TolFun = tolf;
+        options.Display = dsp;
+        options.MaxFunEvals = 200 * length(X0);
+        options.MaxFunctionEvaluations = 200*length(X0);
+        options.MaxIter = 200 * length(X0);
+        options.MaxIterations          = 200*length(X0);
+        
+        if isfield(options,'GradObj') && strcmp(options.GradObj,'on')
+            fun = @fmobj2;
+        else
+            fun = @fmobj;
+        end
+       
+        [x,fval,exitflag,~]=fmincon(fun,X0,[],[],[],[],x_L,x_U,const_fun,options,fobj,neq,varargin{:});
         numeval=n_fun_eval;
+        
 	otherwise
 		error('Local Solver not recognized.');
 
@@ -769,6 +784,15 @@ function f = fmobj(x,fun,neq,varargin)
 global n_fun_eval
 
 f = feval(fun,x,varargin{:});
+n_fun_eval = n_fun_eval + 1;
+return
+
+
+% Now with gradient.
+function [f,g] = fmobj2(x,fun,neq,varargin)
+global n_fun_eval
+
+[f,g] = feval(fun,x,varargin{:});
 n_fun_eval = n_fun_eval + 1;
 return
 %\-----------------------------------------------------/

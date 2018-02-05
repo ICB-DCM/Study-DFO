@@ -1,9 +1,9 @@
-% lssort;		
+% lssort;
 % sort points by increasing alp;
 % count list size and number of strict local extrema
 %
-% simple but inefficient 
-% may be updated in a much faster way 
+% simple but inefficient
+% may be updated in a much faster way
 % by looking at in which intervals points are added
 %
 
@@ -19,12 +19,12 @@ minima=([up,1] & [1,down]);
 nmin=sum(minima);
 [fbest,i]=min(flist);abest=alist(i);
 fmed=median(flist);
- 
+
 % distance from best minimum to next
 if nmin>1,
-  al=alist(minima);al(al==abest)=[];
-  unitlen=min(abs(al-abest));
+    al=alist(minima);al(al==abest)=[];
+    unitlen=min(abs(al-abest));
 else
-  unitlen=max(abest-alist(1),alist(s)-abest);
+    unitlen=max(abest-alist(1),alist(s)-abest);
 end;
 

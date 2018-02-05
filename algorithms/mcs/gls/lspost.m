@@ -1,17 +1,17 @@
-% function [alist,flist,gTp,pTGp,nmin,new]=lspost(alist,flist,prt) 		
+% function [alist,flist,gTp,pTGp,nmin,new]=lspost(alist,flist,prt)
 % postprocessing of line search output
 % find local quadratic model around best point
 % and discard nonminimal points
 %
-% alist,flist:	list of steps and corresponding function values 
+% alist,flist:	list of steps and corresponding function values
 %		at input: steps with known function values
 %		at output: extrema found, except bad ones at boundary
-		% sorted by increasing f
+% sorted by increasing f
 %		in particular, the best point is at alist(1)
 % prt:		print level
 %		0: nothing plotted or printed (default)
 % 		1: mark extrema in plot
-% gTp,pTGp	gradient and Hessian information from 
+% gTp,pTGp	gradient and Hessian information from
 %		local quadratic model around best point
 % nmin:		number of local minima detected
 % new:		is alp=0 separated from abest by a barrier?
@@ -45,26 +45,29 @@ minima=([up,1] & [1,down]);
 nmin=sum(minima);
 
 
-if prt, 
-  figure(1);
-  plot(alist(maxima),flist(maxima),'+');
-  plot(alist(minima),flist(minima),'+');drawnow;
-  pause(0.5);
+if prt,
+    figure(1);
+    plot(alist(maxima),flist(maxima),'+');
+    plot(alist(minima),flist(minima),'+');drawnow;
+    pause(0.5);
 end;
 
 % purge list from nonextremal points
 ind=(maxima | minima);
-if ind==[], error('1???'); end; 
+if ind==[], error('1???'); end;
 alist=alist(ind);flist=flist(ind);
 s=size(alist,2);
 
 % check for separating barrier
 % (sitting on a local maximum is also counted as barrier)
 i=max(find(alist<=0));
-if i==[], f0=flist(1);
-elseif i==s, f0=flist(s);
-else f0=min(flist(i),flist(i+1));
-end;
+if isempty(i)
+    f0=flist(1);
+elseif i==s
+    f0=flist(s);
+else
+    f0=min(flist(i),flist(i+1));
+end
 new= (f0>min(flist));
 
 
@@ -74,12 +77,12 @@ alist=alist(perm);
 
 % discard bad boundary points
 for k=1:2,
-  if s==0, error('2???'); end; 
-  if s<=1, break; end;
-  if alist(s)==min(alist) | alist(s)==max(alist),
-    alist(s)=[];flist(s)=[];s=s-1;
-  else
-    break;
-  end;
+    if s==0, error('2???'); end;
+    if s<=1, break; end;
+    if alist(s)==min(alist) || alist(s)==max(alist),
+        alist(s)=[];flist(s)=[];s=s-1;
+    else
+        break;
+    end;
 end;
 

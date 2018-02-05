@@ -8,7 +8,8 @@
 %
 % Calls minq8sep.m and its subprogram
 %
-clear all; clear mex;
+clear all; 
+clear mex;
 newdata=1;	% new data?
                 % ~= 0 generate new problem and store data in .mat file
                 % = 0  load .mat file

@@ -208,8 +208,9 @@ try
             
             imfilfun = @(x) yimfilfun(objfun,x);
             bounds = [ex.lb, ex.ub];
+            opts = imfil_optset('complete_history','off');
             
-            imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds);
+            imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds,opts);
             
         case 'ga'
             % global

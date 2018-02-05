@@ -116,7 +116,7 @@ lb = lowerBound * ones(4,1);
 ub = upperBound * ones(4,1);
 
 disp('fmincon:');
-parameters_fmincon = runMultiStarts(objectiveFunction, 1, n_starts, 'mcs', dim, lb, ub);
+parameters_fmincon = runMultiStarts(objectiveFunction, 1, n_starts, 'fmincon', dim, lb, ub);
 printResultParameters(parameters_fmincon);
 
 function parameters = runMultiStarts(objectiveFunction, objOutNumber, nStarts, localOptimizer, nPar, parMin, parMax)

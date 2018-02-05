@@ -44,6 +44,7 @@
 function [x,f,g,nit,ier] = minq8(data,xl,xu,x,maxit,tol,prt)
 delta3 = 1.e-4; % parameter for termination when the function 
                 % value is close to zero
+                
 n = length(xl);
 m = size(data.A,1);
 if size(xl,2)>1, xl = xl'; end
@@ -114,7 +115,7 @@ if ~isempty(ind)
   nit = 0;
   return
 end
-ind0 = find(~d&((g>0&isinf(xl))|(g<0&isinf(xu))));
+ind0 = find(d==0&((g>0&isinf(xl))|(g<0&isinf(xu))));
 if ~isempty(ind0)
   ier = 1;
   warning('MINQ8: The function is unbounded below')
@@ -137,7 +138,7 @@ end
 % check whether the function does not depend on some variables 
 % and fix them at the absolutely smallest value
 colA = sum(data.A.^2,1)';
-ind0 = find(~colA&~data.c);
+ind0 = find(colA==0&data.c==0);
 if ~isempty(ind0)
   ind0c = 1:n;
   ind0c(ind0) = [];

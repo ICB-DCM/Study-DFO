@@ -61,7 +61,7 @@ end
 %% Data
 % Experimental data is read out from an .xls-file and written to an AMICI
 % object which is used for the ODE integration
-datatable         = xlsread(fullfile(exdir,'pnas_data_original.xls'));
+datatable         = xlsread(fullfile(exdir,'pnas_data_original_js.xls'));
 amiData.t         = datatable(:,1);       % time points
 amiData.Y         = datatable(:,[2,4,6]); % measurement
 amiData.condition = [1.4,0.45];           % initial conditions

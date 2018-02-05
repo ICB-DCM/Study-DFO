@@ -83,7 +83,7 @@ for j=1:length(ind)
     end
     for k=1:i-1
       if hess(i,k)
-        if xtrip(k) > u(k) & xtrip(k) < v(k) & ~isempty(find(ind==k))
+        if xtrip(k) > u(k) && xtrip(k) < v(k) && ~isempty(find(ind==k,1))
           q1 = ftrip + g(k)*(x1(k)-xtrip(k))+0.5*G(k,k)*(x1(k)-xtrip(k))^2;
           q2 = ftrip + g(k)*(x2(k)-xtrip(k))+0.5*G(k,k)*(x2(k)-xtrip(k))^2; 
           if q1 <= q2
@@ -114,7 +114,7 @@ for j=1:length(ind)
     else 
       x2(i) = xtrip(i);
     end
-    if nargin < 10 & k1 > 0
+    if nargin < 10 && k1 > 0
       if xtripnew(k1) == x1(k1)
         x1(k1) = xtrip(k1);
       else
@@ -122,9 +122,9 @@ for j=1:length(ind)
       end
     end
     for k=1:i
-      if ~isempty(find(ind==k))
+      if ~isempty(find(ind==k,1))
         g(k) = g(k) + G(i,k)*(xtripnew(i) - xtrip(i));
-        if nargin < 10 & k1 > 0
+        if nargin < 10 && k1 > 0
           g(k) = g(k) + G(k1,k)*(xtripnew(k1) - xtrip(k1));
         end
       end

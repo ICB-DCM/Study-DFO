@@ -52,7 +52,7 @@ end
 if nargin < 7
   prt = 0;
 end
-[y,f,g,nit,ier] = minq8(data,yl,yu,ys,maxit,tol,prt);
+[y,~,~,nit,~] = minq8(data,yl,yu,ys,maxit,tol,prt);
 x=(A'*y-c)./d;
 
 % check for accuracy
@@ -70,7 +70,7 @@ end
 itref=1;
 data.c=res;
 data.b = zeros(n,1);
-[dy,f,g,nit0,ier]=minq8(data,yl-y,yu,zeros(m,1),maxit,tol,prt);
+[dy,~,~,nit0,~]=minq8(data,yl-y,yu,zeros(m,1),maxit,tol,prt);
 x=x+(A'*dy)./d;
 y=y+dy;
 nit = nit+nit0;
@@ -79,13 +79,13 @@ nit = nit+nit0;
 res=A*x-b;ressmall=nnz(A)*eps*(abs(A)*abs(x)+abs(b));
 res(~eq)=min(res(~eq),0);
 acc = norm(res,inf);
-if min(abs(res)<=sqrt(nnz(A))*ressmall),
+if min(abs(res)<=sqrt(nnz(A))*ressmall)
   % accuracy satisfactory
   ier=0;
 else
   % feasible set probably empty
   ier=1;
-end;
+end
 
 
 

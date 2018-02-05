@@ -48,7 +48,6 @@
 % range.m
 % triple.m
 function [xmin,fmi,ncall,flag] = lsearch(fcn,data,x,f,f0,u,v,nf,stop,maxstep,gamma,hess)
-global nsweep nsweepbest
 ncall = 0;
 n = length(x);
 x0 = min(max(u,0),v); % absolutely smallest point
@@ -65,7 +64,7 @@ xmin = max(u,min(xmin,v));
 ncall = ncall + nfcsearch;
 xold = xmin;
 fold = fmi;
-if stop(1) > 0 & stop(1) < 1
+if stop(1) > 0 && stop(1) < 1
   flag = chrelerr(fmi,stop);
 elseif stop(1) == 0
   flag = chvtr(fmi,stop(2));
@@ -83,7 +82,7 @@ ydata.D = diag(D);
 p = minq8(ydata,-d,d);
 x = max(u,min(xmin+p,v));
 p=x-xmin; % project search direction to box
-if norm(p),
+if norm(p)
   f1 = feval(fcn,data,x);
   ncall = ncall + 1;
   alist = [0 1];
@@ -100,7 +99,7 @@ if norm(p),
   xmin = xmin + alist(i)*p;
   xmin = max(u,min(xmin,v));
   gain = f - fmi;
-  if stop(1) > 0 & stop(1) < 1
+  if stop(1) > 0 && stop(1) < 1
     flag = chrelerr(fmi,stop);
   elseif stop(1) == 0
     flag = chvtr(fmi,stop(2));
@@ -121,7 +120,7 @@ ydiag = 0;
 ind = find(u < xmin & xmin < v);
 b = abs(g)'*max(abs(xmin),abs(xold));
 nstep = 0;
-while ncall < nf & nstep < maxstep & (ydiag | length(ind) < n | (stop(1) == 0 & fmi - gain <= stop(2)) | (b >= gamma*(f0-f) & gain > 0)) 
+while ncall < nf && nstep < maxstep && (ydiag || length(ind) < n || (stop(1) == 0 && fmi - gain <= stop(2)) || (b >= gamma*(f0-f) && gain > 0)) 
   nstep = nstep + 1;
   delta = abs(xmin)*eps^(1/3);
   j = find(~delta);
@@ -130,7 +129,7 @@ while ncall < nf & nstep < maxstep & (ydiag | length(ind) < n | (stop(1) == 0 & 
   end
   [x1,x2] = neighbor(xmin,delta,u,v);
   f = fmi;
-  if length(ind) < n & (b < gamma*(f0-f) | ~gain)
+  if length(ind) < n && (b < gamma*(f0-f) || ~gain)
     ind1 = find(xmin == u | xmin == v);
     for k=1:length(ind1)
       i = ind1(k);
@@ -169,7 +168,7 @@ while ncall < nf & nstep < maxstep & (ydiag | length(ind) < n | (stop(1) == 0 & 
     end
     [x1,x2] = neighbor(xmin,delta,u,v);
   end 
-  if abs(r-1) > 0.25 | ~gain | b < gamma*(f0-f)
+  if abs(r-1) > 0.25 || ~gain || b < gamma*(f0-f)
     [xmin,fmi,g,G,x1,x2,nftriple] = triple(fcn,data,xmin,fmi,x1,x2,u,v,hess);
     ncall = ncall + nftriple;
     ydiag = 0;
@@ -180,7 +179,7 @@ while ncall < nf & nstep < maxstep & (ydiag | length(ind) < n | (stop(1) == 0 & 
   end
   xold = xmin;
   fold = fmi;
-  if stop(1) > 0 & stop(1) < 1
+  if stop(1) > 0 && stop(1) < 1
     flag = chrelerr(fmi,stop);
   elseif stop(1) == 0
     flag = chvtr(fmi,stop(2));
@@ -201,8 +200,8 @@ ydata.A = L';
 ydata.D = diag(D);
 p = minq8(ydata,max(-d,u-xmin),min(d,v-xmin));
 
-if ~norm(p) & ~ydiag & length(ind) == n,break,end
-  if norm(p),
+if ~norm(p) && ~ydiag && length(ind) == n,break,end
+  if norm(p)
     fpred = fmi + g'*p + 0.5*p'*G*p;
     x = xmin + p;
     f1 = feval(fcn,data,x);
@@ -214,7 +213,7 @@ if ~norm(p) & ~ydiag & length(ind) == n,break,end
     [fmi,i] = min(flist);
     xmin = xmin + alist(i)*p;
     xmin = max(u,min(xmin,v));
-    if stop(1) > 0 & stop(1) < 1
+    if stop(1) > 0 && stop(1) < 1
       flag = chrelerr(fmi,stop);
     elseif stop(1) == 0
       flag = chvtr(fmi,stop(2));

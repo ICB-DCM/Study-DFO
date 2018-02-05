@@ -14,7 +14,7 @@ x = z(j1);
 if x1 == Inf
   x1 = z(j);
   f1 = f1 + f(j);
-elseif x2 == Inf & x1 ~= z(j)
+elseif x2 == Inf && x1 ~= z(j)
   x2 = z(j);
   f2 = f2 + f(j);
 end

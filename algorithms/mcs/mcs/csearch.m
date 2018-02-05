@@ -38,6 +38,7 @@ fmi = f;
 xminnew = xmin;
 fminew = fmi;
 g = zeros(n,1);
+G = zeros(n,n);
 ind0 = [];
 for i=1:n
   p = zeros(n,1);
@@ -92,7 +93,7 @@ for i=1:n
     alist = 0;
     flist = fmi;
   end
-  if linesearch, 
+  if linesearch
     [alist,flist,nfls] = gls(fcn,data,u,v,xmin,p,alist,flist,nloc,small,smaxls);
     nfcsearch = nfcsearch + nfls;
     [fminew,j] = min(flist);
@@ -106,7 +107,7 @@ for i=1:n
     flist(ind) = [];
     [fminew,j] = min(flist);
     xminnew(i) = xmin(i) + alist(j);
-    if i == 1 | ~alist(j)
+    if i == 1 || ~alist(j)
       if j == 1
         x1(i) = xmin(i) + alist(2);
         f1 = flist(2);
@@ -128,7 +129,7 @@ for i=1:n
     else
       x1(i) = xminnew(i);
       f1 = fminew;
-      if xmin(i) < x1(i) & j < length(alist) 
+      if xmin(i) < x1(i) && j < length(alist) 
         x2(i) = xmin(i) + alist(j+1);
         f2 = flist(j+1);
       elseif j == 1
@@ -195,7 +196,7 @@ for i=1:n
     end
     for k=1:i
       g(k) = g(k) + G(i,k)*(xminnew(i) - xmin(i));
-      if nargin < 8 & k1 > 0
+      if nargin < 8 && k1 > 0
         g(k) = g(k) + G(k1,k)*(xminnew(k1) - xmin(k1));
       end
     end

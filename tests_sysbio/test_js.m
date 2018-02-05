@@ -1,36 +1,49 @@
-%% Preliminary
-% Clean up
-
-clear all;
-close all;
+clear;
 clear persistent;
+close all;
 
-addpath(genpath('../examples'));
+addpath('../models_sysbio/jakstat_signaling');
+dirname = 'res_js';
+if ~exist(dirname,'dir')
+    mkdir(dirname);
+end
 
-nStart = 10;
+maxFunEvals = 1000;
+nStarts = 50;
 
-% Seed random number generator
-%rng(0);
+% parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
+% parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
+% parameters_dhc = test('dhc',maxFunEvals,nStarts);
+% parameters_rcs = test('rcs',maxFunEvals,nStarts);
+% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+parameters_mcs = test('mcs',maxFunEvals,nStarts);
+% parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
+parameters_meigo_gradient = test('meigo-ess',maxFunEvals,nStarts,true);
+parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
 
-%% Model Definition
-% The ODE model is set up using the AMICI toolbox. To access the AMICI
-% model setup, see jakstat_pesto_syms.m
-% For a detailed description for the biological model see the referenced
-% papers on the JakStat signaling pathway by Swameye et al. and Schelker et
-% al.
+function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
 
-[exdir,~,~]=fileparts(which('mainJakstatSignaling.m'));
-% try
-%     amiwrap('jakstat_pesto','jakstat_pesto_syms', exdir, 1);
-% catch ME
-%     warning('There was a problem with the AMICI toolbox (available at https:// github.com/ICB-DCM/AMICI), which is needed to run this example file. The original error message was:');
-%     rethrow(ME);
-% end
+if nargin < 4
+    useGradient = false;
+end
+disp(solver);
 
+addpath(genpath('../algorithms'));
+
+% Seed the random number generator. Seeding the random number generator
+% ensures that everytime this example is run, the same sequence of random
+% numbers is generated, and thus, the same starting points for multi-start
+% optimization will be used. This is helpful for debugging or comparing
+% results across different machines.
+% Results might vary though if PestoOptions.comp_type is set to 'parallel'
+rng('default');
+rng(0);
 %% Data
 % Experimental data is read out from an .xls-file and written to an AMICI
 % object which is used for the ODE integration
-datatable         = xlsread(fullfile(exdir,'pnas_data_original.xls'));
+datatable         = xlsread(fullfile('pnas_data_original_js.xls'));
 amiData.t         = datatable(:,1);       % time points
 amiData.Y         = datatable(:,[2,4,6]); % measurement
 amiData.condition = [1.4,0.45];           % initial conditions
@@ -43,91 +56,31 @@ amiData           = amidata(amiData);     % calling the AMICI routine
 
 % parameters
 nPar = 17;
-parameters.min     = -5 * ones(nPar,1);
-parameters.max     =  3 * ones(nPar,1);
-parameters.max(4)  =  6;
-parameters.max(2)  =  6;
-parameters.min(10) = -6;
-parameters.min(4)  = -3;
-parameters.min(2)  = -3;
-parameters.number  = nPar;
-parameters.name    = {'log_{10}(p1)','log_{10}(p2)','log_{10}(p3)','log_{10}(p4)','log_{10}(init_{STAT})',...
-    'log_{10}(sp1)','log_{10}(sp2)','log_{10}(sp3)','log_{10}(sp4)','log_{10}(sp5)',...
-    'log_{10}(offset_{tSTAT})','log_{10}(offset_{pSTAT})','log_{10}(scale_{tSTAT})','log_{10}(scale_{pSTAT})',...
-    'log_{10}(\sigma_{pSTAT})','log_{10}(\sigma_{tSTAT})','log_{10}(\sigma_{pEpoR})'};
+lb     = -5 * ones(nPar,1);
+ub     =  3 * ones(nPar,1);
+ub(4)  =  6;
+ub(2)  =  6;
+lb(10) = -6;
+lb(4)  = -3;
+lb(2)  = -3;
 
-lb = parameters.min;
-ub = parameters.max;
 % objective function
 objectiveFunction = @(theta) logLikelihoodJakstat(theta, amiData);
 
-% Run getMultiStarts
-fprintf('\n Perform optimization...\n');
+%% Optimization
+% A multi-start local optimization is performed within the bounds defined in
+% parameters.min and .max in order to infer the unknown parameters from
+% measurement data. Therefore, a PestoOptions object is created and
+% some of its properties are set accordingly.
 
-n_starts = 2;
-% 
-% disp('fmincon:');
-% parameters_fmincon = runMultiStarts(objectiveFunction, 1, n_starts, 'fmincon', nPar, lb, ub);
-% printResultParameters(parameters_fmincon);
-% 
-% disp('hctt:');
-% parameters_hctt = runMultiStarts(objectiveFunction, 1, n_starts, 'hctt', nPar, lb, ub);
-% printResultParameters(parameters_hctt);
-% 
-% disp('cs:');
-% parameters_cs = runMultiStarts(objectiveFunction, 1, n_starts, 'cs', nPar, lb, ub);
-% printResultParameters(parameters_cs);
-
-disp('dhc:');
-parameters_dhc = runMultiStarts(objectiveFunction, 1, n_starts, 'dhc', nPar, lb, ub);
-printResultParameters(parameters_dhc);
-
-disp('dhc2:');
-parameters_dhc2 = runMultiStarts(objectiveFunction, 1, n_starts, 'dhc', nPar, lb, ub, 2);
-printResultParameters(parameters_dhc2);
-
-disp('dhc3:');
-parameters_dhc3 = runMultiStarts(objectiveFunction, 1, n_starts, 'dhc', nPar, lb, ub, 3);
-printResultParameters(parameters_dhc3);
-
-disp('bobyqa:');
-parameters_bobyqa = runMultiStarts(objectiveFunction, 1, n_starts, 'bobyqa', nPar, lb, ub);
-printResultParameters(parameters_bobyqa);
-
-save('data_js.mat');
-
-function parameters = runMultiStarts(objectiveFunction, objOutNumber, nStarts, localOptimizer, nPar, parMin, parMax, varargin)
-    clearPersistentVariables();
-    
-    if (localO
-    tol = 1e-10;
-    numevals = 1000*nPar;
-    
-    options = PestoOptions();
-    options.obj_type = 'log-posterior';
-    options.comp_type = 'sequential';
-    options.n_starts = nStarts;
-    options.objOutNumber = objOutNumber;
-    options.mode = 'visual';
-    options.localOptimizer = localOptimizer;
-    options.localOptimizerOptions.GradObj="off";
-    options.localOptimizerOptions.TolX          = tol;
-    options.localOptimizerOptions.TolFun        = tol;
-    options.localOptimizerOptions.MaxFunEvals   = numevals;
-    options.localOptimizerOptions.MaxIter       = numevals;
-    if nargin > 7, options.localOptimizerOptions.Mode          = varargin{1}; end
-    if (isequal(localOptimizer,'hctt')), options.localOptimizerOptions.Barrier = 'log-barrier'; end
-    
-    % for fmincon
-    options.localOptimizerOptions.MaxFunctionEvaluations = numevals;
-    options.localOptimizerOptions.MaxIterations = numevals;
-    options.localOptimizerOptions.StepTolerance = tol;
-    options.localOptimizerOptions.Display = 'off';
-    
-    parameters.number = nPar;
-    parameters.min = parMin;
-    parameters.max = parMax;
-    
-    parameters = getMultiStarts(parameters, objectiveFunction, options);
-    
+% Optimization
+parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, useGradient);
+printResultParameters(parameters_res);
+if useGradient
+    gradtext = '_gradient';
+else
+    gradtext = '';
 end
+save(['res_js/test_js_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradtext],'parameters_res');
+
+end % function

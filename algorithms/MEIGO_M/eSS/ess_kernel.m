@@ -106,6 +106,7 @@ function [Results]=ess_kernel(problem,opts,varargin)
 %                                             'fminsearch', 'solnp'
 %                                             'n2fb','dn2fb','dhc','hooke'
 %                                             'ipopt','misqp','lsqnonlin'
+%           opts.local.solver_options
 %           opts.local.tol                  = Level of tolerance in local
 %                                             search. 1: Relaxed; 2: Medium
 %                                             3: Tight (default: 2 in 
@@ -958,7 +959,7 @@ while (not(fin))
                 tic
             end
             [x,fval,exitflag,numeval]=ssm_localsolver(x0,x_L,x_U,c_L,c_U,neq,ndata,int_var,bin_var,fobj,...
-                local_finish,local_iterprint,local_tol,weight,nconst,tolc,varargin{:});
+                local_finish,local_iterprint,local_tol,weight,nconst,tolc,opts.local.finish_options,varargin{:});
 
             if iterprint
                 fprintf('Local solution function value: %f \n',fval);
