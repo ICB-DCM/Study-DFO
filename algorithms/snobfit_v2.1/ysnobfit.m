@@ -1,61 +1,119 @@
 function [x,fval,exitflag,output] = ysnobfit(fun,lb,ub,options)
 file = 'snobfit_datafile';
 
-u = lb(:);
-v = ub(:);
-n = size(u,1);
+lb = lb(:);
+ub = ub(:);
+dim = size(lb,1);
 
-% meaningful default values according to snobtest.m
-npoint = n+6; % number of random start points to be generated
-nreq = n+6; % number of points to be generated in each call to snobfit
-x = rand(npoint,n);
-f = zeros(npoint,2);
-x = x*diag(v-u) + ones(npoint,1)*u'; % generation of npoint random starting points in [u,v]
-dx = (v-u)'*1e-5; % resolution vector
+% options
+options = f_validateOptions(options,dim);
+tolFun = options.TolFun;
+maxStallGenerations = options.MaxStallGenerations;
+maxGenerations = options.MaxGenerations; 
+maxFunEvals = options.MaxFunEvals;
+% number of points to be generated in each call to snobfit
+popSize = options.PopulationSize; 
+
+% create initial population
+f = zeros(popSize,2);
+% latin hypercube starting points, popSize * dim
+x = bsxfun(@plus,lb,bsxfun(@times,ub-lb,lhsdesign(popSize,dim,'smooth','off')'))';
+dx = (ub-lb)'*1e-5; % resolution vector
 p = 0.5; % probability of generating a point of 'class 4'
-params = struct('bounds',{u,v},'nreq',nreq,'p',p);
+params = struct('bounds',{lb,ub},'nreq',popSize,'p',p);
 
 % compute function values
-for j=1:npoint
+for j=1:popSize
     f(j,:) = [fun(x(j,:)), -1];
 end
-funEvals = npoint;
+jFunEvals = popSize;
 [fbest,jbest] = min(f(:,1));
 xbest = x(jbest,:);
 
-while funEvals < options.MaxFunEvals
-    % repeat until maxFunEvals function evals, unless stopping
-    % criterion reached before
+% generation counters
+jGenerations = 0;
+jStallGenerations = 0;
+
+% main loop
+while jGenerations < maxGenerations ...
+        && jStallGenerations < maxStallGenerations ...
+        && jFunEvals < maxFunEvals
     
-    if funEvals == npoint % initial call
+    if jFunEvals == popSize % initial call
         [request,~,~] = snobfit(file,x,f,params,dx);
     else
         [request,~,~] = snobfit(file,x,f,params);
     end
     
-    clear x
-    clear f
-    x = rand(nreq,n);
-    f = zeros(nreq,2);
-    for j=1:nreq % evaluate f at new proposed points
-        x(j,:) = request(j,1:n);
+    x = rand(popSize,dim);
+    f = zeros(popSize,2);
+    for j=1:popSize % evaluate f at new proposed points
+        x(j,:) = request(j,1:dim);
         f(j,:) = [fun(x(j,:)), -1];
     end
-    funEvals = funEvals + nreq;
+    jFunEvals = jFunEvals + popSize;
     [fbestnew,jbestnew] = min(f(:,1));
+    
+    delta_f = fbestnew - fbest;
+    
+    % is sufficiently better estimate?
+    if delta_f < tolFun
+        jStallGenerations = 0;
+    else
+        jStallGenerations = jStallGenerations + 1;
+    end
+    
+    % is better estimate?
     if fbestnew < fbest
         fbest = fbestnew;
         xbest = x(jbestnew,:);
     end
-    
-    % check stopping criterion
-    % TODO what would be a useful stopping criterion?
 end
 
 fval = fbest;
 x = xbest;
-exitflag = 0; % TODO
-output.funcCount = funEvals;
+if jStallGenerations >= maxStallGenerations
+    exitflag = 0;
+else
+    exitflag = 1;
+end
+output.funcCount = jFunEvals;
+
+end
+
+function [optionsSF] = f_validateOptions(options,dim)
+   
+optionsSF = struct();
+
+if isfield(options,'MaxStallGenerations') && ~isempty(options.MaxStallGenerations)
+    optionsSF.MaxStallGenerations = options.MaxStallGenerations;
+else
+    optionsSF.MaxStallGenerations = 50;
+end
+
+if isfield(options,'MaxGenerations') && ~isempty(options.MaxGenerations)
+    optionsSF.MaxGenerations = options.MaxGenerations;
+else
+    optionsSF.MaxGenerations = 100*dim;
+end
+
+if isfield(options,'TolFun') && ~isempty(options.TolFun)
+    optionsSF.TolFun = options.TolFun;
+else
+    optionsSF.TolFun = 1e-8;
+end
+
+if isfield(options,'MaxFunEvals') && ~isempty(options.MaxFunEvals)
+    optionsSF.MaxFunEvals = options.MaxFunEvals;
+else
+    optionsSF.MaxFunEvals = Inf;
+end
+
+if isfield(options,'PopulationSize') && ~isempty(options.PopulationSize)
+    optionsSF.PopulationSize = options.PopulationSize;
+else
+    optionsSF.PopulationSize = dim + 6;
+end
 
 end
 
