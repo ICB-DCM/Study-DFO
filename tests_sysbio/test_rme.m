@@ -8,14 +8,14 @@ if ~exist(dirname,'dir')
     mkdir(dirname);
 end
 
-maxFunEvals = 1000;
+maxFunEvals = 100;
 nStarts = 50;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
 parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
-parameters_dhc = test('dhc',maxFunEvals,nStarts);
-parameters_rcs = test('rcs',maxFunEvals,nStarts);
-parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+% parameters_dhc = test('dhc',maxFunEvals,nStarts);
+% parameters_rcs = test('rcs',maxFunEvals,nStarts);
+% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
 parameters_mcs = test('mcs',maxFunEvals,nStarts);
 parameters_direct = test('direct',maxFunEvals,nStarts);
 parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
@@ -91,7 +91,11 @@ ub = parameters.max;
 
 % objective Function
 objectiveFunction = @(theta) logLikelihoodRafMekErk(theta, amiD, amiO);
-
+if strcmp(solver,'mcs')
+    objfun = @(theta) funWrap(objectiveFunction,theta);
+else
+    objfun = @(theta) objectiveFunction(theta);
+end
 
 %% Optimization
 % A multi-start local optimization is performed within the bounds defined in
@@ -100,7 +104,7 @@ objectiveFunction = @(theta) logLikelihoodRafMekErk(theta, amiD, amiO);
 % some of its properties are set accordingly.
 
 % Optimization
-parameters_res = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, lb, ub, useGradient);
+parameters_res = runMultiStarts(objfun, maxFunEvals, nStarts, solver, nPar, lb, ub, useGradient);
 printResultParameters(parameters_res);
 if useGradient
     gradtext = '_gradient';
@@ -110,3 +114,11 @@ end
 save(['res_rme/test_rme_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradtext],'parameters_res');
 
 end % function
+
+function fval = funWrap(fun,x)
+fval = fun(x);
+% fprintf('%.15f\n',fval);
+if isnan(fval) ||isinf(fval)
+    fval = -e40;
+end
+end

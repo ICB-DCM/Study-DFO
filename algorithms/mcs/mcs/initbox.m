@@ -60,7 +60,7 @@ level(1) = 1;
 ichild(1) = 1;
 f(1,1) = f0(l(1),1);
 par = 1;
-if prt > 1,
+if prt > 1
   iopt = 1:nglob;
 end
 for i = 1:n 
@@ -71,7 +71,7 @@ for i = 1:n
     nboxes = nboxes + 1;
     nchild = nchild + 1;
     [ipar(nboxes),level(nboxes),ichild(nboxes),f(1,nboxes)] = genbox(par,level(par)+1,-nchild,f0(1,i)); 
-    if prt > 1,
+    if prt > 1
       updtoptl(i,u(i),x0(i,1),iopt,level(par)+1,f0(1,i));
     end
   end
@@ -88,7 +88,7 @@ for i = 1:n
   if istar(i) == 1
     if xl < x0(i,1)
       par1 = nboxes;  % label of the current box for the next coordinate
-      j1 = 0;    % auxiliary index  
+      j1 = 0;    % auxiliary index
     else
       par1 = nboxes + 1;
       j1 = 2;
@@ -106,7 +106,7 @@ for i = 1:n
     if prt
       splval = split1(x0(i,j),x0(i,j+1),f0(j,i),f0(j+1,i));
     end
-    if prt > 1,
+    if prt > 1
       updtoptl(i,x0(i,j),splval,iopt,level(par)+1,f0(j,i));
     end
     if j >= 2
@@ -168,7 +168,7 @@ for i = 1:n
   par = par1;
   if j1 == 0
     splval = u(i);
-  elseif j1 == L(i) + 1;
+  elseif j1 == L(i) + 1
     splval = v(i);
   else
     if j1 < istar(i)
@@ -177,7 +177,7 @@ for i = 1:n
       splval = split1(x0(i,istar(i)),x0(i,j1),f0(istar(i),i),f0(j1,i));
     end
   end     
-  if prt > 1 & i <= n - 1
+  if prt > 1 && i <= n - 1
     iopt1 = [];  
     for j = 1:length(iopt)
       if min(splval,x0(i,istar(i))) <= xglob(i,iopt(j)) & xglob(i,iopt(j)) <= max(splval,x0(i,istar(i))) 
