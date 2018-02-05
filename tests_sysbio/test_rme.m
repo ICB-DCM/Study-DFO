@@ -8,20 +8,20 @@ if ~exist(dirname,'dir')
     mkdir(dirname);
 end
 
-maxFunEvals = 10;
-nStarts = 10;
+maxFunEvals = 1000;
+nStarts = 50;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
 parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
-% parameters_dhc = test('dhc',maxFunEvals,nStarts);
-% parameters_rcs = test('rcs',maxFunEvals,nStarts);
-% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+parameters_dhc = test('dhc',maxFunEvals,nStarts);
+parameters_rcs = test('rcs',maxFunEvals,nStarts);
+parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
 parameters_mcs = test('mcs',maxFunEvals,nStarts);
-% parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_direct = test('direct',maxFunEvals,nStarts);
 parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
 parameters_meigo_gradient = test('meigo-ess',maxFunEvals,nStarts,true);
-% parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
-% parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
 
 function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
 

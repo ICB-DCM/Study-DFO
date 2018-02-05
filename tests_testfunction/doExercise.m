@@ -1,3 +1,4 @@
+
 function [ result ] = doExercise( ex )
 %RUNEXERCISE runs exercise
 
