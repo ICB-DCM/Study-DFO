@@ -1,13 +1,13 @@
-% simulate_Pom1p_AP_model_hess_ft.m is the matlab interface to the cvodes mex
+% simulate_jakstat_standard.m is the matlab interface to the cvodes mex
 %   which simulates the ordinary differential equation and respective
 %   sensitivities according to user specifications.
 %   this routine was generated using AMICI commit 53032d67dfa9b9e400f9ec131a444f83f646a6a7 in branch master in repo https://github.com/icb-dcm/amici.
 %
 % USAGE:
 % ======
-% [...] = simulate_Pom1p_AP_model_hess_ft(tout,theta)
-% [...] = simulate_Pom1p_AP_model_hess_ft(tout,theta,kappa,data,options)
-% [status,tout,x,y,sx,sy] = simulate_Pom1p_AP_model_hess_ft(...)
+% [...] = simulate_jakstat_standard(tout,theta)
+% [...] = simulate_jakstat_standard(tout,theta,kappa,data,options)
+% [status,tout,x,y,sx,sy] = simulate_jakstat_standard(...)
 %
 % INPUTS:
 % =======
@@ -93,7 +93,7 @@
 % sol.sy ... time-resolved output sensitivity vector
 % sol.z ... event output
 % sol.sz ... sensitivity of event output
-function varargout = simulate_Pom1p_AP_model_hess_ft(varargin)
+function varargout = simulate_jakstat_standard(varargin)
 
 % DO NOT CHANGE ANYTHING IN THIS FILE UNLESS YOU ARE VERY SURE ABOUT WHAT YOU ARE DOING
 % MANUAL CHANGES TO THIS FILE CAN RESULT IN WRONG SOLUTIONS AND CRASHING OF MATLAB
@@ -109,7 +109,7 @@ else
     kappa=[];
 end
 
-if(length(theta)<9)
+if(length(theta)<17)
     error('provided parameter vector is too short');
 end
 
@@ -125,7 +125,7 @@ else
     options_ami = amioption();
 end
 if(isempty(options_ami.sens_ind))
-    options_ami.sens_ind = 1:9;
+    options_ami.sens_ind = 1:17;
 end
 if(options_ami.sensi>1)
     error('Second order sensitivities were requested but not computed');
@@ -161,7 +161,7 @@ nplist = length(options_ami.sens_ind); % MUST NOT CHANGE THIS VALUE
 if(nplist == 0)
     options_ami.sensi = 0;
 end
-nxfull = 400;
+nxfull = 9;
 if(isempty(options_ami.qpositivex))
     options_ami.qpositivex = zeros(nxfull,1);
 else
@@ -202,10 +202,10 @@ end
 if(not(length(tout)==length(unique(tout))))
     error('Provided time vector has non-unique entries!!');
 end
-if(max(options_ami.sens_ind)>9)
+if(max(options_ami.sens_ind)>17)
     error('Sensitivity index exceeds parameter dimension!')
 end
-if(length(kappa)<400)
+if(length(kappa)<2)
     error('provided condition vector is too short');
 end
 init = struct();
@@ -227,7 +227,7 @@ if(~isempty(options_ami.sx0))
     end
     init.sx0 = bsxfun(@times,options_ami.sx0,1./permute(chainRuleFactor(:),[2,1]));
 end
-sol = ami_Pom1p_AP_model_hess_ft(tout,theta(1:9),kappa(1:400),options_ami,plist,pbar(plist+1),xscale,init,data);
+sol = ami_jakstat_standard(tout,theta(1:17),kappa(1:2),options_ami,plist,pbar(plist+1),xscale,init,data);
 if(nargout>1)
     varargout{1} = sol.status;
     varargout{2} = sol.t;

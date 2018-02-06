@@ -5,7 +5,7 @@ clear;
 solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
 cell_results_all = cell(0);
 for j=1:length(solvers)
-    file = ['cell_results_test_' solvers{j} '_2000_20_.mat'];
+    file = ['cell_results_test_' solvers{j} '_2000_20_noise_.mat'];
     if exist(file,'file')
         load(file);
         cell_results_all = vertcat(cell_results_all,cell_results);
@@ -130,7 +130,7 @@ cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
 markers_tmp = markers(index);
 %display
-fig = figure('name','smooth/modal');
+fig = figure('name','smooth/modal (noise)');
 hold on;
 for j=1:nKeys
     plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
@@ -143,7 +143,7 @@ xlabel('function types');
 ylabel('solved problems');
 ylim([0,1]);
 
-saveas(fig, [pwd '/images/smooth-convex.png']); 
+saveas(fig, [pwd '/images/smooth-convex-noise.png']); 
 
 % and for all
 cell_keys = keys(map_shares_all);
@@ -163,7 +163,7 @@ end
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
 markers_tmp = markers(index);
-fig = figure('name','smooth/convex (all)');
+fig = figure('name','smooth/convex (all, noise)');
 hold on;
 for j=1:nKeys
     plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
@@ -176,7 +176,7 @@ xlabel('function types');
 ylabel('solved problems');
 ylim([0,1]);
 
-saveas(fig, [pwd '/images/smooth-convex-all.png']); 
+saveas(fig, [pwd '/images/smooth-convex-all-noise.png']); 
 
 % dims
 v_x = 1:C.nDims;
@@ -192,7 +192,7 @@ end
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
 markers_tmp = markers(index);
-fig = figure('name','dims');
+fig = figure('name','dims (noise)');
 hold on;
 for j=1:nKeys
     plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
@@ -205,7 +205,7 @@ xlabel('dim');
 ylabel('solved problems');
 ylim([0,1]);
 
-saveas(fig, [pwd '/images/dims.png']); 
+saveas(fig, [pwd '/images/dims-noise.png']); 
 
 % and for all
 v_x = 1:C.nDims;
@@ -221,7 +221,7 @@ end
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
 markers_tmp = markers(index);
-fig = figure('name','dims (all)');
+fig = figure('name','dims (all, noise)');
 hold on;
 for j=1:nKeys
     plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
@@ -234,53 +234,4 @@ xlabel('dim');
 ylabel('solved problems');
 ylim([0,1]);
 
-saveas(fig, [pwd '/images/dims-all.png']); 
-
-% time
-v_x = 1:C.nDims;
-v_y = zeros(nKeys,1);
-for j=1:nKeys
-    key_j = cell_keys{j};
-   for k=1:C.nDims
-       tmp_map = cell_map_all_dim_time{k};
-       v_y(j,k) = tmp_map(key_j);
-   end
-end
-fig = figure('name','time');
-hold on;
-for j=1:nKeys
-    plot(v_x,log10(v_y(j,:)),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
-end
-hold off;
-legend('show','Location','northeastoutside');
-xticks(1:C.nDims);
-xticklabels(C.arr_dims);
-xlabel('dim');
-ylabel('log10(avgTime)');
-
-saveas(fig, [pwd '/images/time.png']); 
-
-% fevals
-v_x = 1:C.nDims;
-v_y = zeros(nKeys,1);
-for j=1:nKeys
-    key_j = cell_keys{j};
-   for k=1:C.nDims
-       tmp_map = cell_map_all_dim_fevals{k};
-       v_y(j,k) = tmp_map(key_j);
-   end
-end
-fig = figure('name','funEvals');
-hold on;
-for j=1:nKeys
-    plot(v_x,log10(v_y(j,:)),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
-end
-plot(1:C.nDims,log10(C.maxFunEvals{1})*ones(1,C.nDims),'-r','DisplayName','maxFunEvals');
-hold off;
-legend('show','Location','northeastoutside');
-xticks(1:C.nDims);
-xticklabels(C.arr_dims);
-xlabel('dim');
-ylabel('log10(avgFunEvals)');
-
-saveas(fig, [pwd '/images/fevals.png']); 
+saveas(fig, [pwd '/images/dims-all-noise.png']); 

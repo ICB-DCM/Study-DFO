@@ -166,7 +166,7 @@ else
 end
 notnan = 1:nx; 
 fnan1 = find(isnan(f(:,1)));
-notnan([fnan fnan1]) = [];
+notnan([fnan' fnan1']) = [];
 if ~isempty(notnan)
   fmn = min(f(notnan,1));
   fmx = max(f(notnan,1));

@@ -1,4 +1,4 @@
-function [model] = jakstat_pesto_syms()
+function [model] = jakstat_standard_syms()
 % jakstat_pesto_syms for examples/jakstat_signaling
 %
 % creates an amimodel-object for the AMICI solver

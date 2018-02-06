@@ -2,7 +2,7 @@ clear;
 clear persistent;
 close all;
 
-addpath('../models_sysbio/jakstat_signaling');
+addpath(genpath('../models_sysbio/jakstat_small'));
 dirname = 'res_js';
 if ~exist(dirname,'dir')
     mkdir(dirname);
@@ -16,12 +16,13 @@ parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
 parameters_dhc = test('dhc',maxFunEvals,nStarts);
 parameters_rcs = test('rcs',maxFunEvals,nStarts);
 parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
-parameters_mcs = test('mcs',maxFunEvals,nStarts);
-parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_mcs = test('mcs',maxFunEvals,1);
+parameters_direct = test('direct',maxFunEvals,1);
 parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
 parameters_meigo_gradient = test('meigo-ess',maxFunEvals,nStarts,true);
 parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+parameters_hybrid = test('hybrid-snobfit',maxFunEvals,nStarts);
 
 function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
 
@@ -40,37 +41,14 @@ addpath(genpath('../algorithms'));
 % Results might vary though if PestoOptions.comp_type is set to 'parallel'
 rng('default');
 rng(0);
-%% Data
-% Experimental data is read out from an .xls-file and written to an AMICI
-% object which is used for the ODE integration
-datatable         = xlsread(fullfile('pnas_data_original_js.xls'));
-amiData.t         = datatable(:,1);       % time points
-amiData.Y         = datatable(:,[2,4,6]); % measurement
-amiData.condition = [1.4,0.45];           % initial conditions
-amiData.Sigma_Y   = NaN(size(amiData.Y)); % preallocation of variances
-amiData           = amidata(amiData);     % calling the AMICI routine
 
-%% Generation of the structs and options for PESTO
-% The structs and the PestoOptions object, which are necessary for the 
-% PESTO routines to work are created and set to convenient values
+[parameters,~] = getParametersAndOptions_jakstat('standard');
+lb = parameters.min;
+ub = parameters.max;
+nPar = parameters.number;
 
-% parameters
-nPar = 17;
-lb     = -5 * ones(nPar,1);
-ub     =  3 * ones(nPar,1);
-ub(4)  =  6;
-ub(2)  =  6;
-lb(10) = -6;
-lb(4)  = -3;
-lb(2)  = -3;
-
-% objective function
-objectiveFunction = @(theta) logLikelihoodJakstat(theta, amiData);
-if strcmp(solver,'mcs')
-    objfun = @(theta) funWrap(objectiveFunction,theta);
-else
-    objfun = @(theta) objectiveFunction(theta);
-end
+load('data_jakstat','D');
+objfun = @(x) llh_jakstat_standard(x,D);
 
 %% Optimization
 % A multi-start local optimization is performed within the bounds defined in
@@ -89,11 +67,3 @@ end
 save(['res_js/test_js_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradtext],'parameters_res');
 
 end % function
-
-function fval = funWrap(fun,x)
-fval = fun(x);
-% fprintf('%.15f\n',fval);
-if isnan(fval) ||isinf(fval)
-    fval = -e40;
-end
-end

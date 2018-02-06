@@ -1,4 +1,10 @@
 function parameters = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients)
+
+if strcmp(solver,'hybrid-snobfit')
+    parameters = runMultiStartsHybrid(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients);
+    return;
+end
+
 %     clearPersistentVariables();
 
 %     tol = 1e-10;
@@ -23,7 +29,7 @@ switch solver
         lOptions = optimoptions(@fmincon);
         lOptions.MaxFunctionEvaluations = numevals;
         lOptions.MaxIterations = numevals;
-        lOptions.Display = 'off';
+        lOptions.Display = 'iter';
         if useGradients
             options.objOutNumber = 2;
             lOptions.GradObj = 'on';
@@ -66,8 +72,8 @@ switch solver
     case 'pswarm'
         lOptions.MaxIter = numevals;
         lOptions.MaxObj  = numevals;
-    
-    otherwise 
+        
+    otherwise
         error('solver not recognized');
 end
 options.localOptimizerOptions = lOptions;
@@ -82,5 +88,43 @@ parameters = getMultiStarts(parameters, objectiveFunction, options);
 for j = 1:nStarts
     parameters.MS.hessian = [];
 end
+
+end % function
+
+function parameters = runMultiStartsHybrid(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients)
+
+numevals = maxFunEvals*nPar;
+
+parameters = struct();
+parameters.min = parMin;
+parameters.max = parMax;
+parameters.number = nPar;
+
+optionsSS = PestoOptions();
+optionsSS.obj_type = 'log-posterior';
+optionsSS.n_starts = nStarts;
+optionsSS.ss_optimizer = 'snobfit';
+optionsSS.ss_maxFunEvals = 50*nStarts;
+
+guess = getStartpointSuggestions(parameters, objectiveFunction, optionsSS);
+
+options = PestoOptions();
+options.obj_type = 'log-posterior';
+options.n_starts = nStarts;
+options.proposal = 'user-supplied';
+options.objOutNumber = 2;
+options.mode = 'text';
+
+options.localOptimizer = 'fmincon';
+lOptions = optimoptions(@fmincon);
+lOptions.MaxFunctionEvaluations = numevals;
+lOptions.MaxIterations = numevals;
+lOptions.Display = 'iter';
+lOptions.GradObj = 'on';
+options.localOptimizerOptions = lOptions;
+
+parameters.guess = guess;
+
+parameters = getMultiStarts(parameters, objectiveFunction, options);
 
 end

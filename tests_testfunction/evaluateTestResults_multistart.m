@@ -1,4 +1,4 @@
-close all;
+cclose all;
 clear;
 
 % gather all results in one big cell array

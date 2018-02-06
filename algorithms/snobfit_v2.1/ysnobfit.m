@@ -1,4 +1,4 @@
-function [x,fval,exitflag,output] = ysnobfit(fun,lb,ub,options)
+function [xbst,fbst,exitflag,output] = ysnobfit(fun,lb,ub,options)
 file = 'snobfit_datafile';
 
 lb = lb(:);
@@ -17,7 +17,11 @@ popSize = options.PopulationSize;
 % create initial population
 f = zeros(popSize,2);
 % latin hypercube starting points, popSize * dim
-x = bsxfun(@plus,lb,bsxfun(@times,ub-lb,lhsdesign(popSize,dim,'smooth','off')'))';
+if ~isempty(options.Guess) && size(options.Guess,2) == popSize
+    x = options.Guess';
+else
+    x = bsxfun(@plus,lb,bsxfun(@times,ub-lb,lhsdesign(popSize,dim,'smooth','off')'))';
+end
 dx = (ub-lb)'*1e-5; % resolution vector
 p = 0.5; % probability of generating a point of 'class 4'
 params = struct('bounds',{lb,ub},'nreq',popSize,'p',p);
@@ -39,15 +43,15 @@ while jGenerations < maxGenerations ...
         && jStallGenerations < maxStallGenerations ...
         && jFunEvals < maxFunEvals
     
+    jGenerations = jGenerations + 1;
+    
     if jFunEvals == popSize % initial call
         [request,~,~] = snobfit(file,x,f,params,dx);
     else
         [request,~,~] = snobfit(file,x,f,params);
     end
     
-    x = rand(popSize,dim);
-    f = zeros(popSize,2);
-    for j=1:popSize % evaluate f at new proposed points
+    for j=1:size(request,1) % evaluate f at new proposed points
         x(j,:) = request(j,1:dim);
         f(j,:) = [fun(x(j,:)), -1];
     end
@@ -70,14 +74,16 @@ while jGenerations < maxGenerations ...
     end
 end
 
-fval = fbest;
-x = xbest;
+fbst = fbest;
+xbst = xbest;
 if jStallGenerations >= maxStallGenerations
     exitflag = 0;
 else
     exitflag = 1;
 end
 output.funcCount = jFunEvals;
+output.population = x';
+output.fvals = f(:,1);
 
 end
 
@@ -113,6 +119,12 @@ if isfield(options,'PopulationSize') && ~isempty(options.PopulationSize)
     optionsSF.PopulationSize = options.PopulationSize;
 else
     optionsSF.PopulationSize = dim + 6;
+end
+
+if isfield(options,'Guess')
+    optionsSF.Guess = options.Guess;
+else
+    optionsSF.Guess = [];
 end
 
 end

@@ -116,11 +116,6 @@ nPar = 5;
 
 % Objective function (Log-likelihood)
 objectiveFunction = @(theta) logLikelihoodT(theta, t, ym);
-if strcmp(solver,'mcs')
-    objfun = @(theta) funWrap(objectiveFunction,theta);
-else
-    objfun = @(theta) objectiveFunction(theta);
-end
 
 %% Optimization
 % A multi-start local optimization is performed within the bounds defined in
@@ -139,11 +134,3 @@ end
 save(['res_mt/test_mt_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradtext],'parameters_res');
 
 end % function
-
-function fval = funWrap(fun,x)
-fval = fun(x);
-% fprintf('%.15f\n',fval);
-if isnan(fval) || isinf(fval)
-    fval = -1e40;
-end
-end

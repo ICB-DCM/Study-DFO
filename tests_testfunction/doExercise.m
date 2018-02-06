@@ -213,6 +213,21 @@ try
             
             imfil(ex.x0,imfilfun,ex.maxFunEvals,bounds,opts);
             
+        case 'sid_psm'
+            % local
+            
+            addpath('../algorithms/sid_psm_1.3');
+            
+            lb = ex.lb;
+            ub = ex.ub;
+            
+            problem.func_f     = objfun;
+            % 1 (>0) if any constraint violated
+            problem.func_const = @(x) any(lb>x) || any(x>ub);
+            problem.grad_const = @(x) zeros(ex.dim,1);
+            
+            sid_psm(problem,ex.x0,2,0);
+            
         case 'ga'
             % global
             
