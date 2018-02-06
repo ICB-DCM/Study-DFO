@@ -1,4 +1,5 @@
 *.asv
 algorithms/sid_psm_1.3
-*.mat
+tests_testfunction/*.mat
+tests_sysbio/*.mat
 *.dat
