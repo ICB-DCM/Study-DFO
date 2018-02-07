@@ -1,6 +1,6 @@
 function parameters = runMultiStarts(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients)
 
-if strcmp(solver,'hybrid-snobfit')
+if contains(solver,'hybrid')
     parameters = runMultiStartsHybrid(objectiveFunction, maxFunEvals, nStarts, solver, nPar, parMin, parMax, useGradients);
     return;
 end

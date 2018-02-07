@@ -8,7 +8,7 @@ if ~exist(dirname,'dir')
     mkdir(dirname);
 end
 
-maxFunEvals = 1000; % relative, multiplied by problem dim
+maxFunEvals = 500; % relative, multiplied by problem dim
 nStarts = 50;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);

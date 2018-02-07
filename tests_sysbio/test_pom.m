@@ -8,7 +8,7 @@ if ~exist(dirname,'dir')
     mkdir(dirname);
 end
 
-maxFunEvals = 1000;
+maxFunEvals = 500;
 nStarts = 50;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
