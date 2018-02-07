@@ -44,7 +44,7 @@ for jExercise = 1:nExercises
     
     result = doExercise(ex);
     
-    fprintf(['xbst: ' num2str(result.fbst) '\t x: ' num2str(result.fval) '\t fevals: ' num2str(result.funEvals) '\n']);
+    fprintf(['fbst: ' num2str(result.fbst) '\t fval: ' num2str(result.fval) '\t fevals: ' num2str(result.funEvals) '\n']);
     
     if maxFunEvals > 20000
         result.fval_trace = [];
