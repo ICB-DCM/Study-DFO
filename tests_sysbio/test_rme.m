@@ -8,8 +8,8 @@ if ~exist(dirname,'dir')
     mkdir(dirname);
 end
 
-maxFunEvals = 500;
-nStarts = 50;
+maxFunEvals = 1000;
+nStarts = 100;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
 parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
@@ -22,7 +22,9 @@ parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
 parameters_meigo_gradient = test('meigo-ess',maxFunEvals,nStarts,true);
 parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
-parameters_hybrid = test('hybrid-snobfit',maxFunEvals,nStarts);
+parameters_hybrid1 = test('hybrid-snobfit',maxFunEvals,nStarts);
+parameters_hybrid2 = test('hybrid-mcs',maxFunEvals,nStarts);
+parameters_hybrid3 = test('hybrid-simple',maxFunEvals,nStarts);
 
 function [parameters_res] = test(solver,maxFunEvals,nStarts,useGradient)
 

@@ -29,7 +29,7 @@ switch solver
         lOptions = optimoptions(@fmincon);
         lOptions.MaxFunctionEvaluations = numevals;
         lOptions.MaxIterations = numevals;
-        lOptions.Display = 'iter';
+        lOptions.Display = 'off';
         if useGradients
             options.objOutNumber = 2;
             lOptions.GradObj = 'on';
@@ -103,10 +103,22 @@ parameters.number = nPar;
 optionsSS = PestoOptions();
 optionsSS.obj_type = 'log-posterior';
 optionsSS.n_starts = nStarts;
-optionsSS.ss_optimizer = 'snobfit';
+if contains(solver,'snobfit')
+    optionsSS.ss_optimizer = 'snobfit';
+elseif contains(solver,'mcs')
+    optionsSS.ss_optimizer = 'mcs';
+elseif contains(solver,'simple')
+    optionsSS.ss_optimizer = 'simple';
+else
+    error('solver not recognized');
+end
 optionsSS.ss_maxFunEvals = 50*nStarts;
 
+starttime = tic;
+
 guess = getStartpointSuggestions(parameters, objectiveFunction, optionsSS);
+
+time_ss = toc(starttime);
 
 options = PestoOptions();
 options.obj_type = 'log-posterior';
@@ -119,12 +131,14 @@ options.localOptimizer = 'fmincon';
 lOptions = optimoptions(@fmincon);
 lOptions.MaxFunctionEvaluations = numevals;
 lOptions.MaxIterations = numevals;
-lOptions.Display = 'iter';
+lOptions.Display = 'off';
 lOptions.GradObj = 'on';
 options.localOptimizerOptions = lOptions;
 
 parameters.guess = guess;
 
 parameters = getMultiStarts(parameters, objectiveFunction, options);
+
+parameters.time_ss = time_ss;
 
 end

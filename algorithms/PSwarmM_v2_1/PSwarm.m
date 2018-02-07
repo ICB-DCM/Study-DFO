@@ -1,5 +1,6 @@
+
 function [BestParticle, BestParticleObj, RunData]=PSwarm(Problem, ...
-    InitialPopulation, Options, varargin)
+        InitialPopulation, Options, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Particle swarm pattern search algorithm for global optimization.

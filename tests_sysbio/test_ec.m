@@ -9,7 +9,7 @@ if ~exist(dirname,'dir')
 end
 
 maxFunEvals = 500; % relative, multiplied by problem dim
-nStarts = 50;
+nStarts = 100;
 
 parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
 parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
