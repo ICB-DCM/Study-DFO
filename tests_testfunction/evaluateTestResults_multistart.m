@@ -7,14 +7,14 @@ solvers_local = C.cell_solvers_local;
 solvers_global = C.cell_solvers_global;
 cell_results_all = cell(0);
 for j=1:length(solvers_local)
-    file = ['cell_results_test_' solvers_local{j} '_2000_20_.mat'];
+    file = ['results/cell_results_test_' solvers_local{j} '_2000_20_.mat'];
     if exist(file,'file')
         load(file);
         cell_results_all = vertcat(cell_results_all,cell_results);
     end
 end
 for j=1:length(solvers_global)
-    file = ['cell_results_test_' solvers_global{j} '_40000_1_.mat'];
+    file = ['results/cell_results_test_' solvers_global{j} '_40000_1_.mat'];
     if exist(file,'file')
         load(file);
         cell_results_all = vertcat(cell_results_all,cell_results);

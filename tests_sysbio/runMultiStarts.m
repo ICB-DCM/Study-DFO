@@ -29,7 +29,7 @@ switch solver
         lOptions = optimoptions(@fmincon);
         lOptions.MaxFunctionEvaluations = numevals;
         lOptions.MaxIterations = numevals;
-        lOptions.Display = 'off';
+        lOptions.Display = 'iter';
         if useGradients
             options.objOutNumber = 2;
             lOptions.GradObj = 'on';

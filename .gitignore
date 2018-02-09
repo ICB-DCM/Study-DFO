@@ -1,5 +1,5 @@
 *.asv
-algorithms/sid_psm_1.3
-tests_testfunction/*.mat
+algorithms/sid_psm_1.3/*
+tests_testfunction/results_big/*
 tests_sysbio/*.mat
 *.dat
