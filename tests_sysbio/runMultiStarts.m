@@ -112,7 +112,7 @@ elseif contains(solver,'simple')
 else
     error('solver not recognized');
 end
-optionsSS.ss_maxFunEvals = 50*nStarts;
+optionsSS.ss_maxFunEvals = min([numevals / 10, 50*nStarts]);
 
 starttime = tic;
 
@@ -129,8 +129,8 @@ options.mode = 'text';
 
 options.localOptimizer = 'fmincon';
 lOptions = optimoptions(@fmincon);
-lOptions.MaxFunctionEvaluations = numevals;
-lOptions.MaxIterations = numevals;
+lOptions.MaxFunctionEvaluations = numevals-optionsSS.ss_maxFunEvals;
+lOptions.MaxIterations = numevals-optionsSS.ss_maxFunEvals;
 lOptions.Display = 'off';
 lOptions.GradObj = 'on';
 options.localOptimizerOptions = lOptions;

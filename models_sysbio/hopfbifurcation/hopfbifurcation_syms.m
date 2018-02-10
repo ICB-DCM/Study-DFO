@@ -4,7 +4,7 @@
 %
 % Written by Benjamin Ballnus (2016)
 
-function model = ODE_M4()
+function model = ODE_M4_syms()
              
 % CVODES OPTIONS
 model.param = 'lin';
@@ -14,8 +14,8 @@ syms X1 X2 X3
 model.sym.x = [X1,X2,X3];
 
 % PARAMETERS
-syms p1 p2 p3 p4 p5 p6 p7 p8
-model.sym.p = [p1,p2,p3,p4,p5,p6,p7,p8];
+syms p1 p2 p3 p4 p5 p6 p7 p8 sigma1 sigma2 sigma3
+model.sym.p = [p1,p2,p3,p4,p5,p6,p7,p8,sigma1,sigma2,sigma3];
 
 % CONSTANTS
 model.sym.k = [];
@@ -38,5 +38,11 @@ model.sym.x0(3) = p8;
 % OBSERVABLES
 model.sym.y = model.sym.x;
 
+% UNCERTAINTIES
 
+model.sym.sigma_y = sym(size(model.sym.y));
+
+model.sym.sigma_y(1) = sigma1;
+model.sym.sigma_y(2) = sigma2;
+model.sym.sigma_y(3) = sigma3;
                                          
