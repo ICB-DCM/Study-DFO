@@ -22,6 +22,9 @@ parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
 parameters_meigo_gradient = test('meigo-ess',maxFunEvals,nStarts,true);
 parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+parameters_hybrid1 = test('hybrid-snobfit',maxFunEvals,nStarts);
+parameters_hybrid2 = test('hybrid-mcs',maxFunEvals,nStarts);
+parameters_hybrid3 = test('hybrid-simple',maxFunEvals,nStarts);
 
 function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
 
@@ -115,7 +118,7 @@ ub    = [log10(max(t)); 5; 5; 5; 2];
 nPar = 5;
 
 % Objective function (Log-likelihood)
-objectiveFunction = @(theta) logLikelihoodT(theta, t, ym);
+objfun = @(theta) logLikelihoodT(theta, t, ym);
 
 %% Optimization
 % A multi-start local optimization is performed within the bounds defined in
