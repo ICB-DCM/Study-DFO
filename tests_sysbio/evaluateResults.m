@@ -31,30 +31,28 @@ for ip = 1:nProblems
     maxFunEvals = cell_maxFunEvals{ip};
     nStarts = cell_nStarts{ip};
     
-    map = containers.Map;
-    
     for is = 1:nSolvers
         solver = cell_solvers{is};
         solver_official = cell_solvers_official{is};
         gradient = cell_gradient{is};
         filename = ['res_' problem '/test_' problem '_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradient '.mat'];
+        if strcmp(problem,'mt')
+            print('hu');
+        end
         if exist(filename, 'file')
             load(filename);
-            nllh(ip,is,:) = -parameters_res.MS.logPost;
+            nllh(ip,is,:) = -parameters_res.MS.logPost';
             funEvals(ip,is,:) = parameters_res.MS.n_objfun;
             bestFoundFval(ip) = min([-parameters_res.MS.logPost(:);bestFoundFval(ip)]);
         end
     end
-    
-    cell_keys = keys(map);
-    nKeys = length(cell_keys);
     
     % waterfall plot
     fig = figure('name',['waterfall-' problem]);
     for is = 1:nSolvers
         tmp_y(:) = nllh(ip,is,:);
         
-        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip),[markers{is} '-'],'DisplayName', cell_solvers_official{is});
+        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip)+1,[markers{is} '-'],'DisplayName', cell_solvers_official{is});
         hold on;
     end
     hold off;
@@ -69,7 +67,7 @@ convergedStarts = zeros(nProblems,nSolvers);
 funEvalsPerConvergedStart = inf(nProblems,nSolvers);
 for ip = 1:nProblems
      for is = 1:nSolvers
-         tmp_totalFunEvals = sum(funEvals(ip,is,:));
+         tmp_totalFunEvals = nansum(funEvals(ip,is,:));
          tmp_convergedStarts = sum(nllh(ip,is,:) < bestFoundFval(ip) + 0.5);
          convergedStarts(ip,is) = tmp_convergedStarts / nStarts;
          funEvalsPerConvergedStart(ip,is) = tmp_totalFunEvals / tmp_convergedStarts; % / (cell_nPar{ip}*cell_maxFunEvals{ip});
