@@ -5,16 +5,20 @@ classdef EvaluationHelper
     end
     
     methods (Static)
-        function [ cell_results_extended ] = f_createResultExtendedList( cell_results )
-            n = length(cell_results);
-            cell_results_extended = cell(n,1);
-            for j=1:n
-                cell_results_extended{j} = ResultExtended(cell_results{j});
+        
+        function [ cell_results_preprocessed ] = f_preprocess(cell_results_all)
+            n = length(cell_results_all);
+            cell_results_preprocessed = cell(n,1);
+            for j = 1:n
+                result = cell_results_all{j};
+                result.alg = upper(result.alg);
+                cell_results_preprocessed{j} = result;
             end
-                
         end
         
         function [ cell_results_best ] = f_extractBestResults(cell_results_all)
+        % extract the best results over all runs (as in a multi-start
+        % setting)
 
             n = length(cell_results_all);
             
@@ -51,7 +55,9 @@ classdef EvaluationHelper
             end
         end
         
-        function [ map ] = f_getSolvedShare(cell_results)
+        function [ map ] = f_getSolvedFraction(cell_results)
+        % for each algorithm, get the fraction of solved problems in the
+        % list
             % map for counting successes
             map = containers.Map;
             % map for counting all
@@ -73,7 +79,7 @@ classdef EvaluationHelper
                end
             end
             
-            % get share
+            % get fraction
             cell_key = keys(map_total);
             nKeys = length(cell_key);
             for j=1:nKeys
@@ -83,6 +89,7 @@ classdef EvaluationHelper
         end
         
         function [ map ] = f_getAverageTimePerAlg(cell_results)
+        % for each algorithm, get the average of the run times in the list
             map = containers.Map;
             map_total = containers.Map;
             
@@ -111,6 +118,8 @@ classdef EvaluationHelper
         end
         
         function [ map ] = f_getAverageFevalsPerAlg(cell_results)
+        % for each algorithm, get the average number of function
+        % evaluations over all problems in the list
             map = containers.Map;
             map_total = containers.Map;
             
@@ -139,7 +148,8 @@ classdef EvaluationHelper
         end
         
         function [ cell_results_having ] = f_getAllHaving(cell_results,dim_lb,dim_ub,smooth,convex,unimodal)
-            % 0: no, 1: yes, 2: both
+        % extract all problems fullfilling the requirements
+        % 0: no, 1: yes, 2: both
             n = length(cell_results);
             index = 1;
             for j=1:n
