@@ -70,7 +70,7 @@ funEvalsPerConvergedStart = inf(nProblems,nSolvers);
 for ip = 1:nProblems
      for is = 1:nSolvers
          tmp_totalFunEvals = sum(funEvals(ip,is,:));
-         tmp_convergedStarts = sum(nllh(ip,is,:) > bestFoundFval(ip) - 0.5);
+         tmp_convergedStarts = sum(nllh(ip,is,:) < bestFoundFval(ip) + 0.5);
          convergedStarts(ip,is) = tmp_convergedStarts / nStarts;
          funEvalsPerConvergedStart(ip,is) = tmp_totalFunEvals / tmp_convergedStarts; % / (cell_nPar{ip}*cell_maxFunEvals{ip});
      end
