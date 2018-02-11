@@ -21,6 +21,7 @@ colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h'};
 markers = markers(1:nSolvers);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
+legendon = 'off';
 
 funEvals = zeros(nProblems,nSolvers,nStarts);
 nllh = nan(nProblems,nSolvers,nStarts);
@@ -36,9 +37,6 @@ for ip = 1:nProblems
         solver_official = cell_solvers_official{is};
         gradient = cell_gradient{is};
         filename = ['res_' problem '/test_' problem '_' solver '_' num2str(maxFunEvals) '_' num2str(nStarts) gradient '.mat'];
-        if strcmp(problem,'mt')
-            print('hu');
-        end
         if exist(filename, 'file')
             load(filename);
             nllh(ip,is,:) = -parameters_res.MS.logPost';
@@ -56,7 +54,7 @@ for ip = 1:nProblems
         hold on;
     end
     hold off;
-    legend('show','Location','northeastoutside');
+    legend(legendon,'Location','northeastoutside');
     xlabel('ordered multistarts');
     ylabel('negative log-likelihood');
     saveas(fig, [pwd '/images/waterfall-' problem '.png']);
@@ -77,12 +75,15 @@ end
 fig = figure('name','convergedstarts');
 for is = 1:nSolvers
     tmp_y = convergedStarts(:,is);
-    plot(1:nProblems,tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is});
+    plot(1:nProblems,100*tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is});
     hold on;
 end
 hold off;
 xticklabels(cell_problems_official);
-legend('show','Location','northeastoutside');
+xlabel('problem');
+ylabel('converged starts [%]');
+ylim([0,100]);
+legend(legendon,'Location','northeastoutside');
 saveas(fig, [pwd '/images/convergedstarts.png']);
 
 fig = figure('name','funevalsperconvergedstart');
@@ -93,7 +94,7 @@ for is = 1:nSolvers
 end
 hold off;
 xticklabels(cell_problems_official);
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 saveas(fig, [pwd '/images/funevalsperconvergedstart.png']);
 
 % bar(convergedStarts);
@@ -111,3 +112,46 @@ saveas(fig, [pwd '/images/funevalsperconvergedstart.png']);
 % end
 % bar(mat_convergedstarts);
 % hold off;
+
+% legend
+
+figHandle = figure('name','legend');
+hold on;
+for j = 1:nSolvers
+   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_solvers_official{j}, 'color', colors(j,:));
+end
+legHandle = legend('show');
+saveLegendToImage(figHandle,legHandle,'images/legend','png');
+
+function saveLegendToImage(figHandle, legHandle, ...
+fileName, fileType)
+
+%make all contents in figure invisible
+allLineHandles = findall(figHandle, 'type', 'line');
+
+for i = 1:length(allLineHandles)
+
+    allLineHandles(i).XData = NaN; %ignore warnings
+
+end
+
+%make axes invisible
+axis off
+
+%move legend to lower left corner of figure window
+legHandle.Units = 'pixels';
+boxLineWidth = legHandle.LineWidth;
+%save isn't accurate and would swallow part of the box without factors
+legHandle.Position = [6 * boxLineWidth, 6 * boxLineWidth, ...
+    legHandle.Position(3), legHandle.Position(4)];
+legLocPixels = legHandle.Position;
+
+%make figure window fit legend
+figHandle.Units = 'pixels';
+figHandle.InnerPosition = [1, 1, legLocPixels(3) + 12 * boxLineWidth, ...
+    legLocPixels(4) + 12 * boxLineWidth];
+
+%save legend
+saveas(figHandle, [fileName, '.', fileType], fileType);
+
+end

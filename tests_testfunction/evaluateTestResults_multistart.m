@@ -102,6 +102,8 @@ markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','
 markers = markers(1:nKeys);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
 
+legendon = 'off';
+
 % smoothness, convexity, modality
 
 % nColumns = 7;
@@ -127,7 +129,7 @@ axes('NextPlot','replacechildren', 'ColorOrder',colors);
 %     plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 % end
 % hold off;
-% legend('show','Location','northeastoutside');
+% legend(legendon,'Location','northeastoutside');
 % xticks(1:nColumns);
 % xticklabels({'all','smooth','nonsmooth','convex','nonconvex','unimodal','multimodal'});
 % xlabel('function category');
@@ -155,15 +157,15 @@ markers_tmp = markers(index);
 fig = figure('name','smooth-convex-lg');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:nColumns);
 xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
-ylim([0,1]);
+ylim([0,100]);
 saveas(fig, [pwd '/images/smooth-convex-lg.png']); 
 
 % and for all
@@ -188,15 +190,15 @@ markers_tmp = markers(index);
 fig = figure('name','smooth-convex-all-lg');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:nColumns);
 xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
-ylim([0,1]);
+ylim([0,100]);
 saveas(fig, [pwd '/images/smooth-convex-all-lg.png']); 
 
 % dims
@@ -216,15 +218,15 @@ markers_tmp = markers(index);
 fig = figure('name','dims-lg');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dimension');
 ylabel('solved problems [%]');
-ylim([0,1]);
+ylim([0,100]);
 xlim([1,C.nDims]);
 saveas(fig, [pwd '/images/dims-lg.png']); 
 
@@ -245,15 +247,15 @@ markers_tmp = markers(index);
 fig = figure('name','dims-all-lg');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
 end
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dimension');
 ylabel('solved problems [%]');
-ylim([0,1]);
+ylim([0,100]);
 xlim([1,C.nDims]);
 saveas(fig, [pwd '/images/dims-all-lg.png']); 
 
@@ -277,7 +279,7 @@ for j=1:nKeys
     hold on;
 end
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dimension');
@@ -307,7 +309,7 @@ end
 plot(1:C.nDims,C.maxFunEvals{2}*ones(1,C.nDims),'-r','DisplayName','maxFunEvals (global)');
 plot(1:C.nDims,C.maxFunEvals{1}*ones(1,C.nDims),'-r','DisplayName','maxFunEvals (local)');
 hold off;
-legend('show','Location','northeastoutside');
+legend(legendon,'Location','northeastoutside');
 xticks(1:C.nDims);
 xticklabels(C.arr_dims);
 xlabel('dim');
