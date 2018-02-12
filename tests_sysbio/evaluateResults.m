@@ -57,6 +57,7 @@ for ip = 1:nProblems
     legend(legendon,'Location','northeastoutside');
     xlabel('ordered multistarts');
     ylabel('negative log-likelihood');
+    pbaspect([1 1 1]);
     saveas(fig, [pwd '/images/waterfall-' problem '.png']);
 end
 
@@ -84,6 +85,7 @@ xlabel('problem');
 ylabel('converged starts [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/convergedstarts.png']);
 
 fig = figure('name','funevalsperconvergedstart');
@@ -95,6 +97,7 @@ end
 hold off;
 xticklabels(cell_problems_official);
 legend(legendon,'Location','northeastoutside');
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/funevalsperconvergedstart.png']);
 
 % bar(convergedStarts);

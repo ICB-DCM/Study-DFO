@@ -131,6 +131,7 @@ legendon = 'off';
 % xlabel('function category');
 % ylabel('solved problems [%]');
 % ylim([0,1]);
+% pbaspect([1 1 1]);
 % saveas(fig, [pwd '/images/smooth-convex-unimodal.png']);
 
 nColumns = 5;
@@ -162,6 +163,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/smooth-convex.png']); 
 
 % and for all
@@ -195,6 +197,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/smooth-convex-all.png']); 
 
 % dims
@@ -224,6 +227,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/dims.png']); 
 
 % and for all
@@ -253,6 +257,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/dims-all.png']); 
 
 % time
@@ -281,6 +286,7 @@ xticklabels(C.arr_dims);
 xlabel('dimension');
 ylabel('avg. time [s]');
 xlim([1,C.nDims]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/time.png']);
 
 % fevals
@@ -310,6 +316,7 @@ xticklabels(C.arr_dims);
 xlabel('dim');
 ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
+pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/fevals.png']);
 
 % legend
