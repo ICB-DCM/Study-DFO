@@ -1,5 +1,30 @@
 function [xbst,fbst,exitflag,output] = ysnobfit(fun,lb,ub,options)
-file = 'snobfit_datafile';
+% ysnobfit can be used as an optimization routine. It uses the snobfit.m 
+% (stable noisy optimization by branch and fit) iteratively.
+%
+% INPUT:
+%   fun: 	objective function handle
+%   lb, ub: box constraints, lb <= x <= ub
+%   options: struct
+%     .MaxStallGenerations : max. number of generations without significant
+%                            improvement allowed
+%     .MaxGenerations      : max. number of generations
+%     .TolFun 			   : function value tolerance
+%     .MaxFunEvals         : max. number of function evaluations allowed
+%     .PopulationSize      : population size in each iteration
+%     .Guess               : nPar * PopulationSize matrix for initial guess
+%                            where nPar denotes the number of parameters
+%     If any of the options is not set by the user, it is set tot default
+%     values.
+%
+% OUTPUT:
+%   xbst: best parameter set found
+%   fbst: fun(xbst), best function value found
+%   exitflag: 1 if function value did not change significantly in the last
+%             %MaxStallGenerations iterations, 0 otherwise
+%   output: further information. in particular:
+%     .fvals      : function values at last iteration
+%     .population : last population
 
 lb = lb(:);
 ub = ub(:);
@@ -84,6 +109,7 @@ end
 output.funcCount = jFunEvals;
 output.population = x';
 output.fvals = f(:,1);
+output.algorithm = 'snobfit';
 
 end
 

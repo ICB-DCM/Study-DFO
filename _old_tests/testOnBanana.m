@@ -14,9 +14,9 @@ lb = -10*ones(200,1);
 ub = 10*ones(200,1);
 x0 = -4*ones(200,1);
 
-% lb=[-2;-1];
-% ub=[2;3];
-% x0 = [-1.5;0.5];
+lb=[-2;-1];
+ub=[2;3];
+x0 = [-1.5;0.5];
 
 %% Optimization without Derivatives
 
@@ -45,7 +45,7 @@ options.TolX          = 1e-10;
 options.TolFun        = 1e-10;
 options.MaxFunEvals   = 25000;
 options.MaxIter       = 25000;
-%options.OutputFcn     = outputFunction;
+options.OutputFcn     = outputFunction;
 options.Mode          = 2;
 
 % disp('--hctt:');
@@ -53,7 +53,7 @@ options.Mode          = 2;
 % printXFvalExitflagOutput(x,fval,exitflag,output);
 
 disp('--dhc:');
-[x, fval, exitflag, output] = dynamicHillClimb(fun,x0,lb,ub,options);
+[x, fval, exitflag, output] = optim.dhc.dhc(fun,x0,lb,ub,options);
 printXFvalExitflagOutput(x,fval,exitflag,output);
 
 % disp('--cs:');

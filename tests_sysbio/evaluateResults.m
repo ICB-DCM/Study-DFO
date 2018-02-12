@@ -21,7 +21,7 @@ colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h'};
 markers = markers(1:nSolvers);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
-legendon = 'off';
+legendon = 'show';
 
 funEvals = zeros(nProblems,nSolvers,nStarts);
 nllh = nan(nProblems,nSolvers,nStarts);
@@ -50,7 +50,7 @@ for ip = 1:nProblems
     for is = 1:nSolvers
         tmp_y(:) = nllh(ip,is,:);
         
-        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip)+1,[markers{is} '-'],'DisplayName', cell_solvers_official{is});
+        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip)+1,[markers{is} '-'],'DisplayName', cell_solvers_official{is}, 'color', colors(is,:));
         hold on;
     end
     hold off;
@@ -76,7 +76,7 @@ end
 fig = figure('name','convergedstarts');
 for is = 1:nSolvers
     tmp_y = convergedStarts(:,is);
-    plot(1:nProblems,100*tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is});
+    plot(1:nProblems,100*tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is}, 'color', colors(is,:));
     hold on;
 end
 hold off;
@@ -91,7 +91,7 @@ saveas(fig, [pwd '/images/convergedstarts.png']);
 fig = figure('name','funevalsperconvergedstart');
 for is = 1:nSolvers
     tmp_y = funEvalsPerConvergedStart(:,is);
-    semilogy(1:nProblems,tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is});
+    semilogy(1:nProblems,tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is},  'color', colors(is,:));
     hold on;
 end
 hold off;
