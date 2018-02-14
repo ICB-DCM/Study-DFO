@@ -145,6 +145,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_smooth_convex = v_y;
 % sort
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
@@ -181,6 +182,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_smooth_convex_all = v_y;
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
@@ -210,6 +212,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_dims = v_y;
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
@@ -240,6 +243,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_dims_all = v_y;
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
@@ -270,6 +274,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_time = v_y;
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
@@ -299,6 +304,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_fevals = v_y;
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);
 colors_tmp = colors(index,:);
@@ -318,6 +324,50 @@ ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
 pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/fevals.png']);
+
+
+
+fig = figure('name','collection');
+
+subplot(5,2,[1 2]);
+bar(100*v_y_smooth_convex');
+xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
+ylim([0,100]);
+% pbaspect([4 1 1]);
+
+subplot(5,2,[3 4]);
+bar(100*v_y_smooth_convex_all');
+xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
+ylim([0,100]);
+% pbaspect([4 1 1]);
+
+subplot(5,2,[5 6]);
+bar(100*v_y_smooth_convex');
+xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
+ylim([0,100]);
+% pbaspect([4 1 1]);
+
+subplot(5,2,[7 9]);
+v_x = 1:C.nDims;
+hold on;
+for j=1:nKeys
+    plot(v_x,100*v_y_dims(j,:),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
+end
+hold off;
+pbaspect([2 2 1]);
+
+subplot(5,2,[8 10]);
+v_x = 1:C.nDims;
+hold on;
+for j=1:nKeys
+    plot(v_x,100*v_y_fevals(j,:),[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:)); 
+end
+hold off;
+pbaspect([2 2 1]);
+
+saveas(fig, [pwd '/images/collection.png']);
+
+
 
 % legend
 
