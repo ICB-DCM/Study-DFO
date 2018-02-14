@@ -1,6 +1,3 @@
-close all;
-clear;
-
 % gather all results in one big cell array
 solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
 cell_results_all = cell(0);
@@ -140,6 +137,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_smooth_convex_noise = v_y;
 % sort
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);

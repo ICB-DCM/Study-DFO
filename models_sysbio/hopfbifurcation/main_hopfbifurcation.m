@@ -25,6 +25,5 @@ lOptions.GradObj = 'on';
 pestoOptions.localOptimizerOptions = lOptions;
 
 objfun = @(x) llh(x, D, @simulate_hopfbifurcation);
-% llhtrue = objfun(p+0.0002)
 
 parameters_res = getMultiStarts(parameters, objfun, pestoOptions);

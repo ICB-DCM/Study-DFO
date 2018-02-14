@@ -37,4 +37,4 @@ for jt = 1:nt
 end
 
 % save everything to file
-save('data_ODE_M4.mat');
+save('data_hopfbifurcation.mat');

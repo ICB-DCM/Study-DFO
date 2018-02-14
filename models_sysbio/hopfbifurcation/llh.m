@@ -22,6 +22,11 @@ for jr = 1:nr
     amiData = amidata(amiData);
 
     sol = simfun([],x,[],amiData,amiOptions);
+    
+    if sol.status ~= 0
+        error('i to pi: be rational. pi to i: be real.');
+    end
+    
     llh = llh + sol.llh;
     if nargout > 1
         sllh = sllh + sol.sllh;

@@ -1,6 +1,3 @@
-close all;
-clear;
-
 % gather all results in one big cell array
 % solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','imfil','mcs','meigo-ess-bobyqa','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','particleswarm','pswarm','rcs','simulannealbnd'};
 solvers_local = C.cell_solvers_local;
@@ -149,6 +146,7 @@ for j=1:nKeys
        v_y(j,k) = tmp_map(key_j);
    end
 end
+v_y_smooth_convex_multistart = v_y;
 % sort
 [v_y,index] = sortrows(v_y,1,'descend');
 cell_keys_tmp = cell_keys(index);

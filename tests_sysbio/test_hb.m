@@ -12,19 +12,19 @@ maxFunEvals = 500;
 nStarts = 100;
 
 % parameters_fmincon = test('fmincon',maxFunEvals,nStarts);
-% parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
-% parameters_dhc = test('dhc',maxFunEvals,nStarts);
-% parameters_rcs = test('rcs',maxFunEvals,nStarts);
-% parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
-% parameters_mcs = test('mcs',maxFunEvals,nStarts);
-% parameters_direct = test('direct',maxFunEvals,nStarts);
-% parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
+parameters_fmincon_gradient = test('fmincon',maxFunEvals,nStarts,true);
+parameters_dhc = test('dhc',maxFunEvals,nStarts);
+parameters_rcs = test('rcs',maxFunEvals,nStarts);
+parameters_bobyqa = test('bobyqa',maxFunEvals,nStarts);
+parameters_mcs = test('mcs',maxFunEvals,nStarts);
+parameters_direct = test('direct',maxFunEvals,nStarts);
+parameters_meigo = test('meigo-ess',maxFunEvals,nStarts);
 parameters_meigo_gradient = test('meigo-ess',maxFunEvals,1,true);
-% parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
-% parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
-% parameters_hybrid1 = test('hybrid-snobfit',maxFunEvals,nStarts);
-% parameters_hybrid2 = test('hybrid-mcs',maxFunEvals,nStarts);
-% parameters_hybrid3 = test('hybrid-simple',maxFunEvals,nStarts);
+parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
+parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+parameters_hybrid1 = test('hybrid-snobfit',maxFunEvals,nStarts);
+parameters_hybrid2 = test('hybrid-mcs',maxFunEvals,nStarts);
+parameters_hybrid3 = test('hybrid-simple',maxFunEvals,nStarts);
 
 function [parameters_res] = test(solver,maxFunEvals,nStarts,useGradient)
 
