@@ -33,14 +33,14 @@ default.n_stuck                   =       0;             %Number of consecutive 
 
 %Local options
 default.local.solver              =       'fmincon';      %Choose local solver
-default.local.solver_options      =       struct();
+default.local.solver_use_gradient =       false;          %Use gradient in local search
 default.local.tol                 =       2;              %Level of tolerance in local search
 default.local.iterprint           =       0;              %Print each iteration on screen
 default.local.n1                  =       'default';      %Number of iterations before applying local search for the 1st time
 default.local.n2                  =       'default';      %Number of minimum iterations of global search between 2 local calls
 default.local.balance             =       0.5;            %BalancesBalances between quality (=0) and diversity (=1) for choosing initial points for the local search
 default.local.finish              =       [];             %Applies local search to the best solution found once the optimization if finished
-default.local.finish_options      =       struct();
+default.local.finish_use_gradient =       false;          %Use gradient in local finish search
 default.local.bestx               =       0;              %When activated (i.e. =1) only applies local search to the best solution found to date, ignoring filters
 default.local.merit_filter        =       1;              %Merit filter activation
 default.local.distance_filter     =       1;              %Distance filter activation

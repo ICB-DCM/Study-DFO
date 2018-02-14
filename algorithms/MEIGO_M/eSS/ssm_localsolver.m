@@ -1,5 +1,5 @@
 function [x,fval,exitflag,numeval]=ssm_localsolver(X0,x_L,x_U,c_L,c_U,neq,ndata,int_var,bin_var,fobj,...
-    local_solver,local_iterprint,local_tol,weight,nconst,tolc,localoptions,varargin)
+    local_solver,local_iterprint,local_tol,weight,nconst,tolc,use_gradient,varargin)
 global ccll ccuu n_upper n_lower n_fun_eval
 
 global hjfun hjxl hjxu hjcl hjcu hjweight hjtolc
@@ -34,7 +34,7 @@ else
     scale.g=1;
 end
 
-if abs(f1)==inf | f1==NaN
+if abs(f1)==inf || isnan(f1)
     scale.f=1;
 else
     scale.f=f1;
@@ -43,7 +43,7 @@ end
 
 
 
-
+try % catch all errors
 
 switch local_solver
     case 'clssolve'
@@ -684,32 +684,38 @@ switch local_solver
         end
 % tolf=1e-9;
 % tolx=1e-9;
-        if local_iterprint
-            dsp='iter';
-        else
-            dsp='off';
-        end
-        options = localoptions;
-        options.TolX = tolx;
-        options.TolFun = tolf;
-        options.Display = dsp;
-        options.MaxFunEvals = 200 * length(X0);
+
+        options = optimoptions(@fmincon);
         options.MaxFunctionEvaluations = 200*length(X0);
-        options.MaxIter = 200 * length(X0);
-        options.MaxIterations          = 200*length(X0);
-        
-        if isfield(options,'GradObj') && strcmp(options.GradObj,'on')
+        options.MaxIterations = 200*length(X0);
+        if use_gradient
+            options.GradObj = 'on';
             fun = @fmobj2;
         else
+            options.GradObj = 'off';      
             fun = @fmobj;
         end
-       
+        if local_iterprint
+            options.Display = 'iter';
+        else
+            options.Display = 'off';
+        end
+        
         [x,fval,exitflag,~]=fmincon(fun,X0,[],[],[],[],x_L,x_U,const_fun,options,fobj,neq,varargin{:});
         numeval=n_fun_eval;
         
 	otherwise
-		error('Local Solver not recognized.');
+		error('Local solver not recognized.');     
 
+end
+
+catch
+    % some algorithms throw errors, e.g. when they are undefined at the 
+    % starting point
+    x = nan(size(X0));
+    fval = nan;
+    numeval = 1;
+    exitflag = 0;
 end
 
 

@@ -93,7 +93,7 @@ markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','
 markers = markers(1:nKeys);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
 
-legendon = 'off';
+legendon = 'show';
 
 % TextSizes.DefaultAxesFontSize = 10;
 % TextSizes.DefaultTextFontSize = 10;

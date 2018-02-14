@@ -106,7 +106,13 @@ function [Results]=ess_kernel(problem,opts,varargin)
 %                                             'fminsearch', 'solnp'
 %                                             'n2fb','dn2fb','dhc','hooke'
 %                                             'ipopt','misqp','lsqnonlin'
-%           opts.local.solver_options
+%           opts.local.solver_use_gradient  = Bool. Set to true if local
+%                                             search should use gradient of
+%                                             objective function (only
+%                                             possible with fmincon at the
+%                                             moment). Then the objective
+%                                             function must return the
+%                                             gradient as a second output.
 %           opts.local.tol                  = Level of tolerance in local
 %                                             search. 1: Relaxed; 2: Medium
 %                                             3: Tight (default: 2 in 
@@ -133,6 +139,7 @@ function [Results]=ess_kernel(problem,opts,varargin)
 %                                             optimization if finished
 %                                             (same values as
 %                                             opts.local.solver)
+%           opts.local.finish_use_gradient  = Like solver_use_gradient.
 %           opts.local.bestx                = When activated (i.e. =1) only
 %                                             applies local search to the
 %                                             best solution found to
@@ -959,7 +966,7 @@ while (not(fin))
                 tic
             end
             [x,fval,exitflag,numeval]=ssm_localsolver(x0,x_L,x_U,c_L,c_U,neq,ndata,int_var,bin_var,fobj,...
-                local_finish,local_iterprint,local_tol,weight,nconst,tolc,opts.local.finish_options,varargin{:});
+                local_finish,local_iterprint,local_tol,weight,nconst,tolc,opts.local.finish_use_gradient,varargin{:});
 
             if iterprint
                 fprintf('Local solution function value: %f \n',fval);

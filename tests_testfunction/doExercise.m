@@ -235,7 +235,7 @@ try
                 options.MaxGenerations = ex.maxFunEvals / 50;
                 options.PopulationSize = 50;
             else
-                options.MaxGenerationa = ex.maxFunEvals / 200;
+                options.MaxGenerations = ex.maxFunEvals / 200;
                 options.PopulationSize = 200;
             end
             options.Display = 'off';
