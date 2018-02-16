@@ -2,7 +2,11 @@
 solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
 cell_results_all = cell(0);
 for j=1:length(solvers)
-    file = ['results/cell_results_test_' solvers{j} '_2000_20_.mat'];
+    solver = solvers{j};
+    if strcmp(solver,'gss')
+        continue;
+    end
+    file = ['results/cell_results_test_' solver '_2000_20_.mat'];
     if exist(file,'file')
         load(file);
         cell_results_all = vertcat(cell_results_all,cell_results);

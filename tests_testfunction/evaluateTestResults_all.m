@@ -14,6 +14,7 @@ for j=1:nKeys
 end
 set(gca,'XTick',[]);
 ylim([0,100]);
+title('Multistart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[3 4]);
@@ -23,6 +24,7 @@ for j=1:nKeys
 end
 set(gca,'XTick',[]);
 ylim([0,100]);
+title('Singlestart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[5 6]);
@@ -32,15 +34,17 @@ for j=1:nKeys
 end
 set(gca,'XTick',[]);
 ylim([0,100]);
+title('Multistart setting, $$n_g = 40000, N_g = 1$$','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[7 8]);
-ybar = bar(100*v_y_noise');
+ybar = bar(100*v_y_smooth_convex_noise');
 for j=1:nKeys
     ybar(j).FaceColor = colors(j,:);
 end
 xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 ylim([0,100]);
+title('Multistart setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 saveas(fig, [pwd '/images/collection.png']);

@@ -12,6 +12,9 @@ classdef EvaluationHelper
             for j = 1:n
                 result = cell_results_all{j};
                 result.alg = upper(result.alg);
+                if any(strcmp(result.alg,{'GPS','MADS'}))
+                   result.alg = ['PATTERNSEARCH-' result.alg];
+                end
                 cell_results_preprocessed{j} = result;
             end
         end
