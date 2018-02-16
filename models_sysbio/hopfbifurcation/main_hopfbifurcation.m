@@ -26,4 +26,6 @@ pestoOptions.localOptimizerOptions = lOptions;
 
 objfun = @(x) llh(x, D, @simulate_hopfbifurcation);
 
-parameters_res = getMultiStarts(parameters, objfun, pestoOptions);
+llhtrue = objfun(p)
+
+% parameters_res = getMultiStarts(parameters, objfun, pestoOptions);

@@ -6,7 +6,7 @@ end
 
 %% parameters
 
-sigma = [0.75; 0.32; 0.46];
+sigma = [0.075; 0.032; 0.046];
 p  = [3.8;1;  1;  1;  1;  1;  1;  1;  sigma];
 lb = [1;  0.8;0.8;0.8;0.8;0;  0;  0;  1e-2;  1e-2;  1e-2];
 ub = [5;  1.2;1.2;1.2;1.2;2;  2;  2;  2;     2;     2];
@@ -18,8 +18,13 @@ ny = 3;
 nr = 1;
 
 %% true solution
-
-sol = simulate_hopfbifurcation(t,p);
+amiOptions = amioption;
+amiOptions.sensi_meth = 'forward';
+amiOptions.sensi = 0;
+% amiOptions.atol = 1e-8;
+% amiOptions.rtol = 1e-6;
+% amiOptions.maxsteps = 1e5;
+sol = simulate_hopfbifurcation(t,p,[],[],[],amiOptions);
 % true observables
 ytrue = sol.y; % nt * ny
 
@@ -35,6 +40,8 @@ for jt = 1:nt
         D.Y(jt,:,jr) = ytrue(jt,:) + normrnd(0,sigma');
     end
 end
+
+sol_with_data = simulate_hopfbifurcation(t,p,[],D,amiOptions);
 
 % save everything to file
 save('data_hopfbifurcation.mat');

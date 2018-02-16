@@ -17,12 +17,14 @@ nProblems = length(cell_problems);
 nStarts = 100;
 
 colors = distinguishable_colors(nSolvers);
-markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h'};
+markers = {'o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h'};
 markers = markers(1:nSolvers);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
 legendon = 'show';
 
 funEvals = zeros(nProblems,nSolvers,nStarts);
+time = zeros(nProblems,nSolvers,nStarts);
+time_ss = zeros(nProblems,nSolvers);
 nllh = nan(nProblems,nSolvers,nStarts);
 bestFoundFval = inf(nProblems,1);
 
@@ -40,6 +42,13 @@ for ip = 1:nProblems
             load(filename);
             nllh(ip,is,:) = -parameters_res.MS.logPost';
             funEvals(ip,is,:) = parameters_res.MS.n_objfun;
+            if isfield(parameters_res,'time_ss')
+                time_ss = parameters_res.time_ss;
+            else
+                time_ss = 0;
+            end
+            time(ip,is,:) = parameters_res.MS.t_cpu;
+            time_ss(ip,is) = time_ss;
             bestFoundFval(ip) = min([-parameters_res.MS.logPost(:);bestFoundFval(ip)]);
         end
     end
@@ -56,22 +65,26 @@ for ip = 1:nProblems
     legend(legendon,'Location','northeastoutside');
     xlabel('ordered multistarts');
     ylabel('negative log-likelihood');
-    pbaspect([1 1 1]);
+%     pbaspect([1 1 1]);
     saveas(fig, [pwd '/images/waterfall-' problem '.png']);
 end
 
-% converged starts
+% further analysis
 convergedStarts = zeros(nProblems,nSolvers);
 funEvalsPerConvergedStart = inf(nProblems,nSolvers);
+timePerConvergedStart = inf(nProblems,nSolvers);
 for ip = 1:nProblems
      for is = 1:nSolvers
          tmp_totalFunEvals = nansum(funEvals(ip,is,:));
+         tmp_totalTime = nansum(time(ip,is,:)) + time_ss(ip,is);
          tmp_convergedStarts = sum(nllh(ip,is,:) < bestFoundFval(ip) + 0.5);
          convergedStarts(ip,is) = tmp_convergedStarts / nStarts;
          funEvalsPerConvergedStart(ip,is) = tmp_totalFunEvals / tmp_convergedStarts; % / (cell_nPar{ip}*cell_maxFunEvals{ip});
+         timePerConvergedStart(ip,is) = tmp_totalTime / tmp_convergedStarts;
      end
 end
 
+% convergedstarts
 fig = figure('name','convergedstarts');
 for is = 1:nSolvers
     tmp_y = convergedStarts(:,is);
@@ -84,9 +97,25 @@ xlabel('problem');
 ylabel('converged starts [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
-pbaspect([1 1 1]);
+% pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/convergedstarts.png']);
 
+% timeperconvergedstart
+fig = figure('name','timeperconvergedstart');
+for is = 1:nSolvers
+    tmp_y = timePerConvergedStart(:,is);
+    semilogy(1:nProblems,tmp_y,[markers{is}],'DisplayName', cell_solvers_official{is},  'color', colors(is,:));
+    hold on;
+end
+hold off;
+xticklabels(cell_problems_official);
+xlabel('problem');
+ylabel('time / converged starts [s]');
+legend(legendon,'Location','northeastoutside');
+% pbaspect([1 1 1]);
+saveas(fig, [pwd '/images/timeperconvergedstart.png']);
+
+% funevalsperconvergedstart
 fig = figure('name','funevalsperconvergedstart');
 for is = 1:nSolvers
     tmp_y = funEvalsPerConvergedStart(:,is);
@@ -95,8 +124,10 @@ for is = 1:nSolvers
 end
 hold off;
 xticklabels(cell_problems_official);
+xlabel('problem');
+ylabel('function evaluations / converged starts');
 legend(legendon,'Location','northeastoutside');
-pbaspect([1 1 1]);
+% pbaspect([1 1 1]);
 saveas(fig, [pwd '/images/funevalsperconvergedstart.png']);
 
 % bar(convergedStarts);

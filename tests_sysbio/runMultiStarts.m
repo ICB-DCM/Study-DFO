@@ -29,7 +29,7 @@ switch solver
         lOptions = optimoptions(@fmincon);
         lOptions.MaxFunctionEvaluations = numevals;
         lOptions.MaxIterations = numevals;
-        lOptions.Display = 'iter';
+        lOptions.Display = 'off';
         if useGradients
             options.objOutNumber = 2;
             lOptions.GradObj = 'on';
@@ -56,13 +56,12 @@ switch solver
         lOptions.maxtime = Inf;
         lOptions.local.solver = 'fmincon';
         lOptions.local.finish = 'fmincon';
-        lOptions.local.solver_options = optimset;
         if useGradients
-            lOptions.local.solver_options.GradObj = 'on';
-            lOptions.local.finish_options.GradObj = 'on';
+            lOptions.local.solver_use_gradient = true;
+            lOptions.local.finish_use_gradient = true;
         else
-            lOptions.local.solver_options.GradObj = 'off';
-            lOptions.local.finish_options.GradObj = 'off';
+            lOptions.local.solver_use_gradient = false;
+            lOptions.local.finish_use_gradient = false;
         end
     case 'cmaes'
         lOptions.MaxFunEvals = numevals;

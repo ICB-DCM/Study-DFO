@@ -2,6 +2,9 @@ function [ varargout ] = llh(x, D, simfun)
 
 amiOptions = amioption;
 amiOptions.sensi_meth = 'forward';
+% amiOptions.atol = 1e-8;
+% amiOptions.rtol = 1e-6;
+% amiOptions.maxsteps = 1e5;
 
 switch nargout
     case 1

@@ -30,6 +30,8 @@ lb = lb(:);
 ub = ub(:);
 dim = size(lb,1);
 
+file = 'snobfit_datafile';
+
 % options
 options = f_validateOptions(options,dim);
 tolFun = options.TolFun;

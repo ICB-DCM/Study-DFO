@@ -4,7 +4,7 @@
 %
 % Written by Benjamin Ballnus (2016)
 
-function model = ODE_M4_syms()
+function model = hopfbifurcation_syms()
              
 % CVODES OPTIONS
 model.param = 'lin';
