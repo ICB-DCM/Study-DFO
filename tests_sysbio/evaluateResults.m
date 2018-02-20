@@ -21,7 +21,7 @@ colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h'};
 markers = markers(1:nSolvers);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
-legendon = 'show';
+legendon = 'off';
 
 funEvals = zeros(nProblems,nSolvers,nStarts);
 time = zeros(nProblems,nSolvers,nStarts);
