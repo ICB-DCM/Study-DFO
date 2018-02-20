@@ -3,7 +3,7 @@ solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
 cell_results_all = cell(0);
 for j=1:length(solvers)
     solver = solvers{j};
-    if strcmp(solver,'gss')
+    if any(strcmp(solver,{'gss'}))
         continue;
     end
     file = ['results/cell_results_test_' solvers{j} '_2000_20_noise_.mat'];

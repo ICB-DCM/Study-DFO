@@ -144,6 +144,20 @@ try
             
             dhc(objfun,ex.x0,ex.lb,ex.ub,options);
             
+        case 'dhc-old'
+            
+            addpath('../algorithms/MEIGO_M/eSS/local_solvers/dhc_old');
+            addpath('../algorithms');
+            
+            initsize = 0.1;
+            thres = 1e-8;
+            local_iterprint = 0;
+            weight = 1e6;
+            tolc = 1e-5;
+            c_L = [];
+            c_U = [];
+            dhc_old('funHandleFileNameWrap',ex.x0,initsize,thres,ex.maxFunEvals,ex.lb,ex.ub,weight,c_L,c_U,local_iterprint,tolc,objfun);
+            
         case 'bobyqa'
             % local
             

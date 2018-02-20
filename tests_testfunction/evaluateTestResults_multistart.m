@@ -5,7 +5,7 @@ solvers_global = C.cell_solvers_global;
 cell_results_all = cell(0);
 for j=1:length(solvers_local)
     solver = solvers_local{j};
-    if strcmp(solver,'gss')
+    if any(strcmp(solver,{'gss'}))
         continue;
     end
     file = ['results/cell_results_test_' solvers_local{j} '_2000_20_.mat'];
