@@ -1,89 +1,99 @@
-% gather all results in one big cell array
-solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
-cell_results_all = cell(0);
-for j=1:length(solvers)
-    solver = solvers{j};
-    if any(strcmp(solver,{'gss'}))
-        continue;
-    end
-    file = ['results/cell_results_test_' solvers{j} '_2000_20_noise_.mat'];
-    if exist(file,'file')
-        load(file);
-        cell_results_all = vertcat(cell_results_all,cell_results);
-    end
-end
+% % gather all results in one big cell array
+% solvers = horzcat(C.cell_solvers_local,C.cell_solvers_global);
+% cell_results_all = cell(0);
+% for j=1:length(solvers)
+%     solver = solvers{j};
+%     if any(strcmp(solver,{'gss'}))
+%         continue;
+%     end
+%     file = ['results/cell_results_test_' solvers{j} '_2000_20_noise_.mat'];
+%     if exist(file,'file')
+%         load(file);
+%         cell_results_all = vertcat(cell_results_all,cell_results);
+%     end
+% end
+% 
+% % pre-processing
+% cell_results_all = EvaluationHelper.f_preprocess(cell_results_all);
+% 
+% % get best results
+% cell_results_best = EvaluationHelper.f_extractBestResults(cell_results_all);
+% 
+% % for j=1:length(cell_results_best), cell_results_best{j}.printTiny(); end
+% 
+% % how many solutions did the algorithms find?
+% map_shares = EvaluationHelper.f_getSolvedFraction(cell_results_best);
+% 
+% % and avgd over all iterates?
+% map_shares_all = EvaluationHelper.f_getSolvedFraction(cell_results_all);
+% 
+% % what about smooth/unimodal?
+% cell_results_best_smooth = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,1,2,2);
+% map_shares_smooth = EvaluationHelper.f_getSolvedFraction(cell_results_best_smooth);
+% 
+% cell_results_best_nonsmooth = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,0,2,2);
+% map_shares_nonsmooth = EvaluationHelper.f_getSolvedFraction(cell_results_best_nonsmooth);
+% 
+% cell_results_best_convex = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,1,2);
+% map_shares_convex = EvaluationHelper.f_getSolvedFraction(cell_results_best_convex);
+% 
+% cell_results_best_nonconvex = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,0,2);
+% map_shares_nonconvex = EvaluationHelper.f_getSolvedFraction(cell_results_best_nonconvex);
+% 
+% cell_results_best_unimodal = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,2,1);
+% map_shares_unimodal = EvaluationHelper.f_getSolvedFraction(cell_results_best_unimodal);
+% 
+% cell_results_best_multimodal = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,2,0);
+% map_shares_multimodal = EvaluationHelper.f_getSolvedFraction(cell_results_best_multimodal);
+% 
+% % and over all
+% cell_results_all_smooth = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,1,2,2);
+% map_shares_all_smooth = EvaluationHelper.f_getSolvedFraction(cell_results_all_smooth);
+% 
+% cell_results_all_nonsmooth = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,0,2,2);
+% map_shares_all_nonsmooth = EvaluationHelper.f_getSolvedFraction(cell_results_all_nonsmooth);
+% 
+% cell_results_all_convex = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,1,2);
+% map_shares_all_convex = EvaluationHelper.f_getSolvedFraction(cell_results_all_convex);
+% 
+% cell_results_all_nonconvex = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,0,2);
+% map_shares_all_nonconvex = EvaluationHelper.f_getSolvedFraction(cell_results_all_nonconvex);
+% 
+% cell_results_all_unimodal = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,2,1);
+% map_shares_all_unimodal = EvaluationHelper.f_getSolvedFraction(cell_results_all_unimodal);
+% 
+% cell_results_all_multimodal = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,2,0);
+% map_shares_all_multimodal = EvaluationHelper.f_getSolvedFraction(cell_results_all_multimodal);
+% 
+% % what about dim?
+% cell_cell_results_best_dim = cell(C.nDims,1);
+% cell_map_best_dim_shares = cell(C.nDims,1);
+% for j=1:C.nDims
+%     cell_cell_results_best_dim{j} = EvaluationHelper.f_getAllHaving(cell_results_best,C.arr_dims(j),C.arr_dims(j),2,2,2);
+%     cell_map_best_dim_shares{j} = EvaluationHelper.f_getSolvedFraction(cell_cell_results_best_dim{j});
+% end
+% 
+% % and over all, and time and fevals
+% cell_cell_results_all_dim = cell(C.nDims,1);
+% cell_map_all_dim_shares = cell(C.nDims,1);
+% cell_map_all_dim_time   = cell(C.nDims,1);
+% cell_map_all_dim_fevals = cell(C.nDims,1);
+% for j=1:C.nDims
+%     cell_cell_results_all_dim{j} = EvaluationHelper.f_getAllHaving(cell_results_all,C.arr_dims(j),C.arr_dims(j),2,2,2);
+%     cell_map_all_dim_shares{j} = EvaluationHelper.f_getSolvedFraction(cell_cell_results_all_dim{j});
+%     cell_map_all_dim_time{j}   = EvaluationHelper.f_getAverageTimePerAlg(cell_cell_results_all_dim{j});
+%     cell_map_all_dim_fevals{j} = EvaluationHelper.f_getAverageFevalsPerAlg(cell_cell_results_all_dim{j});
+% end
+% 
+% %% save data
+% 
+% save('results/maps_evaluate_noise','map_shares','map_shares_all','map_shares_smooth','map_shares_nonsmooth','map_shares_convex','map_shares_nonconvex','map_shares_unimodal','map_shares_multimodal',...
+%     'map_shares_all_smooth','map_shares_all_nonsmooth','map_shares_all_convex','map_shares_all_nonconvex','map_shares_all_unimodal','map_shares_all_multimodal',...
+%     'cell_map_best_dim_shares','cell_map_all_dim_shares','cell_map_all_dim_time','cell_map_all_dim_fevals');
 
-% pre-processing
-cell_results_all = EvaluationHelper.f_preprocess(cell_results_all);
+%% load data
 
-% get best results
-cell_results_best = EvaluationHelper.f_extractBestResults(cell_results_all);
-
-% for j=1:length(cell_results_best), cell_results_best{j}.printTiny(); end
-
-% how many solutions did the algorithms find?
-map_shares = EvaluationHelper.f_getSolvedFraction(cell_results_best);
-
-% and avgd over all iterates?
-map_shares_all = EvaluationHelper.f_getSolvedFraction(cell_results_all);
-
-% what about smooth/unimodal?
-cell_results_best_smooth = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,1,2,2);
-map_shares_smooth = EvaluationHelper.f_getSolvedFraction(cell_results_best_smooth);
-
-cell_results_best_nonsmooth = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,0,2,2);
-map_shares_nonsmooth = EvaluationHelper.f_getSolvedFraction(cell_results_best_nonsmooth);
-
-cell_results_best_convex = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,1,2);
-map_shares_convex = EvaluationHelper.f_getSolvedFraction(cell_results_best_convex);
-
-cell_results_best_nonconvex = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,0,2);
-map_shares_nonconvex = EvaluationHelper.f_getSolvedFraction(cell_results_best_nonconvex);
-
-cell_results_best_unimodal = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,2,1);
-map_shares_unimodal = EvaluationHelper.f_getSolvedFraction(cell_results_best_unimodal);
-
-cell_results_best_multimodal = EvaluationHelper.f_getAllHaving(cell_results_best,-1,Inf,2,2,0);
-map_shares_multimodal = EvaluationHelper.f_getSolvedFraction(cell_results_best_multimodal);
-
-% and over all
-cell_results_all_smooth = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,1,2,2);
-map_shares_all_smooth = EvaluationHelper.f_getSolvedFraction(cell_results_all_smooth);
-
-cell_results_all_nonsmooth = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,0,2,2);
-map_shares_all_nonsmooth = EvaluationHelper.f_getSolvedFraction(cell_results_all_nonsmooth);
-
-cell_results_all_convex = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,1,2);
-map_shares_all_convex = EvaluationHelper.f_getSolvedFraction(cell_results_all_convex);
-
-cell_results_all_nonconvex = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,0,2);
-map_shares_all_nonconvex = EvaluationHelper.f_getSolvedFraction(cell_results_all_nonconvex);
-
-cell_results_all_unimodal = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,2,1);
-map_shares_all_unimodal = EvaluationHelper.f_getSolvedFraction(cell_results_all_unimodal);
-
-cell_results_all_multimodal = EvaluationHelper.f_getAllHaving(cell_results_all,-1,Inf,2,2,0);
-map_shares_all_multimodal = EvaluationHelper.f_getSolvedFraction(cell_results_all_multimodal);
-
-% what about dim?
-cell_cell_results_best_dim = cell(C.nDims,1);
-cell_map_best_dim_shares = cell(C.nDims,1);
-for j=1:C.nDims
-    cell_cell_results_best_dim{j} = EvaluationHelper.f_getAllHaving(cell_results_best,C.arr_dims(j),C.arr_dims(j),2,2,2);
-    cell_map_best_dim_shares{j} = EvaluationHelper.f_getSolvedFraction(cell_cell_results_best_dim{j});
-end
-
-% and over all, and time and fevals
-cell_cell_results_all_dim = cell(C.nDims,1);
-cell_map_all_dim_shares = cell(C.nDims,1);
-cell_map_all_dim_time   = cell(C.nDims,1);
-cell_map_all_dim_fevals = cell(C.nDims,1);
-for j=1:C.nDims
-    cell_cell_results_all_dim{j} = EvaluationHelper.f_getAllHaving(cell_results_all,C.arr_dims(j),C.arr_dims(j),2,2,2);
-    cell_map_all_dim_shares{j} = EvaluationHelper.f_getSolvedFraction(cell_cell_results_all_dim{j});
-    cell_map_all_dim_time{j}   = EvaluationHelper.f_getAverageTimePerAlg(cell_cell_results_all_dim{j});
-    cell_map_all_dim_fevals{j} = EvaluationHelper.f_getAverageFevalsPerAlg(cell_cell_results_all_dim{j});
-end
+load('results/maps_evaluate_noise');
 
 %% visualize
 cell_keys = keys(map_shares);
@@ -94,7 +104,7 @@ markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','
 markers = markers(1:nKeys);
 axes('NextPlot','replacechildren', 'ColorOrder',colors); 
 
-legendon = 'show';
+legendon = 'off';
 
 % smoothness, convexity, modality
 

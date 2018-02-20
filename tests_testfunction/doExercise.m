@@ -156,7 +156,11 @@ try
             tolc = 1e-5;
             c_L = [];
             c_U = [];
-            dhc_old('funHandleFileNameWrap',ex.x0,initsize,thres,ex.maxFunEvals,ex.lb,ex.ub,weight,c_L,c_U,local_iterprint,tolc,objfun);
+            
+            try
+                dhc_old('funHandleFileNameWrap',ex.x0,initsize,thres,ex.maxFunEvals,ex.lb,ex.ub,weight,c_L,c_U,local_iterprint,tolc,objfun);
+            catch
+            end
             
         case 'bobyqa'
             % local

@@ -7,10 +7,11 @@ cell_solvers_official = {'BOBYQA','CMAES','DHC','DIRECT','FMINCON','FMINCON+g','
 cell_solvers = {'bobyqa','cmaes','dhc','direct','fmincon','fmincon','hybrid-mcs','hybrid-simple','hybrid-snobfit','mcs','meigo-ess','meigo-ess','pswarm'};
 cell_gradient = {'','','','','','_gradient','','','','','','_gradient','',''};
 
-cell_problems = {'cr','ec','hb','js','mt','pom','rme','his'};
-cell_problems_official = {'CR','EC','HB','JS','MT','POM','RME','HIS'};cell_maxFunEvals = {500,500,500,1000,500,500,1000,1000};
+cell_problems = {'cr','ec','mt','pom','hb','js','rme','his'};
+cell_problems_official = {'M1','M2','M3','M4','M5','M6','M7','M8'};
+cell_maxFunEvals = {500,500,500,500,500,1000,1000,1000};
 cell_nStarts = {100,100,100,100,100,100,100,100};
-cell_nPar = {2,4,11,17,5,7,28,46};
+cell_nPar = {2,4,5,7,11,17,28,46};
 
 nSolvers = length(cell_solvers);
 nProblems = length(cell_problems);
