@@ -105,7 +105,7 @@
 load('results/maps_evaluate_multistart');
 
 %% visualize
-cell_keys = keys(map_shares);
+cell_keys = solvers_for_output; %keys(map_shares);
 nKeys = length(cell_keys);
 
 colors = distinguishable_colors(nKeys);
@@ -181,11 +181,11 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex-lg.png']); 
+saveas(fig, [pwd '/images/smooth-convex-lg'], 'epsc');
 
 % and for all
-cell_keys = keys(map_shares_all);
-nKeys = length(cell_keys);
+% cell_keys = keys(map_shares_all);
+% nKeys = length(cell_keys);
 
 nColumns = 5;
 v_x = 1:nColumns;
@@ -216,7 +216,7 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex-all-lg.png']); 
+saveas(fig, [pwd '/images/smooth-convex-all-lg'], 'epsc');
 
 % dims
 v_x = 1:C.nDims;
@@ -247,7 +247,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims-lg.png']); 
+saveas(fig, [pwd '/images/dims-lg'], 'epsc');
 
 % and for all
 v_x = 1:C.nDims;
@@ -278,7 +278,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims-all-lg.png']); 
+saveas(fig, [pwd '/images/dims-all-lg'], 'epsc');
 
 % time
 v_x = 1:C.nDims;
@@ -308,7 +308,7 @@ ylabel('avg. time [s]');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/time-lg.png']);
+saveas(fig, [pwd '/images/time-lg'], 'epsc');
 
 % fevals
 v_x = 1:C.nDims;
@@ -340,5 +340,5 @@ ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/fevals-lg.png']);
+saveas(fig, [pwd '/images/fevals-lg'], 'epsc');
 

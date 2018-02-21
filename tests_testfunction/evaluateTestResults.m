@@ -97,7 +97,7 @@
 load('results/maps_evaluate');
 
 %% visualize
-cell_keys = keys(map_shares);
+cell_keys = solvers_for_output; %keys(map_shares);
 nKeys = length(cell_keys);
 
 colors = distinguishable_colors(nKeys);
@@ -178,11 +178,11 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex.png']); 
+saveas(fig, [pwd '/images/smooth_convex'], 'epsc');
 
 % and for all
-cell_keys = keys(map_shares_all);
-nKeys = length(cell_keys);
+% cell_keys = keys(map_shares_all);
+% nKeys = length(cell_keys);
 
 nColumns = 5;
 v_x = 1:nColumns;
@@ -214,7 +214,7 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex-all.png']); 
+saveas(fig, [pwd '/images/smooth-convex-all'], 'epsc');
 
 % dims
 v_x = 1:C.nDims;
@@ -246,7 +246,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims.png']); 
+saveas(fig, [pwd '/images/dims'], 'epsc');
 
 % and for all
 v_x = 1:C.nDims;
@@ -278,7 +278,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims-all.png']); 
+saveas(fig, [pwd '/images/dims-all'], 'epsc');
 
 % time
 v_x = 1:C.nDims;
@@ -309,7 +309,7 @@ ylabel('avg. time [s]');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/time.png']);
+saveas(fig, [pwd '/images/time'], 'epsc');
 
 % fevals
 v_x = 1:C.nDims;
@@ -336,12 +336,12 @@ hold off;
 legend(legendon,'Location','northeastoutside');
 xticks(1:C.nDims);
 xticklabels(C.arr_dims);
-xlabel('dim');
+xlabel('dimension');
 ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/fevals.png']);
+saveas(fig, [pwd '/images/fevals'], 'epsc');
 
 % legend
 
@@ -351,7 +351,7 @@ for j = 1:nKeys
    plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:));
 end
 legHandle = legend('show');
-saveLegendToImage(figHandle,legHandle,'images/legend','png');
+saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
 
 function saveLegendToImage(figHandle, legHandle, ...
 fileName, fileType)
@@ -382,6 +382,6 @@ figHandle.InnerPosition = [1, 1, legLocPixels(3) + 12 * boxLineWidth, ...
     legLocPixels(4) + 12 * boxLineWidth];
 
 %save legend
-saveas(figHandle, [fileName, '.', fileType], fileType);
+saveas(figHandle, fileName, fileType);
 
 end

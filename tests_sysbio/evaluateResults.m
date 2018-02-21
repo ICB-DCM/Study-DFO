@@ -1,11 +1,9 @@
 clear;
 close all;
 
-% cell_solvers_official = {'bobyqa','cmaes','dhc','direct','fmincon','fmincon+g','hybrid-mcs-fmincon+g','hybrid-simple-fmincon+g','hybrid-snobfit-fmincon+g','mcs','meigo-ess-fmincon','meigo-ess-fmincon+g','pswarm','rcs'};
-cell_solvers_official = {'BOBYQA','CMAES','DHC','DIRECT','FMINCON','FMINCON+g','HYBRID-MCS-FMINCON+g','HYBRID-SIMPLE-FMINCON+g','HYBRID-SNOBFIT-FMINCON+g','MCS','MEIGO-ESS-FMINCON','MEIGO-ESS-FMINCON+g','PSWARM'};
-% cell_solvers = {'bobyqa','cmaes','dhc','direct','fmincon','fmincon','hybrid-mcs','hybrid-simple','hybrid-snobfit','mcs','meigo-ess','meigo-ess','pswarm','rcs'};
-cell_solvers = {'bobyqa','cmaes','dhc','direct','fmincon','fmincon','hybrid-mcs','hybrid-simple','hybrid-snobfit','mcs','meigo-ess','meigo-ess','pswarm'};
-cell_gradient = {'','','','','','_gradient','','','','','','_gradient','',''};
+cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','fmincon','fmincon','meigo-ess','meigo-ess','hybrid-mcs','hybrid-simple','hybrid-snobfit'};
+cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','FMINCON','FMINCON+g','MEIGO-ESS-FMINCON','MEIGO-ESS-FMINCON+g','HYBRID-MCS-FMINCON+g','HYBRID-SIMPLE-FMINCON+g','HYBRID-SNOBFIT-FMINCON+g'};
+cell_gradient = {'',     '',   '',      '',   '',    '',       '',       '_gradient','',       '_gradient','',          '',             ''};
 
 cell_problems = {'cr','ec','mt','pom','hb','js','rme','his'};
 cell_problems_official = {'M1','M2','M3','M4','M5','M6','M7','M8'};
@@ -16,6 +14,10 @@ cell_nPar = {2,4,5,7,11,17,28,46};
 nSolvers = length(cell_solvers);
 nProblems = length(cell_problems);
 nStarts = 100;
+
+fig_width = 1.4*8.4;
+fig_height = fig_width;
+fileformat = 'epsc';
 
 colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h'};
@@ -65,9 +67,11 @@ for ip = 1:nProblems
     hold off;
     legend(legendon,'Location','northeastoutside');
     xlabel('ordered multistarts');
-    ylabel('negative log-likelihood');
+    ylabel('negative log-likelihood (\rightarrow min)');
 %     pbaspect([1 1 1]);
-    saveas(fig, [pwd '/images/waterfall-' problem '.png']);
+    xlim([1,100]);
+    set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+    saveas(fig, [pwd '/images/waterfall-' problem], fileformat);
 end
 
 % further analysis
@@ -99,7 +103,8 @@ ylabel('converged starts [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
-saveas(fig, [pwd '/images/convergedstarts.png']);
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+saveas(fig, [pwd '/images/convergedstarts'], fileformat);
 
 % timeperconvergedstart
 fig = figure('name','timeperconvergedstart');
@@ -114,7 +119,8 @@ xlabel('problem');
 ylabel('time / converged starts [s]');
 legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
-saveas(fig, [pwd '/images/timeperconvergedstart.png']);
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+saveas(fig, [pwd '/images/timeperconvergedstart'], fileformat);
 
 % funevalsperconvergedstart
 fig = figure('name','funevalsperconvergedstart');
@@ -129,7 +135,8 @@ xlabel('problem');
 ylabel('function evaluations / converged starts');
 legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
-saveas(fig, [pwd '/images/funevalsperconvergedstart.png']);
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+saveas(fig, [pwd '/images/funevalsperconvergedstart'], fileformat);
 
 % bar(convergedStarts);
 
@@ -155,7 +162,7 @@ for j = 1:nSolvers
    plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_solvers_official{j}, 'color', colors(j,:));
 end
 legHandle = legend('show');
-saveLegendToImage(figHandle,legHandle,'images/legend','png');
+saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
 
 function saveLegendToImage(figHandle, legHandle, ...
 fileName, fileType)
@@ -186,6 +193,6 @@ figHandle.InnerPosition = [1, 1, legLocPixels(3) + 12 * boxLineWidth, ...
     legLocPixels(4) + 12 * boxLineWidth];
 
 %save legend
-saveas(figHandle, [fileName, '.', fileType], fileType);
+saveas(figHandle, fileName, fileType);
 
 end

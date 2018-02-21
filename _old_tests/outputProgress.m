@@ -68,6 +68,9 @@ function stop = outputProgress(x,optimValues,state,objective_function,parMin,par
                 ylabel('y');
                 zlabel('fval');
                 view(10,55);
+                hsv2 = hsv;
+                hsv3 = [hsv2(11:64,:);hsv2(1:10,:)];
+                colormap(hsv3);
                 % alternatively:
                 % contour(x,y,z);
                 hold on;
@@ -84,7 +87,6 @@ function stop = outputProgress(x,optimValues,state,objective_function,parMin,par
             end
             xlabel('iteration');
             ylabel('fval');
-            hold on;
             
             % textual output
             if (with_text)
@@ -114,8 +116,10 @@ function stop = outputProgress(x,optimValues,state,objective_function,parMin,par
             if (dim <= 2)
                 subplot(1,2,2);
             end
-            plot(optimValues.iteration, log(optimValues.fval+eps),'r.');
-            
+            semilogy(optimValues.iteration, optimValues.fval+eps,'r.');
+            xlabel('iteration');
+            ylabel('fval');
+            hold on;
             % textual output
             if (with_text)
                 fprintf(strcat('%d\t|\t%.12f\t|\t',mat2str(x(:)'),'\n'), optimValues.iteration, optimValues.fval);

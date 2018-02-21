@@ -96,7 +96,7 @@
 load('results/maps_evaluate_noise');
 
 %% visualize
-cell_keys = keys(map_shares);
+cell_keys = solvers_for_output; %keys(map_shares);
 nKeys = length(cell_keys);
 
 colors = distinguishable_colors(nKeys);
@@ -172,11 +172,11 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex-noise.png']); 
+saveas(fig, [pwd '/images/smooth-convex-noise'], 'epsc');
 
 % and for all
-cell_keys = keys(map_shares_all);
-nKeys = length(cell_keys);
+% cell_keys = keys(map_shares_all);
+% nKeys = length(cell_keys);
 
 nColumns = 5;
 v_x = 1:nColumns;
@@ -207,7 +207,7 @@ ylabel('solved problems [%]');
 ylim([0,100]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/smooth-convex-all-noise.png']); 
+saveas(fig, [pwd '/images/smooth-convex-all-noise'], 'epsc');
 
 % dims
 v_x = 1:C.nDims;
@@ -238,7 +238,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims-noise.png']); 
+saveas(fig, [pwd '/images/dims-noise'], 'epsc');
 
 % and for all
 v_x = 1:C.nDims;
@@ -269,7 +269,7 @@ ylim([0,100]);
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/dims-all-noise.png']); 
+saveas(fig, [pwd '/images/dims-all-noise'], 'epsc'); 
 
 % time
 v_x = 1:C.nDims;
@@ -299,7 +299,7 @@ ylabel('avg. time [s]');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/time-noise.png']);
+saveas(fig, [pwd '/images/time-noise'], 'epsc');
 
 % fevals
 v_x = 1:C.nDims;
@@ -330,5 +330,5 @@ ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
-saveas(fig, [pwd '/images/fevals-noise.png']);
+saveas(fig, [pwd '/images/fevals-noise'], 'epsc');
 
