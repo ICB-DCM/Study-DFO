@@ -62,7 +62,7 @@ end
 if nargin < 2, whichLabel = 'x';  end
 if nargin < 1, help(mfilename); return; end
 
-if ~isstr(text) | ~isstr(whichLabel)
+if ~ischar(text) || ~ischar(whichLabel)
   error('text and whichLabel must be strings')
 end
 whichLabel=lower(whichLabel);
