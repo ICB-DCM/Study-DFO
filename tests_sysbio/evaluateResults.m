@@ -78,6 +78,7 @@ end
 convergedStarts = zeros(nProblems,nSolvers);
 funEvalsPerConvergedStart = inf(nProblems,nSolvers);
 timePerConvergedStart = inf(nProblems,nSolvers);
+convergedStartsPerTime = zeros(nProblems,nSolvers);
 for ip = 1:nProblems
      for is = 1:nSolvers
          tmp_totalFunEvals = nansum(funEvals(ip,is,:));
@@ -86,6 +87,7 @@ for ip = 1:nProblems
          convergedStarts(ip,is) = tmp_convergedStarts / nStarts;
          funEvalsPerConvergedStart(ip,is) = tmp_totalFunEvals / tmp_convergedStarts; % / (cell_nPar{ip}*cell_maxFunEvals{ip});
          timePerConvergedStart(ip,is) = tmp_totalTime / tmp_convergedStarts;
+         convergedStartsPerTime(ip,is) = tmp_convergedStarts / tmp_totalTime;
      end
 end
 
@@ -137,6 +139,35 @@ legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
 set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
 saveas(fig, [pwd '/images/funevalsperconvergedstart'], fileformat);
+
+% barplot
+
+fig = figure('name','collection');
+
+subplot(2,2,[1 2]);
+ybar = bar(100*convergedStarts);
+for is=1:nSolvers
+    ybar(is).FaceColor = colors(is,:);
+end
+set(gca,'XTick',[]);
+ylabel('converged starts [%]');
+ylim([0,100]);
+legend(legendon,'Location','northeastoutside');
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+
+subplot(2,2,[3,4]);
+ybar = bar(100*convergedStartsPerTime);
+for is=1:nSolvers
+    ybar(is).FaceColor = colors(is,:);
+end
+set(gca,'yscale','log');
+xticklabels(cell_problems_official);
+xlabel('problem');
+ylabel('converged starts / time [s^{-1}]');
+ylim([0,100]);
+legend(legendon,'Location','northeastoutside');
+set(gcf,'units','centimeters','position',[0,0,2*fig_width,fig_height]);
+saveas(fig, [pwd '/images/collection'], fileformat);
 
 % bar(convergedStarts);
 

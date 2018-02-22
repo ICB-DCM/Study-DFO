@@ -26,7 +26,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '-k');
 plot([3.5 3.5], [0,100], '-k');
-title('Multistart setting','Interpreter','latex');
+title('1: Multistart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[3 4]);
@@ -40,7 +40,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '-k');
 plot([3.5 3.5], [0,100], '-k');
-title('Singlestart setting','Interpreter','latex');
+title('2: Singlestart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[5 6]);
@@ -54,7 +54,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '-k');
 plot([3.5 3.5], [0,100], '-k');
-title('Multistart setting, $$m_g = 40000, n_g = 1$$','Interpreter','latex');
+title('3: Multistart setting, $$m_g = 40000, n_g = 1$$','Interpreter','latex');
 % pbaspect([4 1 1]);
 
 subplot(4,2,[7 8]);
@@ -68,7 +68,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '-k');
 plot([3.5 3.5], [0,100], '-k');
-title('Multistart setting, noisy','Interpreter','latex');
+title('4: Multistart setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,2.5*fig_width,fig_height]); end
 
