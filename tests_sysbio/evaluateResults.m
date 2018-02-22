@@ -101,7 +101,7 @@ end
 hold off;
 xticklabels(cell_problems_official);
 xlabel('problem');
-ylabel('converged starts [%]');
+ylabel('converged runs [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
@@ -118,7 +118,7 @@ end
 hold off;
 xticklabels(cell_problems_official);
 xlabel('problem');
-ylabel('time / converged starts [s]');
+ylabel('time / converged runs [s]');
 legend(legendon,'Location','northeastoutside');
 % pbaspect([1 1 1]);
 set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
@@ -150,7 +150,7 @@ for is=1:nSolvers
     ybar(is).FaceColor = colors(is,:);
 end
 set(gca,'XTick',[]);
-ylabel('converged starts [%]');
+ylabel('converged runs [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
@@ -163,11 +163,48 @@ end
 set(gca,'yscale','log');
 xticklabels(cell_problems_official);
 xlabel('problem');
-ylabel('converged starts / time [s^{-1}]');
+ylabel('converged runs / time [s^{-1}]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,2*fig_width,fig_height]);
 saveas(fig, [pwd '/images/collection'], fileformat);
+
+% horizontal barplot
+
+fig = figure('name','collectionh');
+
+subplot(2,2,[1 3]);
+ybar = barh(100*convergedStarts(end:-1:1,end:-1:1));
+hold on;
+for is=1:nSolvers
+    ybar(is).FaceColor = colors(end+1-is,:);
+end
+yticklabels(cell_problems_official(end:-1:1));
+ylabel('problem');
+xlabel('converged runs [%]');
+xlim([0,100]);
+for ip = 1:(nProblems-1)
+    plot([0,100],[ip+0.5,ip+0.5],'--k');
+end
+legend(legendon,'Location','northeastoutside');
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+
+subplot(2,2,[2 4]);
+ybar = barh(100*convergedStartsPerTime(end:-1:1,end:-1:1));
+hold on;
+for is=1:nSolvers
+    ybar(is).FaceColor = colors(end+1-is,:);
+end
+set(gca,'YTick',[]);
+xlabel('converged runs / time [s^{-1}]');
+for ip = 1:(nProblems-1)
+    plot([0:0.0001:1e2],ip+0.5*ones(size(0:0.0001:1e2)),'--k');
+end
+xlim([0, 1e2]);
+set(gca,'xscale','log');
+legend(legendon,'Location','northeastoutside');
+set(gcf,'units','centimeters','position',[0,0,1.3*fig_width,2*fig_height]);
+saveas(fig, [pwd '/images/collectionh'], fileformat);
 
 % bar(convergedStarts);
 

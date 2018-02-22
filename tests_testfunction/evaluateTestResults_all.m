@@ -24,8 +24,8 @@ end
 set(gca,'XTick',[]);
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '-k');
-plot([3.5 3.5], [0,100], '-k');
+plot([1.5 1.5], [0,100], '--k');
+plot([3.5 3.5], [0,100], '--k');
 title('1: Multistart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -38,8 +38,8 @@ end
 set(gca,'XTick',[]);
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '-k');
-plot([3.5 3.5], [0,100], '-k');
+plot([1.5 1.5], [0,100], '--k');
+plot([3.5 3.5], [0,100], '--k');
 title('2: Singlestart setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -52,8 +52,8 @@ end
 set(gca,'XTick',[]);
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '-k');
-plot([3.5 3.5], [0,100], '-k');
+plot([1.5 1.5], [0,100], '--k');
+plot([3.5 3.5], [0,100], '--k');
 title('3: Multistart setting, $$m_g = 40000, n_g = 1$$','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -66,8 +66,8 @@ end
 xticklabels({'all','smooth','non-smooth','convex','non-convex'});
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '-k');
-plot([3.5 3.5], [0,100], '-k');
+plot([1.5 1.5], [0,100], '--k');
+plot([3.5 3.5], [0,100], '--k');
 title('4: Multistart setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,2.5*fig_width,fig_height]); end
