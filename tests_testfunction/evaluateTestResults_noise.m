@@ -96,7 +96,7 @@
 load('results/maps_evaluate_noise');
 
 %% visualize
-cell_keys = solvers_for_output; %keys(map_shares);
+cell_keys = solvers_from_input; %keys(map_shares);
 nKeys = length(cell_keys);
 
 colors = distinguishable_colors(nKeys);

@@ -61,7 +61,7 @@ for ip = 1:nProblems
     for is = 1:nSolvers
         tmp_y(:) = nllh(ip,is,:);
         
-        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip)+1,[markers{is} '-'],'DisplayName', cell_solvers_official{is}, 'color', colors(is,:));
+        semilogy(1:nStarts,tmp_y'-bestFoundFval(ip)+1,[markers{is} '-'],'DisplayName', cell_solvers_official{is}, 'color', colors(is,:), 'MarkerSize',3);
         hold on;
     end
     hold off;
@@ -70,7 +70,7 @@ for ip = 1:nProblems
     ylabel('negative log-likelihood (\rightarrow min)');
 %     pbaspect([1 1 1]);
     xlim([1,100]);
-    set(gcf,'units','centimeters','position',[0,0,2/3*fig_width,2/3*fig_height]);
+    set(gcf,'units','centimeters','position',[0,0,0.8*2/3*fig_width,0.8*2/3*fig_height]);
     saveas(fig, [pwd '/images/waterfall-' problem], fileformat);
 end
 
@@ -142,6 +142,8 @@ saveas(fig, [pwd '/images/funevalsperconvergedstart'], fileformat);
 
 % barplot
 
+subplot = @(m,n,p) subtightplot (m, n, p, [0.03 0.03], [0.1 0.1], [0.1 0.1]);
+
 fig = figure('name','collection');
 
 subplot(2,2,[1 2]);
@@ -168,6 +170,8 @@ ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,2*fig_width,fig_height]);
 saveas(fig, [pwd '/images/collection'], fileformat);
+
+clear subplot;
 
 % horizontal barplot
 

@@ -75,7 +75,6 @@ title('A4: Multi-start setting, noisy','Interpreter','latex');
 mult_factor = 1.833;
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,2*mult_factor*fig_width,mult_factor*fig_height]); end
 
-suplabel('function category','x');
 suplabel('solved problems [%]','y');
 
 saveas(fig, [pwd '/images/collection'], 'epsc');

@@ -76,7 +76,7 @@ elseif strcmp('x',whichLabel)
   xlabel(text);
 elseif strcmp('y',whichLabel)
   set(get(ax,'YLabel'),'Visible','on')
-  ylabel(text);
+  ylabel(text,'FontSize',10);
 elseif strcmp('yy',whichLabel)
   set(get(ax,'YLabel'),'Visible','on')
   ylabel(text);
