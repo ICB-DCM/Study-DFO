@@ -93,7 +93,7 @@ if strcmp('t',whichLabel)
   set(h,'VerticalAlignment','middle')
 elseif strcmp('x',whichLabel)
   h=get(ax,'XLabel');
-elseif strcmp('y',whichLabel) | strcmp('yy',whichLabel)
+elseif strcmp('y',whichLabel) || strcmp('yy',whichLabel)
   h=get(ax,'YLabel');
 end
 

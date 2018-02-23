@@ -66,11 +66,11 @@ for ip = 1:nProblems
     end
     hold off;
     legend(legendon,'Location','northeastoutside');
-    xlabel('ordered multistarts');
+    xlabel('ordered multi-starts');
     ylabel('negative log-likelihood (\rightarrow min)');
 %     pbaspect([1 1 1]);
     xlim([1,100]);
-    set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+    set(gcf,'units','centimeters','position',[0,0,2/3*fig_width,2/3*fig_height]);
     saveas(fig, [pwd '/images/waterfall-' problem], fileformat);
 end
 
@@ -156,7 +156,7 @@ legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
 
 subplot(2,2,[3,4]);
-ybar = bar(100*convergedStartsPerTime);
+ybar = bar(convergedStartsPerTime);
 for is=1:nSolvers
     ybar(is).FaceColor = colors(is,:);
 end
@@ -230,6 +230,7 @@ for j = 1:nSolvers
    plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_solvers_official{j}, 'color', colors(j,:));
 end
 legHandle = legend('show');
+legend boxoff;
 saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
 
 function saveLegendToImage(figHandle, legHandle, ...

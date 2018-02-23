@@ -98,7 +98,7 @@
 load('results/maps_evaluate');
 
 %% visualize
-cell_keys = solvers_for_output; %keys(map_shares);
+cell_keys = solvers_from_input; %keys(map_shares);
 nKeys = length(cell_keys);
 
 colors = distinguishable_colors(nKeys);
@@ -246,6 +246,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/dims'], 'epsc');
@@ -311,6 +312,7 @@ xtickangle(90);
 xlabel('dimension');
 ylabel('avg. time [s]');
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/time'], 'epsc');
@@ -344,6 +346,7 @@ xtickangle(90);
 xlabel('dimension');
 ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/fevals'], 'epsc');
@@ -353,9 +356,10 @@ saveas(fig, [pwd '/images/fevals'], 'epsc');
 figHandle = figure('name','legend');
 hold on;
 for j = 1:nKeys
-   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_keys{j}, 'color', colors(j,:));
+   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
 legHandle = legend('show');
+legend boxoff;
 saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
 
 function saveLegendToImage(figHandle, legHandle, ...
