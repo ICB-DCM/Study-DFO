@@ -1,1 +1,0 @@
-mex SSA_gene_enzyme.cpp
