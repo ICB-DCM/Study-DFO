@@ -7,9 +7,10 @@ fig_height = fig_width;
 fileformat = 'epsc';
 
 solvers_from_input = {'FMINCON','BOBYQA','DHC','DHC-OLD','FMINSEARCHBND','IMFIL','PATTERNSEARCH-GPS','PATTERNSEARCH-MADS','RCS','SIMULANNEALBND',...
-    'DIRECT','MCS','CMAES','GA','PARTICLESWARM','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC-OLD','MEIGO-ESS-DHC','MEIGO-ESS-FMINCON'};
+    'DIRECT','MCS','CMAES','GA','PARTICLESWARM','PSWARM','MEIGO-ESS-FMINCON','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','MEIGO-ESS-DHC-OLD'};
 solvers_for_output = solvers_from_input;
 solvers_for_output{4} = 'MEIGO-DHC';
+solvers_for_output{20} = 'MEIGO-ESS-MEIGO-DHC';
 
 evaluateTestResults;
 evaluateTestResults_multistart;

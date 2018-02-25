@@ -177,6 +177,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/smooth_convex'], 'epsc');
@@ -213,6 +214,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/smooth-convex-all'], 'epsc');
@@ -280,6 +282,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/dims-all'], 'epsc');

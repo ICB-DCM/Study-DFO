@@ -170,6 +170,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/smooth-convex-noise'], 'epsc');
@@ -205,6 +206,7 @@ xticklabels({'all','smooth','nonsmooth','convex','nonconvex'});
 xlabel('function category');
 ylabel('solved problems [%]');
 ylim([0,100]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/smooth-convex-all-noise'], 'epsc');
@@ -236,6 +238,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/dims-noise'], 'epsc');
@@ -267,6 +270,7 @@ xlabel('dimension');
 ylabel('solved problems [%]');
 ylim([0,100]);
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/dims-all-noise'], 'epsc'); 
@@ -297,6 +301,7 @@ xticklabels(C.arr_dims);
 xlabel('dimension');
 ylabel('avg. time [s]');
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/time-noise'], 'epsc');
@@ -328,6 +333,7 @@ xticklabels(C.arr_dims);
 xlabel('dim');
 ylabel('avg. function evaluations');
 xlim([1,C.nDims]);
+box on;
 % pbaspect([1 1 1]);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
 saveas(fig, [pwd '/images/fevals-noise'], 'epsc');
