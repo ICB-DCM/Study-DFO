@@ -36,6 +36,7 @@ end
 disp(solver);
 
 addpath(genpath('../algorithms'));
+addpath('../pesto');
 
 % Seed the random number generator. Seeding the random number generator
 % ensures that everytime this example is run, the same sequence of random

@@ -3,8 +3,6 @@ clear persistent;
 close all;
 
 addpath('../models_sysbio/conversion_reaction');
-addpath('../algorithms/pesto');
-addpath('../algorithms/MEIGO_M');
 dirname = 'res_cr';
 if ~exist(dirname,'dir')
     mkdir(dirname);
@@ -38,6 +36,7 @@ end
 disp(solver);
 
 addpath(genpath('../algorithms'));
+addpath('../pesto');
 
 % Seed the random number generator. Seeding the random number generator
 % ensures that everytime this example is run, the same sequence of random
