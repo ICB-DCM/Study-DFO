@@ -64,12 +64,14 @@ switch solver
             lOptions.local.finish_use_gradient = false;
         end
     case 'meigo-ess-dhc'
+        options.localOptimizer = 'meigo-ess';
         lOptions.inter_save = false;
         lOptions.maxeval = numevals;
         lOptions.maxtime = Inf;
         lOptions.local.solver = 'dhc';
         lOptions.local.finish = 'dhc';
     case 'meigo-ess-bobyqa'
+        options.localOptimizer = 'meigo-ess';
         lOptions.inter_save = false;
         lOptions.maxeval = numevals;
         lOptions.maxtime = Inf;
