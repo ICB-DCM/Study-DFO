@@ -63,6 +63,18 @@ switch solver
             lOptions.local.solver_use_gradient = false;
             lOptions.local.finish_use_gradient = false;
         end
+    case 'meigo-ess-dhc'
+        lOptions.inter_save = false;
+        lOptions.maxeval = numevals;
+        lOptions.maxtime = Inf;
+        lOptions.local.solver = 'dhc';
+        lOptions.local.finish = 'dhc';
+    case 'meigo-ess-bobyqa'
+        lOptions.inter_save = false;
+        lOptions.maxeval = numevals;
+        lOptions.maxtime = Inf;
+        lOptions.local.solver = 'bobyqa';
+        lOptions.local.finish = 'bobyqa';
     case 'cmaes'
         lOptions.MaxFunEvals = numevals;
         lOptions.MaxIter = numevals;
