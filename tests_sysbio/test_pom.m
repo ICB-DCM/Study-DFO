@@ -24,6 +24,9 @@ parameters_meigo_dhc = test('meigo-ess-dhc',maxFunEvals,nStarts);
 parameters_meigo_bobyqa = test('meigo-ess-bobyqa',maxFunEvals,nStarts);
 parameters_cmaes = test('cmaes',maxFunEvals,nStarts);
 parameters_pswarm = test('pswarm',maxFunEvals,nStarts);
+parameters_hybrid1 = test('hybrid-snobfit',maxFunEvals,nStarts);
+parameters_hybrid2 = test('hybrid-mcs',maxFunEvals,nStarts);
+parameters_hybrid3 = test('hybrid-simple',maxFunEvals,nStarts);
 
 function [parameters_res] =  test(solver,maxFunEvals,nStarts,useGradient)
 
