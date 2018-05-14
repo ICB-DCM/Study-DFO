@@ -1,13 +1,13 @@
 % simulate_hopfbifurcation.m is the matlab interface to the cvodes mex
 %   which simulates the ordinary differential equation and respective
 %   sensitivities according to user specifications.
-%   this routine was generated using AMICI commit 65b21e55803e53baf99ad77b9f15cef2afc2ccd7 in branch master in repo https://github.com/icb-dcm/amici.
+%   this routine was generated using AMICI commit 4bc7cd2a972300a9064305c7713378fae209b017 in branch master in repo .
 %
 % USAGE:
 % ======
-% [...] = simulate_ODE_M4(tout,theta)
-% [...] = simulate_ODE_M4(tout,theta,kappa,data,options)
-% [status,tout,x,y,sx,sy] = simulate_ODE_M4(...)
+% [...] = simulate_hopfbifurcation(tout,theta)
+% [...] = simulate_hopfbifurcation(tout,theta,kappa,data,options)
+% [status,tout,x,y,sx,sy] = simulate_hopfbifurcation(...)
 %
 % INPUTS:
 % =======
@@ -134,12 +134,6 @@ if(options_ami.sensi>1)
     error('Second order sensitivities were requested but not computed');
 end
 
-if(~isempty(options_ami.pbar))
-    pbar = options_ami.pbar;
-else
-    pbar = ones(size(theta));
-end
-
 if(isempty(options_ami.pscale))
     options_ami.pscale = 'lin' ;
 end
@@ -230,7 +224,7 @@ if(~isempty(options_ami.sx0))
     end
     init.sx0 = bsxfun(@times,options_ami.sx0,1./permute(chainRuleFactor(:),[2,1]));
 end
-sol = ami_hopfbifurcation(tout,theta(1:11),kappa(1:0),options_ami,plist,pbar(plist+1),xscale,init,data);
+sol = ami_hopfbifurcation(tout,theta(1:11),kappa(1:0),options_ami,plist,xscale,init,data);
 if(nargout>1)
     varargout{1} = sol.status;
     varargout{2} = sol.t;

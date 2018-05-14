@@ -1,7 +1,7 @@
 % simulate_histones.m is the matlab interface to the cvodes mex
 %   which simulates the ordinary differential equation and respective
 %   sensitivities according to user specifications.
-%   this routine was generated using AMICI commit 1df18b0671f83797af62e28a491a1f1fcbed649a in branch master in repo .
+%   this routine was generated using AMICI commit 4bc7cd2a972300a9064305c7713378fae209b017 in branch master in repo .
 %
 % USAGE:
 % ======
@@ -134,12 +134,6 @@ if(options_ami.sensi>1)
     error('Second order sensitivities were requested but not computed');
 end
 
-if(~isempty(options_ami.pbar))
-    pbar = options_ami.pbar;
-else
-    pbar = ones(size(theta));
-end
-
 if(isempty(options_ami.pscale))
     options_ami.pscale = 'log10' ;
 end
@@ -230,7 +224,7 @@ if(~isempty(options_ami.sx0))
     end
     init.sx0 = bsxfun(@times,options_ami.sx0,1./permute(chainRuleFactor(:),[2,1]));
 end
-sol = ami_histones(tout,theta(1:46),kappa(1:0),options_ami,plist,pbar(plist+1),xscale,init,data);
+sol = ami_histones(tout,theta(1:46),kappa(1:0),options_ami,plist,xscale,init,data);
 if(nargout>1)
     varargout{1} = sol.status;
     varargout{2} = sol.t;

@@ -1,7 +1,7 @@
 % simulate_Pom1p_MSP_model_hess_eq.m is the matlab interface to the cvodes mex
 %   which simulates the ordinary differential equation and respective
 %   sensitivities according to user specifications.
-%   this routine was generated using AMICI commit 53032d67dfa9b9e400f9ec131a444f83f646a6a7 in branch master in repo https://github.com/icb-dcm/amici.
+%   this routine was generated using AMICI commit 4bc7cd2a972300a9064305c7713378fae209b017 in branch master in repo .
 %
 % USAGE:
 % ======
@@ -131,12 +131,6 @@ if(options_ami.sensi>1)
     error('Second order sensitivities were requested but not computed');
 end
 
-if(~isempty(options_ami.pbar))
-    pbar = options_ami.pbar;
-else
-    pbar = ones(size(theta));
-end
-
 if(isempty(options_ami.pscale))
     options_ami.pscale = 'log10' ;
 end
@@ -227,7 +221,7 @@ if(~isempty(options_ami.sx0))
     end
     init.sx0 = bsxfun(@times,options_ami.sx0,1./permute(chainRuleFactor(:),[2,1]));
 end
-sol = ami_Pom1p_MSP_model_hess_eq(tout,theta(1:7),kappa(1:200),options_ami,plist,pbar(plist+1),xscale,init,data);
+sol = ami_Pom1p_MSP_model_hess_eq(tout,theta(1:7),kappa(1:200),options_ami,plist,xscale,init,data);
 if(nargout>1)
     varargout{1} = sol.status;
     varargout{2} = sol.t;
