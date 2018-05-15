@@ -15,6 +15,25 @@ solvers_for_output = solvers_from_input;
 solvers_for_output{4} = 'MEIGO-DHC';
 solvers_for_output{19} = 'MEIGO-ESS-MEIGO-DHC';
 
+% legend
+
+nKeys = length(solvers_for_output);
+
+colors = distinguishable_colors(nKeys);
+markers = {'o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h','o','+','*','.','x','s','d','^','v','<','>','p','h'};
+markers = markers(1:nKeys);
+axes('NextPlot','replacechildren', 'ColorOrder',colors); 
+
+figHandle = figure('name','legend');
+hold on;
+for j = 1:nKeys
+   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
+end
+legHandle = legend('show');
+legend boxoff;
+saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
+
+
 evaluateTestResults;
 evaluateTestResults_multistart;
 evaluateTestResults_noise;
@@ -85,3 +104,39 @@ suplabel('solved problems [%]','y');
 saveas(fig, [pwd '/images/collection'], 'epsc');
 
 disp('done evaluateTestResults');
+
+
+
+
+
+
+function saveLegendToImage(figHandle, legHandle, ...
+fileName, fileType)
+
+%make all contents in figure invisible
+allLineHandles = findall(figHandle, 'type', 'line');
+
+for i = 1:length(allLineHandles)
+    allLineHandles(i).XData = NaN; %ignore warnings
+end
+
+%make axes invisible
+axis off
+
+%move legend to lower left corner of figure window
+legHandle.Units = 'pixels';
+boxLineWidth = legHandle.LineWidth;
+%save isn't accurate and would swallow part of the box without factors
+legHandle.Position = [6 * boxLineWidth, 6 * boxLineWidth, ...
+    legHandle.Position(3), legHandle.Position(4)];
+legLocPixels = legHandle.Position;
+
+%make figure window fit legend
+figHandle.Units = 'pixels';
+figHandle.InnerPosition = [1, 1, legLocPixels(3) + 12 * boxLineWidth, ...
+    legLocPixels(4) + 12 * boxLineWidth];
+
+%save legend
+saveas(figHandle, fileName, fileType);
+
+end
