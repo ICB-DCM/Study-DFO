@@ -15,6 +15,7 @@ An evaluation of the applicability of derivative-free optimization for parameter
 
 * Clone this repository ``git clone https://github.com/icb-dcm/Study-DFO``.
 * The scripts in tests_testfunction should run out-of-the-box. For the scripts in tests_sysbio relying on AMICI, [amici/installAMICI.m](amici/installAMICI.m) needs to be called once beforehand in the open Matlab session.
+* All other required paths should be automatically set when running the respective scripts.
 
 ### Code organization and Usage
 
