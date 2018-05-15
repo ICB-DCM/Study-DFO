@@ -20,11 +20,11 @@ Optimizer | Version | Source | Literature | Type
 BOBYQA | 2009 | www.mat.uc.pt/~zhang/software.html | Powell2009 | local
 CMAES | 3.61beta | www.lri.fr/~hansen/cmaesintro.html | Hansen1996 | global
 DHC | 1.0 | www.github.com/icb-dcm/pesto | DeLaMazaYur1994 | local
-DIRECT | 4.0 | www4.ncsu.edu/~ctk/Finkel_Direct | Finkel2003 | global
+DIRECT | 4.0 | [www4.ncsu.edu/~ctk/Finkel_Direct](www4.ncsu.edu/~ctk/Finkel_Direct) | Finkel2003 | global
 FMINCON | R2017A | www.mathworks.com/products/optimization.html | ByrdGil2000 | local
 FMINSEARCHBND | R2017A | www.mathworks.com/products/optimization.html | NelderMea1965 | local
 GA | R2017A | www.mathworks.com/products/global-optimization.html | Mitchell1998 | global
-IMFIL | 1.0 | www4.ncsu.edu/~ctk/imfil.html | Kelley2011 | local
+IMFIL | 1.0 | [www4.ncsu.edu/~ctk/imfil.html](www4.ncsu.edu/~ctk/imfil.html) | Kelley2011 | local
 MCS | 2.0 | www.mat.univie.ac.at/~neum/software/mcs | Huyer1999 | global
 MEIGO-ESS | 03-07.2014 | www.gingproc.iim.csic.es/meigo.html | EgeaHen2014 | hybrid
 PARTICLESWARM | R2017A | www.mathworks.com/products/global-optimization.html | Eberhardt1995 | global
