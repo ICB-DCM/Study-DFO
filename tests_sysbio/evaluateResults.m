@@ -1,9 +1,11 @@
 clear;
 close all;
 
-cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','fmincon','fmincon','meigo-ess','meigo-ess','hybrid-mcs','hybrid-simple','hybrid-snobfit'};
-cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','FMINCON','FMINCON+g','MEIGO-ESS-FMINCON','MEIGO-ESS-FMINCON+g','HYBRID-MCS-FMINCON+g','HYBRID-SIMPLE-FMINCON+g','HYBRID-SNOBFIT-FMINCON+g'};
-cell_gradient = {'',     '',   '',      '',   '',    '',       '',       '_gradient','',       '_gradient','',          '',             ''};
+threshold = 3;
+
+cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','fmincon','fmincon'};
+cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','FMINCON','FMINCON+g'};
+cell_gradient = {'',     '',   '',      '',   '',    '',       '',       '_gradient'};
 
 cell_problems = {'cr','ec','mt','pom','hb','js','rme','his'};
 cell_problems_official = {'M1','M2','M3','M4','M5','M6','M7','M8'};
@@ -15,7 +17,7 @@ nSolvers = length(cell_solvers);
 nProblems = length(cell_problems);
 nStarts = 100;
 
-fig_width = 1.4*8.4;
+fig_width = 3.667/2*(0.5/0.667)*8.4;
 fig_height = fig_width;
 fileformat = 'epsc';
 
@@ -70,7 +72,7 @@ for ip = 1:nProblems
     ylabel('negative log-likelihood (\rightarrow min)');
 %     pbaspect([1 1 1]);
     xlim([1,100]);
-    set(gcf,'units','centimeters','position',[0,0,0.8*2/3*fig_width,0.8*2/3*fig_height]);
+    set(gcf,'units','centimeters','position',[0,0,2/3*fig_width,2/3*fig_height]);
     saveas(fig, [pwd '/images/waterfall-' problem], fileformat);
 end
 
@@ -83,7 +85,7 @@ for ip = 1:nProblems
      for is = 1:nSolvers
          tmp_totalFunEvals = nansum(funEvals(ip,is,:));
          tmp_totalTime = nansum(time(ip,is,:)) + time_ss(ip,is);
-         tmp_convergedStarts = sum(nllh(ip,is,:) < bestFoundFval(ip) + 0.5);
+         tmp_convergedStarts = sum(nllh(ip,is,:) < bestFoundFval(ip) + threshold);
          convergedStarts(ip,is) = tmp_convergedStarts / nStarts;
          funEvalsPerConvergedStart(ip,is) = tmp_totalFunEvals / tmp_convergedStarts; % / (cell_nPar{ip}*cell_maxFunEvals{ip});
          timePerConvergedStart(ip,is) = tmp_totalTime / tmp_convergedStarts;
@@ -157,18 +159,19 @@ ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
 
-subplot(2,2,[3,4]);
+ax = subplot(2,2,[3,4]);
 ybar = bar(convergedStartsPerTime);
 for is=1:nSolvers
     ybar(is).FaceColor = colors(is,:);
 end
 set(gca,'yscale','log');
 xticklabels(cell_problems_official);
+% set(ax(1),'TickLength',[0,0]);
 xlabel('problem');
 ylabel('converged runs / time [s^{-1}]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
-set(gcf,'units','centimeters','position',[0,0,2*fig_width,fig_height]);
+set(gcf,'units','centimeters','position',[0,0,2*fig_width,0.9*fig_height]);
 saveas(fig, [pwd '/images/collection'], fileformat);
 
 clear subplot;

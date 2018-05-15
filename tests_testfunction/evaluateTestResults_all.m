@@ -93,11 +93,11 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '--k');
 plot([3.5 3.5], [0,100], '--k');
-set(ax(1),'TickLength',[0,0]);
+% set(ax(1),'TickLength',[0,0]);
 title('A4: Multi-start setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
-mult_factor = 2;
-if set_sizes, set(gcf,'units','centimeters','position',[0,0,2*mult_factor*fig_width,mult_factor*fig_height]); end
+mult_factor = 3.667;
+if set_sizes, set(gcf,'units','centimeters','position',[0,0,mult_factor*fig_width,mult_factor/2*fig_height]); end
 
 suplabel('solved problems [%]','y');
 
