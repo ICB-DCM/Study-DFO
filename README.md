@@ -46,6 +46,5 @@ PATTERNSEARCH | R2017A | www.mathworks.com/products/global-optimization.html | T
 PSWARM | 2.1 | www.norg.uminho.pt/aivaz/pswarm | Vaz and Vicente 2009 | global
 RCS | 1.0 | www.github.com/icb-dcm/pesto | - | local
 SIMULANNEALBND | R2017A | www.mathworks.com/products/global-optimzation.html | Kirkpatrick et al. 1983 | local
-SNOBFIT | 2.1 | www.mat.univie.ac.at/~neum/software/mcs | Huyer and Neumaier 2008 | global
 
 It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison.
