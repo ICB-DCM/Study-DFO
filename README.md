@@ -11,7 +11,7 @@ An evaluation of the applicability of derivative-free optimization for parameter
 * Some of the optimizers require a Fortran compiler to generate .mex files. Preferably use the compilers recommended by Matlab for your operating system, see [here](https://de.mathworks.com/help/matlab/write-fortran-mex-files.html).
 * Some of the application examples require the [AMICI](https://github.com/ICB-DCM/AMICI) ODE solving environment. To compile the models using C++, a C/C++ compiler is required. Preferably use the compilers recommended by Matlab for your operating system, see [here](https://de.mathworks.com/help/matlab/write-cc-mex-files.html).
 * For the application examples, the [PESTO](https://github.com/ICB-DCM/PESTO) parameter estimation toolbox was used.
-* The used, adapted, versions of [AMICI](amici) and [PESTO](pesto) are included in the respective subfolders in this repository.
+* The used versions of [AMICI](amici) and (adapted to admit all optimizers) [PESTO](pesto) are included in the respective subfolders in this repository.
 
 ### Installation
 
