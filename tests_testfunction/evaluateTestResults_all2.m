@@ -40,7 +40,7 @@ evaluateTestResults_noise;
 
 fig = figure('name','collection');
 
-subplot(4,2,[1 2]);
+subplot(2,5,[1 4]);
 ybar = bar(100*v_y_smooth_convex');
 hold on;
 for j=1:nKeys
@@ -54,36 +54,8 @@ plot([3.5 3.5], [0,100], '--k');
 title('A1: Multi-start setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
-subplot(4,2,[3 4]);
+subplot(2,5,[6 9]);
 ybar = bar(100*v_y_smooth_convex_all');
-hold on;
-for j=1:nKeys
-    ybar(j).FaceColor = colors(j,:);
-end
-set(gca,'XTick',[]);
-ylim([0,100]);
-yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '--k');
-plot([3.5 3.5], [0,100], '--k');
-title('A2: Single-start setting','Interpreter','latex');
-% pbaspect([4 1 1]);
-
-subplot(4,2,[5 6]);
-ybar = bar(100*v_y_smooth_convex_multistart');
-hold on;
-for j=1:nKeys
-    ybar(j).FaceColor = colors(j,:);
-end
-set(gca,'XTick',[]);
-ylim([0,100]);
-yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '--k');
-plot([3.5 3.5], [0,100], '--k');
-title('A3: Multi-start setting, $$m_g = 40000, k_g = 1$$','Interpreter','latex');
-% pbaspect([4 1 1]);
-
-ax = subplot(4,2,[7 8]);
-ybar = bar(100*v_y_smooth_convex_noise');
 hold on;
 for j=1:nKeys
     ybar(j).FaceColor = colors(j,:);
@@ -93,6 +65,34 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([1.5 1.5], [0,100], '--k');
 plot([3.5 3.5], [0,100], '--k');
+title('A2: Single-start setting','Interpreter','latex');
+% pbaspect([4 1 1]);
+
+subplot(2,5,[5]);
+ybar = bar(100*v_y_smooth_convex_multistart(:,1)');
+hold on;
+ybar.FaceColor = 'flat';
+for j=1:nKeys
+   ybar.CData(j,:) = colors(j,:);
+end
+set(gca,'XTick',[]);
+ylim([0,100]);
+yticks([0 25 50 75 100]);
+set(gca,'YTickLabel',[]);
+title('A3: Multi-start setting, $$m_g = 40000, k_g = 1$$','Interpreter','latex');
+% pbaspect([4 1 1]);
+
+ax = subplot(2,5,[10]);
+ybar = bar(100*v_y_smooth_convex_noise(:,1)');
+hold on;
+ybar.FaceColor = 'flat';
+for j=1:nKeys
+    ybar.CData(j,:) = colors(j,:);
+end
+xticklabels({'all'});
+ylim([0,100]);
+yticks([0 25 50 75 100]);
+set(gca,'YTickLabel',[]);
 % set(ax(1),'TickLength',[0,0]);
 title('A4: Multi-start setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
@@ -101,7 +101,7 @@ if set_sizes, set(gcf,'units','centimeters','position',[0,0,mult_factor*fig_widt
 
 suplabel('solved problems [%]','y');
 
-saveas(fig, [pwd '/images/collection'], 'epsc');
+saveas(fig, [pwd '/images/collection2'], 'epsc');
 
 disp('done evaluateTestResults');
 
