@@ -6,7 +6,7 @@ An evaluation of the applicability of derivative-free optimization for parameter
 
 ### Requirements
 
-* An installation of Matlab, version 2017a (used in the study) or higher.
+* An installation of Matlab, version 2017a or higher (in the study, 2017a was used, except for the algorithms from the Global Optimization Toolbox, which was only available for 2017b).
 * Some of the optimizers are contained in the Matlab Optimization and Global Optimization toolboxes.
 * Some of the optimizers require a Fortran compiler to generate .mex files. Preferably use the compilers recommended by Matlab for your operating system, see [here](https://de.mathworks.com/help/matlab/write-fortran-mex-files.html).
 * Some of the application examples require the [AMICI](https://github.com/ICB-DCM/AMICI) ODE solving environment. To compile the models using C++, a C/C++ compiler is required. Preferably use the compilers recommended by Matlab for your operating system, see [here](https://de.mathworks.com/help/matlab/write-cc-mex-files.html).
@@ -31,20 +31,20 @@ An evaluation of the applicability of derivative-free optimization for parameter
 
 Optimizer | Version | Source | Literature | Type
 --- | --- | --- | --- | ---
-BOBYQA | 2009 | www.mat.uc.pt/~zhang/software.html | Powell 2009 | local
-CMAES | 3.61beta | www.lri.fr/~hansen/cmaesintro.html | Hansen 1996 | global
-DHC | 1.0 | www.github.com/icb-dcm/pesto | De La Maza and Yuret 1994 | local
-DIRECT | 4.0 | [ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf](https://ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf) | Finkel 2003 | global
-FMINCON | R2017A | www.mathworks.com/products/optimization.html | Byrd et al. 2000 | local
-FMINSEARCHBND | R2017A | www.mathworks.com/products/optimization.html | Nelder and Mead 1965 | local
-GA | R2017A | www.mathworks.com/products/global-optimization.html | Mitchell 1998 | global
-IMFIL | 1.0 | [ctk.math.ncsu.edu](https://ctk.math.ncsu.edu/) | Kelley 2011 | local
-MCS | 2.0 | www.mat.univie.ac.at/~neum/software/mcs | Huyer and Neumaier 1999 | global
-MEIGO-ESS | 03-07.2014 | www.gingproc.iim.csic.es/meigo.html | Egea et al. 2014 | hybrid
-PARTICLESWARM | R2017A | www.mathworks.com/products/global-optimization.html | Eberhardt and Kennedy 1995 | global
-PATTERNSEARCH | R2017A | www.mathworks.com/products/global-optimization.html | Torczon 1997 | local
-PSWARM | 2.1 | www.norg.uminho.pt/aivaz/pswarm | Vaz and Vicente 2009 | global
-RCS | 1.0 | www.github.com/icb-dcm/pesto | - | local
-SIMULANNEALBND | R2017A | www.mathworks.com/products/global-optimzation.html | Kirkpatrick et al. 1983 | local
+BOBYQA | 2009 | www.mat.uc.pt/~zhang/software.html | Powell 2009 | local, model-based (quadratic approximation)
+CMAES | 3.61beta | www.lri.fr/~hansen/cmaesintro.html | Hansen 1996 | global, evolutionary (with covariance adaptation)
+DHC | 1.0 | www.github.com/icb-dcm/pesto | De La Maza and Yuret 1994 | local, direct (dynamic hill climbing)
+DIRECT | 4.0 | [ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf](https://ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf) | Finkel 2003 | global, partitioning (dividing rectangles)
+FMINCON | R2017A | www.mathworks.com/products/optimization.html | Byrd et al. 2000 | local, gradient-based (interior point)
+FMINSEARCHBND | R2017A | www.mathworks.com/products/optimization.html | Nelder and Mead 1965 | local, direct (simplices)
+GA | R2017B| www.mathworks.com/products/global-optimization.html | Mitchell 1998 | global, evolutionary (genetic)
+IMFIL | 1.0 | [ctk.math.ncsu.edu](https://ctk.math.ncsu.edu/) | Kelley 2011 | local, direct (implicit filtering)
+MCS | 2.0 | www.mat.univie.ac.at/~neum/software/mcs | Huyer and Neumaier 1999 | global, partitioning (multivariate coordinate search)
+MEIGO-ESS | 03-07.2014 | www.gingproc.iim.csic.es/meigo.html | Egea et al. 2014 | global, hybrid (enhanced scatter search)
+PARTICLESWARM | R2017B| www.mathworks.com/products/global-optimization.html | Eberhardt and Kennedy 1995 | global, swarm-based (particle swarm)
+PATTERNSEARCH | R2017B| www.mathworks.com/products/global-optimization.html | Torczon 1997 | local, direct (pattern search)
+PSWARM | 2.1 | www.norg.uminho.pt/aivaz/pswarm | Vaz and Vicente 2009 | global, swarm-based (particle swarm)
+RCS | 1.0 | www.github.com/icb-dcm/pesto | - | local, direct (randomized coordinate search)
+SIMULANNEALBND | R2017B| www.mathworks.com/products/global-optimzation.html | Kirkpatrick et al. 1983 | local, direct (simulated annealing)
 
 It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison.
