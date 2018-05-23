@@ -2,7 +2,7 @@
 
 An evaluation of the applicability of derivative-free optimization for parameter estimation in systems biology. Supplementary material for:
 
-> "Yannik Schälte, Paul Stapor, Jan Hasenauer. Evaluation of Derivative-Free Optimizers for Parameter Estimation in Systems Biology. FOSBE, 2018."
+> Yannik Schälte, Paul Stapor, Jan Hasenauer. Evaluation of Derivative-Free Optimizers for Parameter Estimation in Systems Biology. FOSBE Conference Proceedings, 2018.
 
 ### Requirements
 
@@ -47,4 +47,4 @@ PSWARM | 2.1 | Vaz and Vicente 2009 | global, swarm-based (particle swarm) | [li
 RCS | 1.0 | - | local, direct (randomized coordinate search) | [link](https://www.github.com/icb-dcm/pesto)
 SIMULANNEALBND | R2017B | Kirkpatrick et al. 1983 | local, direct (simulated annealing) | [link](https://www.mathworks.com/products/global-optimzation.html)
 
-It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison.
+It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison. In case of questions, do not hesitate to contact us.
