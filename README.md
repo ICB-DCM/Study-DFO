@@ -29,22 +29,22 @@ An evaluation of the applicability of derivative-free optimization for parameter
 
 ### Overview of used optimizers
 
-Optimizer | Version | Source | Literature | Type
+Optimizer | Version | Literature | Type | Source
 --- | --- | --- | --- | ---
-BOBYQA | 2009 | www.mat.uc.pt/~zhang/software.html | Powell 2009 | local, model-based (quadratic approximation)
-CMAES | 3.61beta | www.lri.fr/~hansen/cmaesintro.html | Hansen 1996 | global, evolutionary (with covariance adaptation)
-DHC | 1.0 | www.github.com/icb-dcm/pesto | De La Maza and Yuret 1994 | local, direct (dynamic hill climbing)
-DIRECT | 4.0 | [ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf](https://ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf) | Finkel 2003 | global, partitioning (dividing rectangles)
-FMINCON | R2017A | www.mathworks.com/products/optimization.html | Byrd et al. 2000 | local, gradient-based (interior point)
-FMINSEARCHBND | R2017A | www.mathworks.com/products/optimization.html | Nelder and Mead 1965 | local, direct (simplices)
-GA | R2017B| www.mathworks.com/products/global-optimization.html | Mitchell 1998 | global, evolutionary (genetic)
-IMFIL | 1.0 | [ctk.math.ncsu.edu](https://ctk.math.ncsu.edu/) | Kelley 2011 | local, direct (implicit filtering)
-MCS | 2.0 | www.mat.univie.ac.at/~neum/software/mcs | Huyer and Neumaier 1999 | global, partitioning (multivariate coordinate search)
-MEIGO-ESS | 03-07.2014 | www.gingproc.iim.csic.es/meigo.html | Egea et al. 2014 | global, hybrid (enhanced scatter search)
-PARTICLESWARM | R2017B| www.mathworks.com/products/global-optimization.html | Eberhardt and Kennedy 1995 | global, swarm-based (particle swarm)
-PATTERNSEARCH | R2017B| www.mathworks.com/products/global-optimization.html | Torczon 1997 | local, direct (pattern search)
-PSWARM | 2.1 | www.norg.uminho.pt/aivaz/pswarm | Vaz and Vicente 2009 | global, swarm-based (particle swarm)
-RCS | 1.0 | www.github.com/icb-dcm/pesto | - | local, direct (randomized coordinate search)
-SIMULANNEALBND | R2017B| www.mathworks.com/products/global-optimzation.html | Kirkpatrick et al. 1983 | local, direct (simulated annealing)
+BOBYQA | 2009 | Powell 2009 | local, model-based (quadratic approximation) | ww.mat.uc.pt/~zhang/software.html
+CMAES | 3.61beta | Hansen 1996 | global, evolutionary (with covariance adaptation) | www.lri.fr/~hansen/cmaesintro.html
+DHC | 1.0 | De La Maza and Yuret 1994 | local, direct (dynamic hill climbing) | www.github.com/icb-dcm/pesto
+DIRECT | 4.0 | Finkel 2003 | global, partitioning (dividing rectangles) | [ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf](https://ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf)
+FMINCON | R2017A | Byrd et al. 2000 | local, gradient-based (interior point) | www.mathworks.com/products/optimization.html
+FMINSEARCHBND | R2017A | Nelder and Mead 1965 | local, direct (simplices) | www.mathworks.com/products/optimization.html
+GA | R2017B | Mitchell 1998 | global, evolutionary (genetic) | www.mathworks.com/products/global-optimization.html
+IMFIL | 1.0 | Kelley 2011 | local, direct (implicit filtering) | [ctk.math.ncsu.edu](https://ctk.math.ncsu.edu/)
+MCS | 2.0 | Huyer and Neumaier 1999 | global, partitioning (multivariate coordinate search) | www.mat.univie.ac.at/~neum/software/mcs
+MEIGO-ESS | 03-07.2014 | Egea et al. 2014 | global, hybrid (enhanced scatter search) | www.gingproc.iim.csic.es/meigo.html
+PARTICLESWARM | R2017B | Eberhardt and Kennedy 1995 | global, swarm-based (particle swarm) | www.mathworks.com/products/global-optimization.html
+PATTERNSEARCH | R2017B | Torczon 1997 | local, direct (pattern search) | www.mathworks.com/products/global-optimization.html
+PSWARM | 2.1 | Vaz and Vicente 2009 | global, swarm-based (particle swarm) | www.norg.uminho.pt/aivaz/pswarm
+RCS | 1.0 | - | local, direct (randomized coordinate search) | www.github.com/icb-dcm/pesto
+SIMULANNEALBND | R2017B | Kirkpatrick et al. 1983 | local, direct (simulated annealing) | www.mathworks.com/products/global-optimzation.html
 
 It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison.
