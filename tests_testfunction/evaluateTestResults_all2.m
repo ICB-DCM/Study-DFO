@@ -26,56 +26,73 @@ axes('NextPlot','replacechildren', 'ColorOrder',colors);
 
 figHandle = figure('name','legend');
 hold on;
-for j = 1:nKeys
+for j = 1:10
    plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
 legHandle = legend('show');
 legend boxoff;
-saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
+saveLegendToImage(figHandle,legHandle,'images/legend_2_1','epsc');
 
+figHandle = figure('name','legend');
+hold on;
+for j = 11:19
+   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
+end
+legHandle = legend('show');
+legend boxoff;
+saveLegendToImage(figHandle,legHandle,'images/legend_2_2','epsc');
 
 evaluateTestResults;
 evaluateTestResults_multistart;
 evaluateTestResults_noise;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ticklength = 0.04;
+
 fig = figure('name','collection');
 
-subplot(2,5,[1 4]);
-ybar = bar(100*v_y_smooth_convex');
+ax = subplot(2,5,[1 4]);
+ybar = bar(100*v_y_smooth_convex(:,[2:5 1])');
 hold on;
 for j=1:nKeys
     ybar(j).FaceColor = colors(j,:);
 end
-set(gca,'XTick',[]);
+ax.XTick = [1 2 3 4 5];
+ax.XTickLabel = {'','','','',''};
+ax.TickLength = [ticklength/5*3/2 0.025];
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '--k');
-plot([3.5 3.5], [0,100], '--k');
+plot([2.5 2.5], [0,100], '--k');
+plot([4.5 4.5], [0,100], '--k');
 title('A1: Multi-start setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
-subplot(2,5,[6 9]);
-ybar = bar(100*v_y_smooth_convex_all');
+ax = subplot(2,5,[6 9]);
+ybar = bar(100*v_y_smooth_convex_all(:,[2:5 1])');
 hold on;
 for j=1:nKeys
     ybar(j).FaceColor = colors(j,:);
 end
-xticklabels({'all','smooth','non-smooth','convex','non-convex'});
+xticklabels({'smooth','non-smooth','convex','non-convex','all'});
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-plot([1.5 1.5], [0,100], '--k');
-plot([3.5 3.5], [0,100], '--k');
+ax.TickLength = [ticklength/5*3/2 0.025];
+plot([2.5 2.5], [0,100], '--k');
+plot([4.5 4.5], [0,100], '--k');
 title('A2: Single-start setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
-subplot(2,5,[5]);
+ax = subplot(2,5,[5]);
 ybar = bar(100*v_y_smooth_convex_multistart(:,1)');
 hold on;
 ybar.FaceColor = 'flat';
 for j=1:nKeys
    ybar.CData(j,:) = colors(j,:);
 end
-set(gca,'XTick',[]);
+ax.XTick = [10];
+ax.XTickLabel = {''};
+ax.TickLength = [ticklength 0.025];
 ylim([0,100]);
 yticks([0 25 50 75 100]);
 set(gca,'YTickLabel',[]);
@@ -89,15 +106,17 @@ ybar.FaceColor = 'flat';
 for j=1:nKeys
     ybar.CData(j,:) = colors(j,:);
 end
-xticklabels({'all'});
+ax.XTick = [10];
+ax.XTickLabel = {'all'};
+ax.TickLength = [ticklength 0.025];
 ylim([0,100]);
 yticks([0 25 50 75 100]);
 set(gca,'YTickLabel',[]);
 % set(ax(1),'TickLength',[0,0]);
 title('A4: Multi-start setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
-mult_factor = 3.667;
-if set_sizes, set(gcf,'units','centimeters','position',[0,0,mult_factor*fig_width,mult_factor/2*fig_height]); end
+mult_factor = 6;
+if set_sizes, set(gcf,'units','centimeters','position',[0,0,mult_factor*fig_width,mult_factor/4*fig_height]); end
 
 suplabel('solved problems [%]','y');
 
