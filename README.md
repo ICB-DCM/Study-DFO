@@ -31,20 +31,20 @@ An evaluation of the applicability of derivative-free optimization for parameter
 
 Optimizer | Version | Literature | Type | Source
 --- | --- | --- | --- | ---
-BOBYQA | 2009 | Powell 2009 | local, model-based (quadratic approximation) | [link](www.mat.uc.pt/~zhang/software.html)
-CMAES | 3.61beta | Hansen 1996 | global, evolutionary (with covariance adaptation) | [link](www.lri.fr/~hansen/cmaesintro.html)
-DHC | 1.0 | De La Maza and Yuret 1994 | local, direct (dynamic hill climbing) | [link](www.github.com/icb-dcm/pesto)
+BOBYQA | 2009 | Powell 2009 | local, model-based (quadratic approximation) | [link](https://www.mat.uc.pt/~zhang/software.html)
+CMAES | 3.61beta | Hansen 1996 | global, evolutionary (with covariance adaptation) | [link](https://www.lri.fr/~hansen/cmaesintro.html)
+DHC | 1.0 | De La Maza and Yuret 1994 | local, direct (dynamic hill climbing) | [link](https://www.github.com/icb-dcm/pesto)
 DIRECT | 4.0 | Finkel 2003 | global, partitioning (dividing rectangles) | [link](https://ctk.math.ncsu.edu/Finkel_Direct/DirectUserGuide_pdf.pdf)
-FMINCON | R2017A | Byrd et al. 2000 | local, gradient-based (interior point) | [link](www.mathworks.com/products/optimization.html)
-FMINSEARCHBND | R2017A | Nelder and Mead 1965 | local, direct (simplices) | [link](www.mathworks.com/products/optimization.html)
-GA | R2017B | Mitchell 1998 | global, evolutionary (genetic) | [link](www.mathworks.com/products/global-optimization.html)
+FMINCON | R2017A | Byrd et al. 2000 | local, gradient-based (interior point) | [link](https://www.mathworks.com/products/optimization.html)
+FMINSEARCHBND | R2017A | Nelder and Mead 1965 | local, direct (simplices) | [link](https://www.mathworks.com/products/optimization.html)
+GA | R2017B | Mitchell 1998 | global, evolutionary (genetic) | [link](https://www.mathworks.com/products/global-optimization.html)
 IMFIL | 1.0 | Kelley 2011 | local, direct (implicit filtering) | [link](https://ctk.math.ncsu.edu/)
-MCS | 2.0 | Huyer and Neumaier 1999 | global, partitioning (multivariate coordinate search) | [link](www.mat.univie.ac.at/~neum/software/mcs)
-MEIGO-ESS | 03-07.2014 | Egea et al. 2014 | global, hybrid (enhanced scatter search) | [link](www.gingproc.iim.csic.es/meigo.html)
-PARTICLESWARM | R2017B | Eberhardt and Kennedy 1995 | global, swarm-based (particle swarm) | [link](www.mathworks.com/products/global-optimization.html)
-PATTERNSEARCH | R2017B | Torczon 1997 | local, direct (pattern search) | [link](www.mathworks.com/products/global-optimization.html)
-PSWARM | 2.1 | Vaz and Vicente 2009 | global, swarm-based (particle swarm) | [link](www.norg.uminho.pt/aivaz/pswarm)
-RCS | 1.0 | - | local, direct (randomized coordinate search) | [link](www.github.com/icb-dcm/pesto)
-SIMULANNEALBND | R2017B | Kirkpatrick et al. 1983 | local, direct (simulated annealing) | [link](www.mathworks.com/products/global-optimzation.html)
+MCS | 2.0 | Huyer and Neumaier 1999 | global, partitioning (multivariate coordinate search) | [link](https://www.mat.univie.ac.at/~neum/software/mcs)
+MEIGO-ESS | 03-07.2014 | Egea et al. 2014 | global, hybrid (enhanced scatter search) | [link](https://www.gingproc.iim.csic.es/meigo.html)
+PARTICLESWARM | R2017B | Eberhardt and Kennedy 1995 | global, swarm-based (particle swarm) | [link](https://www.mathworks.com/products/global-optimization.html)
+PATTERNSEARCH | R2017B | Torczon 1997 | local, direct (pattern search) | [link](https://www.mathworks.com/products/global-optimization.html)
+PSWARM | 2.1 | Vaz and Vicente 2009 | global, swarm-based (particle swarm) | [link](https://www.norg.uminho.pt/aivaz/pswarm)
+RCS | 1.0 | - | local, direct (randomized coordinate search) | [link](https://www.github.com/icb-dcm/pesto)
+SIMULANNEALBND | R2017B | Kirkpatrick et al. 1983 | local, direct (simulated annealing) | [link](https://www.mathworks.com/products/global-optimzation.html)
 
 It should be fairly easy and is encouraged to add further optimizers and test problems to this comparison.
