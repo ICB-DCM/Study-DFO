@@ -8,6 +8,12 @@ end
 %     clearPersistentVariables();
 
 %     tol = 1e-10;
+
+% The maximum number of function evaluations is chosen proportional to the
+% number of parameters to take into account that DFO algorithms usually
+% require a number of function evaluations that increases linearly with the
+% dimension of the search space, not taking into account that the objective
+% function landscape may in general become more complex.
 numevals = maxFunEvals*nPar;
 
 options.obj_type = 'log-posterior';
