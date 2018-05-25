@@ -35,6 +35,7 @@ legend boxoff;
 legH = findobj(legIcons, 'type', 'line');
 set(legH, 'LineWidth', lineWidth);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
+% sorry legend eps file has to be generated manually
 % saveLegendToImage(figHandle,legHandle,'images/legend_2_1','epsc');
 
 figHandle = figure('name','legend');
@@ -47,6 +48,7 @@ legend boxoff;
 legH = findobj(legIcons, 'type', 'line');
 set(legH, 'LineWidth', lineWidth);
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
+% sorry legend eps file has to be generated manually
 % saveLegendToImage(figHandle,legHandle,'images/legend_2_2','epsc');
 
 evaluateTestResults;

@@ -157,7 +157,7 @@ set(gca,'XTick',[]);
 ylabel('converged runs [%]');
 ylim([0,100]);
 legend(legendon,'Location','northeastoutside');
-set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+% set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
 
 ax = subplot(2,2,[3,4]);
 ybar = bar(convergedStartsPerTime);
@@ -234,11 +234,15 @@ saveas(fig, [pwd '/images/collectionh'], fileformat);
 figHandle = figure('name','legend');
 hold on;
 for j = 1:nSolvers
-   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', cell_solvers_official{j}, 'color', colors(j,:));
+   plot([1,2],[nan,nan],[markers{j} '-'], 'DisplayName', cell_solvers_official{j}, 'color', colors(j,:));
 end
-legHandle = legend('show');
+[legHandle,legIcons] = legend('show');
 legend boxoff;
-saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
+legH = findobj(legIcons, 'type', 'line');
+set(legH, 'LineWidth', 2*0.5);
+set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
+% sorry legend eps file has to be generated manually (via plot browser)
+% saveLegendToImage(figHandle,legHandle,'images/legend','epsc');
 
 function saveLegendToImage(figHandle, legHandle, ...
 fileName, fileType)
