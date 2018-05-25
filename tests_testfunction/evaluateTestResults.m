@@ -238,7 +238,7 @@ markers_tmp = markers(index);
 fig = figure('name','dims');
 hold on;
 for j=1:nKeys
-    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,100*v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:), 'LineWidth', lineWidth); 
 end
 hold off;
 legend(legendon,'Location','northeastoutside');
@@ -305,7 +305,7 @@ colors_tmp = colors(index,:);
 markers_tmp = markers(index);
 fig = figure('name','time');
 for j=1:nKeys
-    semilogy(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    semilogy(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:), 'LineWidth', lineWidth); 
     hold on;
 end
 hold off;
@@ -339,7 +339,7 @@ markers_tmp = markers(index);
 fig = figure('name','fevals');
 hold on;
 for j=1:nKeys
-    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:)); 
+    plot(v_x,v_y(j,:),[markers_tmp{j} '-'], 'DisplayName', cell_keys_tmp{j}, 'color', colors_tmp(j,:), 'LineWidth', lineWidth); 
 end
 plot(1:C.nDims,C.maxFunEvals{1}*ones(1,C.nDims),'-r','DisplayName','maxFunEvals');
 hold off;

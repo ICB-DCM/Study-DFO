@@ -3,6 +3,7 @@ close all;
 
 set_sizes = true;
 fig_width = 8.4;
+lineWidth = 2*0.5;
 fig_height = fig_width;
 fileformat = 'epsc';
 
@@ -27,20 +28,26 @@ axes('NextPlot','replacechildren', 'ColorOrder',colors);
 figHandle = figure('name','legend');
 hold on;
 for j = 1:10
-   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
+   plot([1,2],[nan,nan],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
-legHandle = legend('show');
+[legHandle,legIcons] = legend('show');
 legend boxoff;
-saveLegendToImage(figHandle,legHandle,'images/legend_2_1','epsc');
+legH = findobj(legIcons, 'type', 'line');
+set(legH, 'LineWidth', lineWidth);
+if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
+% saveLegendToImage(figHandle,legHandle,'images/legend_2_1','epsc');
 
 figHandle = figure('name','legend');
 hold on;
 for j = 11:19
-   plot([1,2],[1,2],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
+   plot([1,2],[nan,nan],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
-legHandle = legend('show');
+[legHandle,legIcons] = legend('show');
 legend boxoff;
-saveLegendToImage(figHandle,legHandle,'images/legend_2_2','epsc');
+legH = findobj(legIcons, 'type', 'line');
+set(legH, 'LineWidth', lineWidth);
+if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]); end
+% saveLegendToImage(figHandle,legHandle,'images/legend_2_2','epsc');
 
 evaluateTestResults;
 evaluateTestResults_multistart;
@@ -60,7 +67,7 @@ for j=1:nKeys
 end
 ax.XTick = [1 2 3 4 5];
 ax.XTickLabel = {'','','','',''};
-ax.TickLength = [ticklength/5*3/2 0.025];
+ax.TickLength = [ticklength/5 0.025];
 ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([2.5 2.5], [0,100], '--k');
@@ -77,7 +84,7 @@ end
 xticklabels({'smooth','non-smooth','convex','non-convex','all'});
 ylim([0,100]);
 yticks([0 25 50 75 100]);
-ax.TickLength = [ticklength/5*3/2 0.025];
+ax.TickLength = [ticklength/5 0.025];
 plot([2.5 2.5], [0,100], '--k');
 plot([4.5 4.5], [0,100], '--k');
 title('A2: Single-start setting','Interpreter','latex');
@@ -115,7 +122,7 @@ set(gca,'YTickLabel',[]);
 % set(ax(1),'TickLength',[0,0]);
 title('A4: Multi-start setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
-mult_factor = 6;
+mult_factor = 5;
 if set_sizes, set(gcf,'units','centimeters','position',[0,0,mult_factor*fig_width,mult_factor/4*fig_height]); end
 
 suplabel('solved problems [%]','y');
