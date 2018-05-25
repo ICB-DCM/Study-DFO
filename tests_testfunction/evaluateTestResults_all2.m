@@ -6,6 +6,7 @@ fig_width = 8.4;
 lineWidth = 2*0.5;
 fig_height = fig_width;
 fileformat = 'epsc';
+ygrid = 'off';
 
 solvers_from_input = {'FMINCON','BOBYQA','DHC','DHC-OLD','FMINSEARCHBND','IMFIL','PATTERNSEARCH-GPS','PATTERNSEARCH-MADS','RCS','SIMULANNEALBND',...
     'DIRECT','MCS','CMAES','GA','PARTICLESWARM','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','MEIGO-ESS-DHC-OLD'};
@@ -74,6 +75,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 plot([2.5 2.5], [0,100], '--k');
 plot([4.5 4.5], [0,100], '--k');
+ax.YGrid = ygrid;
 title('A1: Multi-start setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -89,6 +91,7 @@ yticks([0 25 50 75 100]);
 ax.TickLength = [ticklength/5 0.025];
 plot([2.5 2.5], [0,100], '--k');
 plot([4.5 4.5], [0,100], '--k');
+ax.YGrid = ygrid;
 title('A2: Single-start setting','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -105,6 +108,7 @@ ax.TickLength = [ticklength 0.025];
 ylim([0,100]);
 yticks([0 25 50 75 100]);
 set(gca,'YTickLabel',[]);
+ax.YGrid = ygrid;
 title('A3: Multi-start setting, $$m_g = 40000, k_g = 1$$','Interpreter','latex');
 % pbaspect([4 1 1]);
 
@@ -122,6 +126,7 @@ ylim([0,100]);
 yticks([0 25 50 75 100]);
 set(gca,'YTickLabel',[]);
 % set(ax(1),'TickLength',[0,0]);
+ax.YGrid = ygrid;
 title('A4: Multi-start setting, noisy','Interpreter','latex');
 % pbaspect([4 1 1]);
 mult_factor = 5;
