@@ -20,6 +20,8 @@ nStarts = 100;
 fig_width = 3.667/2*(0.5/0.667)*8.4;
 fig_height = fig_width;
 fileformat = 'epsc';
+ticklength = 0.04;
+ygrid = 'on';
 
 colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h'};
@@ -144,18 +146,22 @@ saveas(fig, [pwd '/images/funevalsperconvergedstart'], fileformat);
 
 % barplot
 
-subplot = @(m,n,p) subtightplot (m, n, p, [0.03 0.03], [0.1 0.1], [0.1 0.1]);
+subplot = @(m,n,p) subtightplot (m, n, p, [0.1 0.1], [0.1 0.1], [0.1 0.1]);
+% previously: m, n, p, [0.03 0.03], [0.1 0.1], [0.1 0.1]
 
 fig = figure('name','collection');
 
-subplot(2,2,[1 2]);
+ax = subplot(2,2,[1 2]);
 ybar = bar(100*convergedStarts);
 for is=1:nSolvers
     ybar(is).FaceColor = colors(is,:);
 end
-set(gca,'XTick',[]);
 ylabel('converged runs [%]');
 ylim([0,100]);
+yticks([0 25 50 75 100]);
+ax.XTickLabel = {'','','','','','','',''};
+ax.TickLength = [ticklength/5 0.025];
+ax.YGrid = ygrid;
 legend(legendon,'Location','northeastoutside');
 % set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height]);
 
@@ -168,8 +174,11 @@ set(gca,'yscale','log');
 xticklabels(cell_problems_official);
 % set(ax(1),'TickLength',[0,0]);
 xlabel('problem');
-ylabel('converged runs / time [s^{-1}]');
+ylabel('converged runs / time [1/s]');
 ylim([0,100]);
+ax.TickLength = [ticklength/5 0.025];
+ax.YGrid = ygrid;
+ax.MinorGridLineStyle = '-';
 legend(legendon,'Location','northeastoutside');
 set(gcf,'units','centimeters','position',[0,0,2*fig_width,0.9*fig_height]);
 saveas(fig, [pwd '/images/collection'], fileformat);
