@@ -21,7 +21,7 @@ fig_width = 3.667/2*(0.5/0.667)*8.4;
 fig_height = fig_width;
 fileformat = 'epsc';
 ticklength = 0.04;
-ygrid = 'on';
+ygrid = 'off';
 
 colors = distinguishable_colors(nSolvers);
 markers = {'o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h','o','+','*','x','s','d','^','v','<','>','p','h'};

@@ -6,7 +6,7 @@ fig_width = 8.4;
 lineWidth = 2*0.5;
 fig_height = fig_width;
 fileformat = 'epsc';
-ygrid = 'on';
+ygrid = 'off';
 
 solvers_from_input = {'FMINCON','BOBYQA','DHC','DHC-OLD','FMINSEARCHBND','IMFIL','PATTERNSEARCH-GPS','PATTERNSEARCH-MADS','RCS','SIMULANNEALBND',...
     'DIRECT','MCS','CMAES','GA','PARTICLESWARM','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','MEIGO-ESS-DHC-OLD'};
