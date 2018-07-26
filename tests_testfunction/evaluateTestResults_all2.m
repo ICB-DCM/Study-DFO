@@ -28,7 +28,7 @@ axes('NextPlot','replacechildren', 'ColorOrder',colors);
 
 figHandle = figure('name','legend');
 hold on;
-for j = 1:10
+for j = 1:9
    plot([1,2],[nan,nan],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
 [legHandle,legIcons] = legend('show');
@@ -41,7 +41,7 @@ if set_sizes, set(gcf,'units','centimeters','position',[0,0,fig_width,fig_height
 
 figHandle = figure('name','legend');
 hold on;
-for j = 11:19
+for j = 10:19
    plot([1,2],[nan,nan],[markers{j} '-'], 'DisplayName', solvers_for_output{j}, 'color', colors(j,:));
 end
 [legHandle,legIcons] = legend('show');

@@ -1,3 +1,6 @@
+% this is for comparing multistart to global methods, run with a larger
+% budget.
+
 % % gather all results in one big cell array
 % % solvers = {'bobyqa','cmaes','dhc','fmincon','gps','gss','mads','imfil','mcs','meigo-ess-bobyqa','meigo-ess-dhc-old','meigo-ess-dhc','meigo-ess-fmincon','particleswarm','pswarm','rcs','simulannealbnd'};
 % solvers_local = C.cell_solvers_local;
