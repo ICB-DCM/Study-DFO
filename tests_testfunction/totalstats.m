@@ -12,4 +12,4 @@ for jFile = 1:length(files)
     end
 end
 
-disp(['total time: ' num2str(sum_time) 's = ' num2str(sum_time/3600) 'h']);
+disp(['total time: ' num2str(sum_time) 's = ' num2str(sum_time/3600) 'h = ' num2str(sum_time/3600/24) 'd']);
