@@ -3,9 +3,17 @@ close all;
 
 threshold = 3;
 
-cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','meigo-ess-bobyqa','meigo-ess-dhc','fmincon','fmincon'};
-cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','FMINCON','FMINCON+g'};
-cell_gradient = {'',     '',   '',      '',   '',    '',       '',                '',             '',        '_gradient'};
+include_hybrid = false;
+
+if include_hybrid
+    cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','meigo-ess-bobyqa','meigo-ess-dhc','fmincon','fmincon','meigo-ess','meigo-ess'};
+    cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','FMINCON','FMINCON+g','MEIGO-ESS-FMINCON','MEIGO-ESS-FMINCON+g'};
+    cell_gradient = {'',     '',   '',      '',   '',    '',       '',                '',             '',        '_gradient','','_gradient'};
+else
+    cell_solvers = {'bobyqa','dhc','direct','mcs','cmaes','pswarm','meigo-ess-bobyqa','meigo-ess-dhc','fmincon','fmincon'};
+    cell_solvers_official = {'BOBYQA','DHC','DIRECT','MCS','CMAES','PSWARM','MEIGO-ESS-BOBYQA','MEIGO-ESS-DHC','FMINCON','FMINCON+g'};
+    cell_gradient = {'',     '',   '',      '',   '',    '',       '',                '',             '',        '_gradient'};
+end
 
 cell_problems = {'cr','ec','mt','pom','hb','js','rme','his'};
 cell_problems_official = {'M1','M2','M3','M4','M5','M6','M7','M8'};
