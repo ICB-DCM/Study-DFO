@@ -463,6 +463,30 @@ classdef TF
             fun_with_noise = @(x) fun(x) + C.noise_standard_deviation*randn(1);
         end
         
+        function totalstats()
+            sum_smooth_convex = 0;
+            sum_smooth_nonconvex = 0;
+            sum_nonsmooth_convex = 0;
+            sum_nonsmooth_nonconvex = 0;
+            for jTF = 1:length(TF.cell_tfs)
+                tf = TF.cell_tfs{jTF};
+                if tf.smooth == 1
+                    if tf.convex == 1
+                        sum_smooth_convex = sum_smooth_convex + 1;
+                    else
+                        sum_smooth_nonconvex = sum_smooth_nonconvex + 1;
+                    end
+                elseif tf.convex == 1
+                    sum_nonsmooth_convex = sum_nonsmooth_convex + 1;
+                else
+                    sum_nonsmooth_nonconvex = sum_nonsmooth_nonconvex + 1;
+                end
+            end
+            disp(['smooth convex: ' num2str(sum_smooth_convex)]);
+            disp(['smooth nonconvex: ' num2str(sum_smooth_nonconvex)]);
+            disp(['nonsmooth convex: ' num2str(sum_nonsmooth_convex)]);
+            disp(['nonsmooth nonconvex: ' num2str(sum_nonsmooth_nonconvex)]);
+        end
     end
     
 end
